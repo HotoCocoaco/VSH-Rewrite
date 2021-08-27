@@ -31,16 +31,16 @@ methodmap CSeeldier < SaxtonHaleBase
 	
 	public void GetBossInfo(char[] sInfo, int length)
 	{
-		StrCat(sInfo, length, "\nDuo Boss with Seeman");
-		StrCat(sInfo, length, "\nMelee deals 124 damage");
-		StrCat(sInfo, length, "\nHealth: Low");
+		StrCat(sInfo, length, "\n和Seeman一起的双人Boss");
+		StrCat(sInfo, length, "\n近战造成124伤害");
+		StrCat(sInfo, length, "\n生命值: 低");
 		StrCat(sInfo, length, "\n ");
-		StrCat(sInfo, length, "\nAbilities");
-		StrCat(sInfo, length, "\n- Brave Jump");
+		StrCat(sInfo, length, "\n能力");
+		StrCat(sInfo, length, "\n- 超级跳");
 		StrCat(sInfo, length, "\n ");
-		StrCat(sInfo, length, "\nRage");
-		StrCat(sInfo, length, "\n- Summons 3 mini-Seeldiers");
-		StrCat(sInfo, length, "\n- 200%% Rage: Summons 6 mini-Seeldiers");
+		StrCat(sInfo, length, "\n愤怒");
+		StrCat(sInfo, length, "\n- 召唤3个迷你Seeldier");
+		StrCat(sInfo, length, "\n- 200%% 愤怒: 召唤6个迷你Seeldier");
 	}
 	
 	public void OnSpawn()

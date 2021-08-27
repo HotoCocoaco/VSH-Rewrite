@@ -81,26 +81,26 @@ methodmap CBonkBoy < SaxtonHaleBase
 	
 	public void GetBossName(char[] sName, int length)
 	{
-		strcopy(sName, length, "Bonk Boy");
+		strcopy(sName, length, "原子能侦察兵");
 	}
 	
 	public void GetBossInfo(char[] sInfo, int length)
 	{
-		StrCat(sInfo, length, "\nHealth: Low");
+		StrCat(sInfo, length, "\n生命值: 低");
 		StrCat(sInfo, length, "\n ");
-		StrCat(sInfo, length, "\nAbilities");
-		StrCat(sInfo, length, "\n- Faster movement speed and extra jump height");
-		StrCat(sInfo, length, "\n- Dash Jump");
-		StrCat(sInfo, length, "\n- Sandman deals crit to stunned players");
-		StrCat(sInfo, length, "\n- Fast recharge balls, able to hold 3 max");
-		StrCat(sInfo, length, "\n- Medium range balls stun players and buildings, moonshot instakills");
+		StrCat(sInfo, length, "\n能力");
+		StrCat(sInfo, length, "\n- 更快的移动速度和额外跳跃高度");
+		StrCat(sInfo, length, "\n- 可以冲跳");
+		StrCat(sInfo, length, "\n- 睡魔可以爆击和击晕玩家");
+		StrCat(sInfo, length, "\n- 快速充能球, 最高可持有3个球");
+		StrCat(sInfo, length, "\n- 中距离的球击晕玩家和建筑, 远距离击中可秒杀");
 		StrCat(sInfo, length, "\n ");
-		StrCat(sInfo, length, "\nRage");
-		StrCat(sInfo, length, "\n- Unlimited and greater mobility jumps");
-		StrCat(sInfo, length, "\n- Faster movement speed");
-		StrCat(sInfo, length, "\n- Unlimited balls");
-		StrCat(sInfo, length, "\n- Bat stuns and knockback players");
-		StrCat(sInfo, length, "\n- 200%% Rage: Extends duration from 5 to 10 seconds");
+		StrCat(sInfo, length, "\n愤怒");
+		StrCat(sInfo, length, "\n- 无限制的更高的机动跳跃");
+		StrCat(sInfo, length, "\n- 更快的移动速度");
+		StrCat(sInfo, length, "\n- 无限的球");
+		StrCat(sInfo, length, "\n- 球棍击晕击退玩家");
+		StrCat(sInfo, length, "\n- 200%% 愤怒: 延长时间从5秒到10秒");
 	}
 	
 	public void OnSpawn()

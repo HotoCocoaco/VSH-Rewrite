@@ -79,21 +79,21 @@ methodmap CGentleSpy < SaxtonHaleBase
 	
 	public void GetBossName(char[] sName, int length)
 	{
-		strcopy(sName, length, "Gentle Spy");
+		strcopy(sName, length, "绅士间谍");
 	}
 	
 	public void GetBossInfo(char[] sInfo, int length)
 	{
-		StrCat(sInfo, length, "\nHealth: Medium");
+		StrCat(sInfo, length, "\n生命值: 中等");
 		StrCat(sInfo, length, "\n ");
-		StrCat(sInfo, length, "\nAbilities");
-		StrCat(sInfo, length, "\n- Passive Invis Watch");
-		StrCat(sInfo, length, "\n- Super fast speed and high jump during cloak");
+		StrCat(sInfo, length, "\n能力");
+		StrCat(sInfo, length, "\n- 被动隐形手表");
+		StrCat(sInfo, length, "\n- 隐身时极快速度和跳跃更高");
 		StrCat(sInfo, length, "\n ");
-		StrCat(sInfo, length, "\nRage");
-		StrCat(sInfo, length, "\n- Adds 50%% to cloak meter");
-		StrCat(sInfo, length, "\n- Ambassador with high damage and penetrates");
-		StrCat(sInfo, length, "\n- 200%% Rage: Sets cloak meter to 100%%");
+		StrCat(sInfo, length, "\n愤怒");
+		StrCat(sInfo, length, "\n- 增加50%%隐形能量");
+		StrCat(sInfo, length, "\n- 有着高伤害和穿透性的大使手枪");
+		StrCat(sInfo, length, "\n- 200%% 愤怒: 设置隐形能量为100%%");
 	}
 	
 	public void OnSpawn()

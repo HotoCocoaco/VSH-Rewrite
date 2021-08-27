@@ -89,21 +89,21 @@ methodmap CHorsemann < SaxtonHaleBase
 	
 	public void GetBossName(char[] sName, int length)
 	{
-		strcopy(sName, length, "Horseless Headless Horsemann Jr.");
+		strcopy(sName, length, "脱缰的无头骑士 Jr.");
 	}
 	
 	public void GetBossInfo(char[] sInfo, int length)
 	{
-		StrCat(sInfo, length, "\nHealth: Low");
+		StrCat(sInfo, length, "\n生命值: 低");
 		StrCat(sInfo, length, "\n ");
-		StrCat(sInfo, length, "\nAbilities");
-		StrCat(sInfo, length, "\n- Wall Climb");
-		StrCat(sInfo, length, "\n- Teleport Swap");
+		StrCat(sInfo, length, "\n能力");
+		StrCat(sInfo, length, "\n- 爬墙");
+		StrCat(sInfo, length, "\n- 传送交换");
 		StrCat(sInfo, length, "\n ");
-		StrCat(sInfo, length, "\nRage");
-		StrCat(sInfo, length, "\n- Become a flying ghost that is immune to damage, cannot attack for 8 seconds");
-		StrCat(sInfo, length, "\n- Pulls in and drains health from nearby players with random spooky effects");
-		StrCat(sInfo, length, "\n- 200%% Rage: Larger range and health drain is doubled");
+		StrCat(sInfo, length, "\n愤怒");
+		StrCat(sInfo, length, "\n- 变成一个免疫伤害但不能攻击的幽灵8秒");
+		StrCat(sInfo, length, "\n- 使用随机幽灵效果从附近玩家身上吸取生命值");
+		StrCat(sInfo, length, "\n- 200%% 愤怒: 更大的距离并且生命值吸取双倍");
 	}
 	
 	public void OnSpawn()

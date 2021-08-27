@@ -76,22 +76,22 @@ methodmap CUberRanger < SaxtonHaleBase
 	
 	public void GetBossName(char[] sName, int length)
 	{
-		strcopy(sName, length, "Über Ranger");
+		strcopy(sName, length, "Über 游侠");
 	}
 	
 	public void GetBossInfo(char[] sInfo, int length)
 	{
-		StrCat(sInfo, length, "\nHealth: Very Low");
+		StrCat(sInfo, length, "\n生命值: 非常低");
 		StrCat(sInfo, length, "\n ");
-		StrCat(sInfo, length, "\nAbilities");
-		StrCat(sInfo, length, "\n- Brave Jump");
-		StrCat(sInfo, length, "\n- Equipped with a Medi Gun");
+		StrCat(sInfo, length, "\n能力");
+		StrCat(sInfo, length, "\n- 超级跳");
+		StrCat(sInfo, length, "\n- 装备着医疗枪");
 		StrCat(sInfo, length, "\n ");
-		StrCat(sInfo, length, "\nRage");
-		StrCat(sInfo, length, "\n- Übercharge for 5 seconds");
-		StrCat(sInfo, length, "\n- Summons a fellow Über Ranger");
-		StrCat(sInfo, length, "\n- Über Rangers can heal and über each other");
-		StrCat(sInfo, length, "\n- 200%% Rage: extends über duration to 8 seconds and summons 3 Über Rangers");
+		StrCat(sInfo, length, "\n愤怒");
+		StrCat(sInfo, length, "\n- 获得Übercharge持续5秒");
+		StrCat(sInfo, length, "\n- 召唤一个伙伴Über游侠");
+		StrCat(sInfo, length, "\n- Über游侠可以治疗和über队友");
+		StrCat(sInfo, length, "\n- 200%% 愤怒: 延长über时间到8秒并召唤3个Über游侠");
 	}
 	
 	public void OnSpawn()
@@ -198,7 +198,7 @@ methodmap CUberRanger < SaxtonHaleBase
 	
 	public void OnThink()
 	{		
-		Hud_AddText(this.iClient, "Use your Medigun to heal your companions!");
+		Hud_AddText(this.iClient, "使用你的医疗枪来治疗你的伙伴!");
 	}
 	
 	public void Precache()
@@ -354,9 +354,9 @@ methodmap CMinionRanger < SaxtonHaleBase
 	{
 		char sMessage[64];
 		if (!g_bUberRangerMinionHasMoved[this.iClient])
-			Format(sMessage, sizeof(sMessage), "You have %d second%s to move before getting replaced!", g_iUberRangerMinionAFKTimeLeft[this.iClient], g_iUberRangerMinionAFKTimeLeft[this.iClient] != 1 ? "s" : "");
+			Format(sMessage, sizeof(sMessage), "你再被替代之前还有 %d 秒%s 来移动!", g_iUberRangerMinionAFKTimeLeft[this.iClient], g_iUberRangerMinionAFKTimeLeft[this.iClient] != 1 ? "s" : "");
 		else
-			Format(sMessage, sizeof(sMessage), "Use your Medigun to heal your companions!");
+			Format(sMessage, sizeof(sMessage), "使用你的医疗枪来治疗你的伙伴!");
 			
 		Hud_AddText(this.iClient, sMessage);
 	}

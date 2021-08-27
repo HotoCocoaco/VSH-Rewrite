@@ -64,21 +64,21 @@ methodmap CRedmond < SaxtonHaleBase
 	
 	public void GetBossName(char[] sName, int length)
 	{
-		strcopy(sName, length, "Redmond");
+		strcopy(sName, length, "雷德蒙德");
 	}
 	
 	public void GetBossInfo(char[] sInfo, int length)
 	{
-		StrCat(sInfo, length, "\nDuo Boss with Blutarch");
-		StrCat(sInfo, length, "\nMelee deals 124 damage");
-		StrCat(sInfo, length, "\nHealth: Low");
+		StrCat(sInfo, length, "\n与布鲁塔克一起的双人Boss");
+		StrCat(sInfo, length, "\n近战造成124伤害");
+		StrCat(sInfo, length, "\n生命值: 低");
 		StrCat(sInfo, length, "\n ");
-		StrCat(sInfo, length, "\nAbilities");
-		StrCat(sInfo, length, "\n- Alt-attack to use Teleport spell (5 second cooldown)");
+		StrCat(sInfo, length, "\n能力");
+		StrCat(sInfo, length, "\n- 辅助攻击使用传送魔咒（5秒冷却）");
 		StrCat(sInfo, length, "\n ");
-		StrCat(sInfo, length, "\nRage");
-		StrCat(sInfo, length, "\n- Grants a MONOCULUS! spell");
-		StrCat(sInfo, length, "\n- 200%% Rage: Grants 3 MONOCULUS! spells");
+		StrCat(sInfo, length, "\n愤怒");
+		StrCat(sInfo, length, "\n- 获得一个魔眼！魔咒");
+		StrCat(sInfo, length, "\n- 200%% 愤怒: 获得3个魔眼！魔咒");
 	}
 	
 	public void OnDeath(Event eventInfo)

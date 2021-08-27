@@ -107,16 +107,16 @@ methodmap CPainisCupcake < SaxtonHaleBase
 	
 	public void GetBossInfo(char[] sInfo, int length)
 	{
-		StrCat(sInfo, length, "\nHealth: Low");
+		StrCat(sInfo, length, "\n生命值: 低");
 		StrCat(sInfo, length, "\n ");
-		StrCat(sInfo, length, "\nAbilities");
-		StrCat(sInfo, length, "\n- Brave Jump");
-		StrCat(sInfo, length, "\n- Holding reload key eats dead bodies to heal up to 400 HP, recovered health depends on damage the player did");
+		StrCat(sInfo, length, "\n能力");
+		StrCat(sInfo, length, "\n- 超级跳");
+		StrCat(sInfo, length, "\n- 按住装填键吃掉尸体并治疗至多400HP, 恢复的生命值取决于此玩家造成的伤害值");
 		StrCat(sInfo, length, "\n ");
-		StrCat(sInfo, length, "\nRage");
-		StrCat(sInfo, length, "\n- Übercharge and bright glow for 8 seconds");
-		StrCat(sInfo, length, "\n- Automatically eats nearby bodies");
-		StrCat(sInfo, length, "\n- 200%% Rage: extends duration to 16 seconds");
+		StrCat(sInfo, length, "\n愤怒");
+		StrCat(sInfo, length, "\n- Übercharge和轮廓标记8秒");
+		StrCat(sInfo, length, "\n- 自动吃掉周围的尸体");
+		StrCat(sInfo, length, "\n- 200%% 愤怒: 延长时间到16秒");
 	}
 	
 	public void OnRage()

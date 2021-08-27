@@ -575,7 +575,7 @@ public void OnPluginStart()
 	func = SaxtonHaleFunction("GetModifiersInfo", ET_Ignore, Param_String, Param_Cell);
 	func.SetParam(1, Param_String, VSHArrayType_Dynamic, 2);
 	
-	//Ability functions
+	//Ability functions 能力功能
 	SaxtonHaleFunction("CreateAbility", ET_Single, Param_String);
 	SaxtonHaleFunction("FindAbility", ET_Single, Param_String);
 	SaxtonHaleFunction("DestroyAbility", ET_Ignore, Param_String);
@@ -596,7 +596,7 @@ public void OnPluginStart()
 	func.SetParam(3, Param_String, VSHArrayType_Static, PLATFORM_MAX_PATH);
 	func.SetParam(9, Param_String, VSHArrayType_Static, PLATFORM_MAX_PATH);
 	
-	//Damage/Death functions
+	//Damage/Death functions 伤害/死亡功能
 	SaxtonHaleFunction("OnPlayerKilled", ET_Ignore, Param_Cell, Param_Cell);
 	SaxtonHaleFunction("OnDeath", ET_Ignore, Param_Cell);
 	
@@ -612,19 +612,19 @@ public void OnPluginStart()
 	func.SetParam(6, Param_Array, VSHArrayType_Static, 3);
 	func.SetParam(7, Param_Array, VSHArrayType_Static, 3);
 	
-	//Button functions
+	//Button functions 按钮功能
 	SaxtonHaleFunction("OnButton", ET_Ignore, Param_CellByRef);
 	SaxtonHaleFunction("OnButtonPress", ET_Ignore, Param_Cell);
 	SaxtonHaleFunction("OnButtonHold", ET_Ignore, Param_Cell);
 	SaxtonHaleFunction("OnButtonRelease", ET_Ignore, Param_Cell);
 	
-	//Building functions
+	//Building functions 建筑功能
 	SaxtonHaleFunction("OnBuild", ET_Single, Param_Cell, Param_Cell);
 	SaxtonHaleFunction("OnBuildObject", ET_Event, Param_Cell);
 	SaxtonHaleFunction("OnDestroyObject", ET_Event, Param_Cell);
 	SaxtonHaleFunction("OnObjectSapped", ET_Event, Param_Cell);
 	
-	//Retrieve array/strings
+	//Retrieve array/strings 检索
 	func = SaxtonHaleFunction("GetModel", ET_Ignore, Param_String, Param_Cell);
 	func.SetParam(1, Param_String, VSHArrayType_Dynamic, 2);
 	
@@ -646,7 +646,7 @@ public void OnPluginStart()
 	func = SaxtonHaleFunction("GetRageMusicInfo", ET_Ignore, Param_String, Param_Cell, Param_FloatByRef);
 	func.SetParam(1, Param_String, VSHArrayType_Dynamic, 2);
 	
-	//Misc functions
+	//Misc functions 其他功能
 	SaxtonHaleFunction("Precache", ET_Ignore);
 	SaxtonHaleFunction("CalculateMaxHealth", ET_Single);
 	SaxtonHaleFunction("AddRage", ET_Ignore, Param_Cell);
@@ -659,7 +659,7 @@ public void OnPluginStart()
 	SaxtonHale_RegisterClass("SaxtonHaleModifiers", VSHClassType_Core);
 	SaxtonHale_RegisterClass("SaxtonHaleAbility", VSHClassType_Core);
 	
-	//Register normal bosses
+	//Register normal bosses 注册普通Boss
 	SaxtonHale_RegisterClass("CSaxtonHale", VSHClassType_Boss);
 	
 	SaxtonHale_RegisterClass("CAnnouncer", VSHClassType_Boss);
@@ -682,18 +682,18 @@ public void OnPluginStart()
 	SaxtonHale_RegisterClass("CVagineer", VSHClassType_Boss);
 	SaxtonHale_RegisterClass("CYeti", VSHClassType_Boss);
 	
-	//Register multi bosses
+	//Register multi bosses 注册多重Boss
 	SaxtonHale_RegisterClass("CMannBrothers", VSHClassType_BossMulti);
 	SaxtonHale_RegisterClass("CPyromancers", VSHClassType_BossMulti);
 	SaxtonHale_RegisterClass("CSeeManSeeldier", VSHClassType_BossMulti);
 	
-	//Register minions
+	//Register minions 注册小弟
 	SaxtonHale_RegisterClass("CSeeldierMinion", VSHClassType_Boss);
 	SaxtonHale_RegisterClass("CAnnouncerMinion", VSHClassType_Boss);
 	SaxtonHale_RegisterClass("CMinionRanger", VSHClassType_Boss);
 	SaxtonHale_RegisterClass("CZombie", VSHClassType_Boss);
 	
-	//Register ability
+	//Register ability 注册能力
 	SaxtonHale_RegisterClass("CBodyEat", VSHClassType_Ability);
 	SaxtonHale_RegisterClass("CBomb", VSHClassType_Ability);
 	SaxtonHale_RegisterClass("CBombProjectile", VSHClassType_Ability);
@@ -720,7 +720,7 @@ public void OnPluginStart()
 	SaxtonHale_RegisterClass("CWeaponSentry", VSHClassType_Ability);
 	SaxtonHale_RegisterClass("CWeaponSpells", VSHClassType_Ability);
 	
-	//Register modifiers
+	//Register modifiers 注册修改器
 	SaxtonHale_RegisterClass("CModifiersAngry", VSHClassType_Modifier);
 	SaxtonHale_RegisterClass("CModifiersElectric", VSHClassType_Modifier);
 	SaxtonHale_RegisterClass("CModifiersHot", VSHClassType_Modifier);
@@ -731,7 +731,7 @@ public void OnPluginStart()
 	SaxtonHale_RegisterClass("CModifiersSpeed", VSHClassType_Modifier);
 	SaxtonHale_RegisterClass("CModifiersVampire", VSHClassType_Modifier);
 	
-	//Init our convars
+	//Init our convars 一些cvars
 	g_ConfigConvar.Create("vsh_force_load", "-1", "Force enable VSH on map start? (-1 for default, 0 for force disable, 1 for force enable)", _, true, -1.0, true, 1.0);
 	g_ConfigConvar.Create("vsh_boss_ping_limit", "200", "Max ping/latency to allow player to play as boss (-1 for no limit)", _, true, -1.0);
 	g_ConfigConvar.Create("vsh_telefrag_damage", "9001.0", "Damage amount to boss from telefrag", _, true, 0.0);

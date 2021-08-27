@@ -116,21 +116,21 @@ methodmap CMerasmus < SaxtonHaleBase
 	
 	public void GetBossName(char[] sName, int length)
 	{
-		strcopy(sName, length, "Merasmus");
+		strcopy(sName, length, "马拉莫斯");
 	}
 	
 	public void GetBossInfo(char[] sInfo, int length)
 	{
-		StrCat(sInfo, length, "\nHealth: Medium");
+		StrCat(sInfo, length, "\n生命值: 中等");
 		StrCat(sInfo, length, "\n ");
-		StrCat(sInfo, length, "\nAbilities");
-		StrCat(sInfo, length, "\n- Rocket Jump spell");
-		StrCat(sInfo, length, "\n- Teleport-View");
+		StrCat(sInfo, length, "\n能力");
+		StrCat(sInfo, length, "\n- 火箭跳魔咒");
+		StrCat(sInfo, length, "\n- 瞄准传送");
 		StrCat(sInfo, length, "\n ");
-		StrCat(sInfo, length, "\nRage");
-		StrCat(sInfo, length, "\n- Bomb projectiles at random directions from boss");
-		StrCat(sInfo, length, "\n- Self-Über and Crits for 8 seconds");
-		StrCat(sInfo, length, "\n- 200%% Rage: Doubled bomb projectile spawn rate");
+		StrCat(sInfo, length, "\n愤怒");
+		StrCat(sInfo, length, "\n- Boss随机方向投掷炸弹");
+		StrCat(sInfo, length, "\n- 自身无敌和爆击8秒");
+		StrCat(sInfo, length, "\n- 200%% 愤怒: 双倍炸弹生成倍率");
 	}
 	
 	public void OnSpawn()

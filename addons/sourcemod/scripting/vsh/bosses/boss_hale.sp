@@ -113,19 +113,19 @@ methodmap CSaxtonHale < SaxtonHaleBase
 	
 	public void GetBossName(char[] sName, int length)
 	{
-		strcopy(sName, length, "Saxton Hale");
+		strcopy(sName, length, "萨克斯顿 霍尔");
 	}
 	
 	public void GetBossInfo(char[] sInfo, int length)
 	{
-		StrCat(sInfo, length, "\nHealth: Medium");
+		StrCat(sInfo, length, "\n生命值: 中等");
 		StrCat(sInfo, length, "\n ");
-		StrCat(sInfo, length, "\nAbilities");
-		StrCat(sInfo, length, "\n- Brave Jump");
+		StrCat(sInfo, length, "\n能力");
+		StrCat(sInfo, length, "\n- 超级跳");
 		StrCat(sInfo, length, "\n ");
-		StrCat(sInfo, length, "\nRage");
-		StrCat(sInfo, length, "\n- Scares players at medium range for 5 seconds");
-		StrCat(sInfo, length, "\n- 200%% Rage: Longer range and extends duration to 7.5 seconds");
+		StrCat(sInfo, length, "\n愤怒");
+		StrCat(sInfo, length, "\n- 惊吓中等距离玩家5秒");
+		StrCat(sInfo, length, "\n- 200%% 愤怒: 更长的距离和延长时间刀7.5秒");
 	}
 	
 	public void OnSpawn()

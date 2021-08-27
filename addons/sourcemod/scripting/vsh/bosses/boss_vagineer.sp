@@ -69,15 +69,15 @@ methodmap CVagineer < SaxtonHaleBase
 	
 	public void GetBossInfo(char[] sInfo, int length)
 	{
-		StrCat(sInfo, length, "\nHealth: Slightly low");
+		StrCat(sInfo, length, "\n生命值: 稍低");
 		StrCat(sInfo, length, "\n ");
-		StrCat(sInfo, length, "\nAbilities");
-		StrCat(sInfo, length, "\n- Brave Jump");
+		StrCat(sInfo, length, "\n能力");
+		StrCat(sInfo, length, "\n- 超级跳");
 		StrCat(sInfo, length, "\n ");
-		StrCat(sInfo, length, "\nRage");
-		StrCat(sInfo, length, "\n- Builds Level 1 Sentry with faster rotate and firing speed, health scales based on players alive");
-		StrCat(sInfo, length, "\n- Scares players at small range for 5 seconds");
-		StrCat(sInfo, length, "\n- 200%% Rage: Level 2 Sentry, larger scare range and extends duration to 7.5 seconds");
+		StrCat(sInfo, length, "\n愤怒");
+		StrCat(sInfo, length, "\n- 建造一个等级1步哨, 有更快的旋转和开火速度, 生命值取决于生存着的玩家数");
+		StrCat(sInfo, length, "\n- 小范围惊吓玩家5秒");
+		StrCat(sInfo, length, "\n- 200%% 愤怒: 2级步哨, 更大的惊吓范围并延长时间到7.5秒");
 	}
 	
 	public void OnSpawn()

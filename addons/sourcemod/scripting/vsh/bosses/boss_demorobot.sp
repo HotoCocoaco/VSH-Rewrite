@@ -93,20 +93,20 @@ methodmap CDemoRobot < SaxtonHaleBase
 	
 	public void GetBossName(char[] sName, int length)
 	{
-		strcopy(sName, length, "Glitched Robot");
+		strcopy(sName, length, "故障机器人");
 	}
 	
 	public void GetBossInfo(char[] sInfo, int length)
 	{
-		StrCat(sInfo, length, "\nHealth: Medium");
+		StrCat(sInfo, length, "\n生命值: 中");
 		StrCat(sInfo, length, "\n ");
-		StrCat(sInfo, length, "\nAbilities");
-		StrCat(sInfo, length, "\n- Brave Jump");
+		StrCat(sInfo, length, "\n能力");
+		StrCat(sInfo, length, "\n- 超级跳");
 		StrCat(sInfo, length, "\n ");
-		StrCat(sInfo, length, "\nRage");
-		StrCat(sInfo, length, "\n- Get an upgraded Grenade Launcher for 8 seconds");
-		StrCat(sInfo, length, "\n- It has faster firing speed, unlimited ammo and clip size");
-		StrCat(sInfo, length, "\n- 200%% Rage: Grenade Launcher faster firing speed is doubled");
+		StrCat(sInfo, length, "\n愤怒");
+		StrCat(sInfo, length, "\n- 获得升级版榴弹发射器8秒");
+		StrCat(sInfo, length, "\n- 它有更快的开火速度, 无限弹药和弹匣");
+		StrCat(sInfo, length, "\n- 200%% 愤怒: 榴弹发射器的开火速度双倍");
 	}
 	
 	public void OnSpawn()

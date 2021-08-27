@@ -99,17 +99,17 @@ methodmap CPyroCar < SaxtonHaleBase
 	
 	public void GetBossInfo(char[] sInfo, int length)
 	{
-		StrCat(sInfo, length, "\nHealth: Medium");
-		StrCat(sInfo, length, "\nYour backburner does little damage");
-		StrCat(sInfo, length, "\nDoused enemies take critical hits");
-		StrCat(sInfo, length, "\nYou can chain thermal thruster jumps");
+		StrCat(sInfo, length, "\n生命值: 中等");
+		StrCat(sInfo, length, "\n你的偷袭烈焰喷射器造成很少伤害");
+		StrCat(sInfo, length, "\n油泡过的敌人受到爆击");
+		StrCat(sInfo, length, "\n你可以连续热能推进器跳");
 		StrCat(sInfo, length, "\n ");
-		StrCat(sInfo, length, "\nAbilities");
-		StrCat(sInfo, length, "\n- Throw gas passer (Deal damage to gain up to 5)");
+		StrCat(sInfo, length, "\n能力");
+		StrCat(sInfo, length, "\n- 投掷纵火者的油桶 (造成至多5伤害)");
 		StrCat(sInfo, length, "\n ");
-		StrCat(sInfo, length, "\nRage");
-		StrCat(sInfo, length, "\n- Douses enemies around you and grants a speed boost for 8 seconds");
-		StrCat(sInfo, length, "\n- 200%% Rage: Increases bonus speed and extends duration to 12 seconds");
+		StrCat(sInfo, length, "\n愤怒");
+		StrCat(sInfo, length, "\n- 油湿周围的敌人并获得速度加成8秒");
+		StrCat(sInfo, length, "\n- 200%% 愤怒: 增加额外速度并延长时间到12秒");
 	}
 	
 	public void OnSpawn()

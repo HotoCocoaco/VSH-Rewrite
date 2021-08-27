@@ -64,7 +64,7 @@ methodmap CZombie < SaxtonHaleBase
 		if (sCmd1[0] == '0' && sCmd2[0] == '0')
 		{
 			//Since zombie scout cant get healed from medic, dont allow him to call medic
-			PrintHintText(this.iClient, "You can't heal as zombie!");
+			PrintHintText(this.iClient, "你作为僵尸不能被治疗!");
 			return Plugin_Handled;
 		}
 		

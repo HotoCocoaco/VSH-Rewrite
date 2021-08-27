@@ -73,19 +73,19 @@ methodmap CAnnouncer < SaxtonHaleBase
 	
 	public void GetBossName(char[] sName, int length)
 	{
-		strcopy(sName, length, "Announcer");
+		strcopy(sName, length, "管理员");
 	}
 	
 	public void GetBossInfo(char[] sInfo, int length)
 	{
-		StrCat(sInfo, length, "\nHealth: Medium");
+		StrCat(sInfo, length, "\n生命值: 中等");
 		StrCat(sInfo, length, "\n ");
-		StrCat(sInfo, length, "\nAbilities");
-		StrCat(sInfo, length, "\n- Brings players and buildings shot by your Diamondback to your team");
+		StrCat(sInfo, length, "\n能力");
+		StrCat(sInfo, length, "\n- 通过你的菱背响尾蛇将玩家和建筑带入你的队伍");
 		StrCat(sInfo, length, "\n ");
-		StrCat(sInfo, length, "\nRage");
-		StrCat(sInfo, length, "\n- Ammo is added to your Diamondback");
-		StrCat(sInfo, length, "\n- 200%% Rage: Ammo added is doubled");
+		StrCat(sInfo, length, "\n愤怒");
+		StrCat(sInfo, length, "\n- 你的菱背响尾蛇弹药增加");
+		StrCat(sInfo, length, "\n- 200%% 愤怒: 弹药增加双倍");
 	}
 	
 	public void OnSpawn()
@@ -205,7 +205,7 @@ methodmap CAnnouncer < SaxtonHaleBase
 		//Alert teammates, herself and unconverted minions that the victim is about to change teams
 		TFClassType nClass = TF2_GetPlayerClass(victim);
 		char sMessage[128];
-		Format(sMessage, sizeof(sMessage), "A%s %s was hit and will switch teams!", (nClass == TFClass_Engineer ? "n" : ""), g_strClassName[nClass]);
+		Format(sMessage, sizeof(sMessage), "一个%s %s 被击中并将切换团队!", (nClass == TFClass_Engineer ? "n" : ""), g_strClassName[nClass]);
 		Announcer_ShowAnnotation(victim, sMessage, 6.0);
 		
 		EmitSoundToClient(this.iClient, SOUND_BACKSTAB);
@@ -230,7 +230,7 @@ methodmap CAnnouncer < SaxtonHaleBase
 		TFObjectMode nMode = TF2_GetBuildingMode(building);
 		
 		char sMessage[128];
-		Format(sMessage, sizeof(sMessage), "A %s was hit and has switched teams!", g_strBuildingName[nType][nMode]);
+		Format(sMessage, sizeof(sMessage), "一个 %s 被击中并切换了团队!", g_strBuildingName[nType][nMode]);
 		Announcer_ShowAnnotation(building, sMessage, 3.0);
 		
 		TF2_SetBuildingTeam(building, TF2_GetClientTeam(this.iClient), this.iClient);
@@ -387,7 +387,7 @@ public Action Timer_AnnouncerChangeTeam(Handle hTimer, int iClient)
 	if (g_iAnnouncerMinionTimeLeft[iClient] > 0)
 	{
 		//Warning on about to become boss
-		PrintCenterText(iClient, "YOU'RE SWAPPING TEAMS IN %d SECOND%s", g_iAnnouncerMinionTimeLeft[iClient], g_iAnnouncerMinionTimeLeft[iClient] > 1 ? "S" : "");
+		PrintCenterText(iClient, "你将在之后的时间切换队伍 %d 秒%s", g_iAnnouncerMinionTimeLeft[iClient], g_iAnnouncerMinionTimeLeft[iClient] > 1 ? "S" : "");
 		g_iAnnouncerMinionTimeLeft[iClient]--;
 		g_hAnnouncerMinionTimer[iClient] = CreateTimer(1.0, Timer_AnnouncerChangeTeam, iClient);
 		return;
@@ -402,7 +402,7 @@ public Action Timer_AnnouncerChangeTeam(Handle hTimer, int iClient)
 			TF2_SetBuildingTeam(iBuilding, TFTeam_Boss);
 	}
 	
-	PrintCenterText(iClient, "YOU'RE NOW IN BOSS TEAM");
+	PrintCenterText(iClient, "你现在和BOSS同队!");
 	
 	SetEntProp(iClient, Prop_Send, "m_lifeState", LifeState_Dead);
 	TF2_ChangeClientTeam(iClient, TFTeam_Boss);

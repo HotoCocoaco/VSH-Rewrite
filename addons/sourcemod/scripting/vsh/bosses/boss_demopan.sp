@@ -85,15 +85,15 @@ methodmap CDemoPan < SaxtonHaleBase
 	
 	public void GetBossInfo(char[] sInfo, int length)
 	{
-		StrCat(sInfo, length, "\nHealth: Medium");
+		StrCat(sInfo, length, "\n生命值: 中等");
 		StrCat(sInfo, length, "\n ");
-		StrCat(sInfo, length, "\nAbilities");
-		StrCat(sInfo, length, "\n- Brave Jump");
-		StrCat(sInfo, length, "\n- Passive Chargin' Targe, reload to charge");
+		StrCat(sInfo, length, "\n能力");
+		StrCat(sInfo, length, "\n- 超级跳");
+		StrCat(sInfo, length, "\n- 被动冲锋盾, 装填键冲锋");
 		StrCat(sInfo, length, "\n ");
-		StrCat(sInfo, length, "\nRage");
-		StrCat(sInfo, length, "\n- 5 seconds of force full-control charging");
-		StrCat(sInfo, length, "\n- 200%% Rage: extends duration to 10 seconds");
+		StrCat(sInfo, length, "\n愤怒");
+		StrCat(sInfo, length, "\n- 5秒完全操纵的冲锋");
+		StrCat(sInfo, length, "\n- 200%% 愤怒: 延长时间为10秒");
 	}
 	
 	public void OnSpawn()

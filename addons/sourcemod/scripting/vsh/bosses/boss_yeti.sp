@@ -64,21 +64,21 @@ methodmap CYeti < SaxtonHaleBase
 	
 	public void GetBossName(char[] sName, int length)
 	{
-		strcopy(sName, length, "Last Yeti");
+		strcopy(sName, length, "最后的雪人");
 	}
 	
 	public void GetBossInfo(char[] sInfo, int length)
 	{
-		StrCat(sInfo, length, "\nHealth: High");
+		StrCat(sInfo, length, "\n生命值: 高");
 		StrCat(sInfo, length, "\n ");
-		StrCat(sInfo, length, "\nAbilities");
-		StrCat(sInfo, length, "\n- Brave Jump");
-		StrCat(sInfo, length, "\n- Ground Pound (Passive)");
+		StrCat(sInfo, length, "\n能力");
+		StrCat(sInfo, length, "\n- 超级跳");
+		StrCat(sInfo, length, "\n- 大地重击 (被动)");
 		StrCat(sInfo, length, "\n ");
-		StrCat(sInfo, length, "\nRage");
-		StrCat(sInfo, length, "\n- Slows players at medium range for 3 seconds");
-		StrCat(sInfo, length, "\n- Affected players get frozen for 4 seconds");
-		StrCat(sInfo, length, "\n- 200%% Rage: Extended range and freeze duration increased to 6 seconds");
+		StrCat(sInfo, length, "\n愤怒");
+		StrCat(sInfo, length, "\n- 减速中等距离内的玩家3秒");
+		StrCat(sInfo, length, "\n- 受影响的玩家被冻结4秒");
+		StrCat(sInfo, length, "\n- 200%% 愤怒: 增加距离并延长冻结时间到6秒");
 	}
 	
 	public void OnSpawn()

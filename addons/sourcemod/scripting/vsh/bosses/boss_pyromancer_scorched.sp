@@ -32,21 +32,21 @@ methodmap CScorchedPyromancer < SaxtonHaleBase
 	
 	public void GetBossName(char[] sName, int length)
 	{
-		strcopy(sName, length, "Scorched Pyromancer");
+		strcopy(sName, length, "烧焦火焰兵");
 	}
 	
 	public void GetBossInfo(char[] sInfo, int length)
 	{
-		StrCat(sInfo, length, "\nDuo Boss: The Pyromancers");
-		StrCat(sInfo, length, "\nMelee deals 80 damage");
-		StrCat(sInfo, length, "\nHealth: Low");
+		StrCat(sInfo, length, "\n双人Boss: 纵火者");
+		StrCat(sInfo, length, "\n近战造成80伤害");
+		StrCat(sInfo, length, "\n生命值: 低");
 		StrCat(sInfo, length, "\n ");
-		StrCat(sInfo, length, "\nAbilities");
-		StrCat(sInfo, length, "\n- Boost Jump");
+		StrCat(sInfo, length, "\n能力");
+		StrCat(sInfo, length, "\n- 增强跳");
 		StrCat(sInfo, length, "\n ");
-		StrCat(sInfo, length, "\nRage");
-		StrCat(sInfo, length, "\n- Ignite all players within 500 units");
-		StrCat(sInfo, length, "\n- 200%% Rage: Ignite all players on the map");
+		StrCat(sInfo, length, "\n愤怒");
+		StrCat(sInfo, length, "\n- 点燃500单位内的所有玩家");
+		StrCat(sInfo, length, "\n- 200%% 愤怒: 点燃地图的所有玩家");
 	}
 	
 	public void OnSpawn()
@@ -85,6 +85,6 @@ methodmap CScorchedPyromancer < SaxtonHaleBase
 	
 	public void OnThink()
 	{
-		Hud_AddText(this.iClient, "HINT: Stay near the other Pyromancer so they can crit ignited players!");
+		Hud_AddText(this.iClient, "提示: 靠近另一个纵火者以便让它爆击被点燃的敌人！");
 	}
 }

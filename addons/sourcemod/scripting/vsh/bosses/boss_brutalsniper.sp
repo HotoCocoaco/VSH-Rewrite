@@ -89,25 +89,25 @@ methodmap CBrutalSniper < SaxtonHaleBase
 	
 	public void GetBossName(char[] sName, int length)
 	{
-		strcopy(sName, length, "Christian Brutal Sniper");
+		strcopy(sName, length, "残忍基督弓手");
 	}
 	
 	public void GetBossInfo(char[] sInfo, int length)
 	{
-		StrCat(sInfo, length, "\nHealth: Medium");
+		StrCat(sInfo, length, "\n生命值: 中等");
 		StrCat(sInfo, length, "\n ");
-		StrCat(sInfo, length, "\nAbilities");
-		StrCat(sInfo, length, "\n- Brave Jump");
-		StrCat(sInfo, length, "\n- Changes your melee to a random knife on melee kill");
-		StrCat(sInfo, length, "\n  - Kukri: Default");
-		StrCat(sInfo, length, "\n  - Tribalman Shiv: 10 seconds bleed, 15%% dmg penalty");
-		StrCat(sInfo, length, "\n  - Bushwacka: Always crit, 20%% dmg vulnerability");
-		StrCat(sInfo, length, "\n  - Shahanshah: +15%% dmg when <50%% health, -15%% dmg when >50%% health");
+		StrCat(sInfo, length, "\n能力");
+		StrCat(sInfo, length, "\n- 超级跳");
+		StrCat(sInfo, length, "\n- 近战击杀后切换一个随机刀");
+		StrCat(sInfo, length, "\n  - 反曲刀: 默认");
+		StrCat(sInfo, length, "\n  - 部落者刮刀: 10秒流血, 15%%伤害降低");
+		StrCat(sInfo, length, "\n  - 灌木丛: 永远爆击, 受到的伤害增加20%%");
+		StrCat(sInfo, length, "\n  - 诸王之王: 当 <50%% 生命值时 +15%% 伤害, 当 >50%% 生命值时 -15%% 伤害");
 		StrCat(sInfo, length, "\n ");
-		StrCat(sInfo, length, "\nRage");
-		StrCat(sInfo, length, "\n- Huntsman with high damage and faster charge time");
-		StrCat(sInfo, length, "\n- Scares players at close range for 5 seconds");
-		StrCat(sInfo, length, "\n- 200%% Rage: longer range scare and extends duration to 7.5 seconds");
+		StrCat(sInfo, length, "\n愤怒");
+		StrCat(sInfo, length, "\n- 高伤害和高装填速度的猎人短弓");
+		StrCat(sInfo, length, "\n- 惊吓近距离的敌人5秒");
+		StrCat(sInfo, length, "\n- 200%% 愤怒: 更远距离的惊吓并延长时间刀7.5秒");
 	}
 	
 	public void OnSpawn()
@@ -256,22 +256,22 @@ methodmap CBrutalSniper < SaxtonHaleBase
 		{
 			case ITEM_KUKRI:
 			{
-				Format(sMessage, sizeof(sMessage), "Kukri: Default");
+				Format(sMessage, sizeof(sMessage), "反曲刀: 默认");
 				iColor[0] = 192; iColor[1] = 192; iColor[2] = 192;
 			}
 			case ITEM_TRIBALMAN_SHIV:
 			{
-				Format(sMessage, sizeof(sMessage), "Tribalman Shiv: 10 seconds bleed, 15%% dmg penalty");
+				Format(sMessage, sizeof(sMessage), "部落者刮刀: 10秒流血, 15%%伤害降低");
 				iColor[0] = 192; iColor[1] = 32; iColor[2] = 0;
 			}
 			case ITEM_BUSHWACKA:
 			{
-				Format(sMessage, sizeof(sMessage), "Bushwacka: Always crit, 20%% dmg vulnerability");
+				Format(sMessage, sizeof(sMessage), "灌木丛: 永远爆击, 受到的伤害增加20%%");
 				iColor[0] = 224; iColor[1] = 160; iColor[2] = 0;
 			}
 			case ITEM_SHAHANSHAH:
 			{
-				Format(sMessage, sizeof(sMessage), "Shahanshah: +15%% dmg when <50%% health, -15%% dmg when >50%% health");
+				Format(sMessage, sizeof(sMessage), "诸王之王: 当 <50%% 生命值时 +15%% 伤害, 当 >50%% 生命值时 -15%% 伤害");
 				iColor[0] = 144; iColor[1] = 92; iColor[2] = 0;
 			}
 		}

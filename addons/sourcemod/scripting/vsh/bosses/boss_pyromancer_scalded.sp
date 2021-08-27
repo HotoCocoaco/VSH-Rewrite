@@ -40,21 +40,21 @@ methodmap CScaldedPyromancer < SaxtonHaleBase
 	
 	public void GetBossName(char[] sName, int length)
 	{
-		strcopy(sName, length, "Scalded Pyromancer");
+		strcopy(sName, length, "烫伤火焰兵");
 	}
 	
 	public void GetBossInfo(char[] sInfo, int length)
 	{
-		StrCat(sInfo, length, "\nDuo Boss: The Pyromancers");
-		StrCat(sInfo, length, "\nMelee deals 80 damage.");
-		StrCat(sInfo, length, "\nHealth: Low");
+		StrCat(sInfo, length, "\n双人Boss: 纵火者");
+		StrCat(sInfo, length, "\n近战造成80伤害.");
+		StrCat(sInfo, length, "\n生命值: 低");
 		StrCat(sInfo, length, "\n ");
-		StrCat(sInfo, length, "\nAbilities");
-		StrCat(sInfo, length, "\n- Boost Jump");
+		StrCat(sInfo, length, "\n能力");
+		StrCat(sInfo, length, "\n- 增强跳");
 		StrCat(sInfo, length, "\n ");
-		StrCat(sInfo, length, "\nRage");
-		StrCat(sInfo, length, "\n- Grants a degreaser for 8 seconds");
-		StrCat(sInfo, length, "\n- 200%% Rage: Grants a buffed backburner with quick-switch for 8 seconds");
+		StrCat(sInfo, length, "\n愤怒");
+		StrCat(sInfo, length, "\n- 获得一个脱油剂8秒");
+		StrCat(sInfo, length, "\n- 200%% 愤怒: 获得一个增强的偷袭烈焰燃烧器并能快速切换8秒");
 	}
 	
 	public void OnSpawn()

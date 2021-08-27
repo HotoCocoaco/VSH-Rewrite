@@ -64,21 +64,21 @@ methodmap CBlutarch < SaxtonHaleBase
 	
 	public void GetBossName(char[] sName, int length)
 	{
-		strcopy(sName, length, "Blutarch");
+		strcopy(sName, length, "布鲁塔克");
 	}
 	
 	public void GetBossInfo(char[] sInfo, int length)
 	{
-		StrCat(sInfo, length, "\nDuo Boss with Redmond");
-		StrCat(sInfo, length, "\nMelee deals 124 damage");
-		StrCat(sInfo, length, "\nHealth: Low");
+		StrCat(sInfo, length, "\n与雷德蒙德一起的双人Boss");
+		StrCat(sInfo, length, "\n近战造成 124 伤害");
+		StrCat(sInfo, length, "\n生命值: 低");
 		StrCat(sInfo, length, "\n ");
-		StrCat(sInfo, length, "\nAbilities");
-		StrCat(sInfo, length, "\n- Alt-attack to use Bats spell for 15 seconds cooldown");
+		StrCat(sInfo, length, "\n能力");
+		StrCat(sInfo, length, "\n- 辅助攻击使用具有15秒冷却的蝙蝠魔咒");
 		StrCat(sInfo, length, "\n ");
-		StrCat(sInfo, length, "\nRage");
-		StrCat(sInfo, length, "\n- Summons a Meteor spell");
-		StrCat(sInfo, length, "\n- 200%% Rage: Summons 3 Meteor spells");
+		StrCat(sInfo, length, "\n愤怒");
+		StrCat(sInfo, length, "\n- 召唤一个流星球魔咒");
+		StrCat(sInfo, length, "\n- 200%% 愤怒: 召唤3个流星球魔咒");
 	}
 	
 	public void OnDeath(Event eventInfo)
