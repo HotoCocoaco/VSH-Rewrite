@@ -40,7 +40,7 @@ methodmap CScaldedPyromancer < SaxtonHaleBase
 	
 	public void GetBossName(char[] sName, int length)
 	{
-		strcopy(sName, length, "烫伤火焰兵");
+		strcopy(sName, length, "白灼纵火犯");
 	}
 	
 	public void GetBossInfo(char[] sInfo, int length)

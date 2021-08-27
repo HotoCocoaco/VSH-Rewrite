@@ -18,21 +18,21 @@ methodmap CMannBrothers < SaxtonHaleBase
 	
 	public void GetBossMultiName(char[] sName, int length)
 	{
-		strcopy(sName, length, "Mann Brothers");
+		strcopy(sName, length, "曼恩兄弟");
 	}
 	
 	public void GetBossMultiInfo(char[] sInfo, int length)
 	{
-		StrCat(sInfo, length, "\nMelee deals 124 damage");
-		StrCat(sInfo, length, "\nHealth: Low");
+		StrCat(sInfo, length, "\n近战造成124伤害");
+		StrCat(sInfo, length, "\n生命值: 低");
 		StrCat(sInfo, length, "\n ");
-		StrCat(sInfo, length, "\nAbilities");
-		StrCat(sInfo, length, "\n- Spells: alt-attack to use spell for 20%% of rage");
-		StrCat(sInfo, length, "\n- Redmond uses Bats spell, Blutarch uses Teleport spell");
+		StrCat(sInfo, length, "\n能力");
+		StrCat(sInfo, length, "\n- 魔咒: 辅助攻击键使用魔咒, 消耗20%%愤怒");
+		StrCat(sInfo, length, "\n- 布鲁塔克使用蝙蝠魔咒, 雷德蒙德使用传送魔咒");
 		StrCat(sInfo, length, "\n ");
-		StrCat(sInfo, length, "\nRage");
-		StrCat(sInfo, length, "\n- Redmond gets a Meteor spell, Blutarch gets a MONOCULUS! spell");
-		StrCat(sInfo, length, "\n- 200%% Rage: Grants 3 spells");
+		StrCat(sInfo, length, "\n愤怒");
+		StrCat(sInfo, length, "\n- 布鲁塔克获得流星球魔咒, 雷德蒙德获得魔眼！魔咒");
+		StrCat(sInfo, length, "\n- 200%% 愤怒: 获得3个魔咒");
 	}
 	
 	public void OnSpawn()

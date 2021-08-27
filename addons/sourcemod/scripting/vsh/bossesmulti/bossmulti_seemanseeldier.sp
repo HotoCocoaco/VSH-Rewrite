@@ -14,22 +14,22 @@ methodmap CSeeManSeeldier < SaxtonHaleBase
 	
 	public void GetBossMultiName(char[] sName, int length)
 	{
-		strcopy(sName, length, "Seeman and Seeldier");
+		strcopy(sName, length, "Seeman和Seeldier");
 	}
 	
 	public void GetBossMultiInfo(char[] sInfo, int length)
 	{
-		StrCat(sInfo, length, "\nMelee deals 124 damage");
-		StrCat(sInfo, length, "\nHealth: Low");
+		StrCat(sInfo, length, "\n近战造成124伤害");
+		StrCat(sInfo, length, "\n生命值: 低");
 		StrCat(sInfo, length, "\n ");
-		StrCat(sInfo, length, "\nAbilities");
-		StrCat(sInfo, length, "\n- Brave Jump");
+		StrCat(sInfo, length, "\n能力");
+		StrCat(sInfo, length, "\n- 超级跳");
 		StrCat(sInfo, length, "\n ");
-		StrCat(sInfo, length, "\nRage");
-		StrCat(sInfo, length, "\n- Seeman is frozen with Übercharge for 3 seconds with small explosions around him");
-		StrCat(sInfo, length, "\n- 200%% Rage: Seeman gets an instakill nuke at end of rage");
-		StrCat(sInfo, length, "\n- Seeldlier summons 3 mini-Seeldiers");
-		StrCat(sInfo, length, "\n- 200%% Rage: Seeldlier summons 6 mini-Seeldiers");
+		StrCat(sInfo, length, "\n愤怒");
+		StrCat(sInfo, length, "\n- Seeman被冻结并获得Übercharge状态3秒, 自身周围发生小爆炸");
+		StrCat(sInfo, length, "\n- 200%% 愤怒: Seeman在愤怒结尾使用秒杀的核弹");
+		StrCat(sInfo, length, "\n- Seeldlier召唤3个迷你Seeldlier");
+		StrCat(sInfo, length, "\n- 200%% 愤怒: Seeldlier召唤6个迷你Seeldlier");
 	}
 	
 	public void GetSound(char[] sSound, int length, SaxtonHaleSound iSoundType)

@@ -62,22 +62,22 @@ methodmap CPyromancers < SaxtonHaleBase
 	
 	public void GetBossMultiName(char[] sName, int length)
 	{
-		strcopy(sName, length, "Pyromancers");
+		strcopy(sName, length, "纵火犯");
 	}
 	
 	public void GetBossMultiInfo(char[] sInfo, int length)
 	{
-		StrCat(sInfo, length, "\nMelee deals 80 damage.");
-		StrCat(sInfo, length, "\nHealth: Low");
+		StrCat(sInfo, length, "\n近战造成80伤害");
+		StrCat(sInfo, length, "\n生命值: 低");
 		StrCat(sInfo, length, "\n ");
-		StrCat(sInfo, length, "\nAbilities");
-		StrCat(sInfo, length, "\n- Boost Jump");
+		StrCat(sInfo, length, "\n能力");
+		StrCat(sInfo, length, "\n- 增强跳");
 		StrCat(sInfo, length, "\n ");
-		StrCat(sInfo, length, "\nRage");
-		StrCat(sInfo, length, "\n- Scalded gets a degreaser for 8 seconds");
-		StrCat(sInfo, length, "\n- 200%% Rage: Scalded gets a buffed Backburner with quick-switch for 8 seconds");
-		StrCat(sInfo, length, "\n- Scorched ignites all players within 500 units");
-		StrCat(sInfo, length, "\n- 200%% Rage: Scorched ignites all players on the map");
+		StrCat(sInfo, length, "\n愤怒");
+		StrCat(sInfo, length, "\n- 白灼获得脱油剂8秒");
+		StrCat(sInfo, length, "\n- 200%% 愤怒: 白灼获得一个增强的偷袭烈焰燃烧器并能快速切换8秒");
+		StrCat(sInfo, length, "\n- 烧焦能点燃500单位内的所有玩家");
+		StrCat(sInfo, length, "\n- 200%% 愤怒: 烧焦点燃地图的全部玩家");
 	}
 	
 	public void OnSpawn()
