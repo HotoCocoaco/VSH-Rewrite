@@ -115,6 +115,6 @@ methodmap CWallClimb < SaxtonHaleBase
 	
 	public void OnThink()
 	{
-		Hud_AddText(this.iClient, "Climb walls by hitting them with your melee weapon!");
+		Hud_AddText(this.iClient, "使用近战武器攻击墙面来爬墙!");
 	}
 };

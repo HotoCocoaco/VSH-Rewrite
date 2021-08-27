@@ -123,15 +123,15 @@ methodmap CBraveJump < SaxtonHaleBase
 		
 		char sMessage[255];
 		if (this.iJumpCharge > 0)
-			Format(sMessage, sizeof(sMessage), "Jump charge: %0.2f%%. Look up and stand up to use super-jump.", (float(this.iJumpCharge)/float(this.iMaxJumpCharge))*100.0);
+			Format(sMessage, sizeof(sMessage), "跳跃充能: %0.2f%%. 向上看站起来释放超级跳", (float(this.iJumpCharge)/float(this.iMaxJumpCharge))*100.0);
 		else
-			Format(sMessage, sizeof(sMessage), "Hold right click to use your super-jump!");
+			Format(sMessage, sizeof(sMessage), "按住右键来使用你的超级跳！");
 		
 		if (g_flJumpCooldownWait[this.iClient] != 0.0 && g_flJumpCooldownWait[this.iClient] > GetGameTime())
 		{
 			float flRemainingTime = g_flJumpCooldownWait[this.iClient]-GetGameTime();
 			int iSec = RoundToNearest(flRemainingTime);
-			Format(sMessage, sizeof(sMessage), "Super-jump cooldown %i second%s remaining!", iSec, (iSec > 1) ? "s" : "");
+			Format(sMessage, sizeof(sMessage), "超级跳冷却 %i 秒%s 剩余！", iSec, (iSec > 1) ? "s" : "");
 			Hud_AddText(this.iClient, sMessage);
 			return;
 		}

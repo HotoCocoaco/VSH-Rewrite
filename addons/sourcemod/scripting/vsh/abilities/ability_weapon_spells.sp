@@ -117,21 +117,21 @@ methodmap CWeaponSpells < SaxtonHaleBase
 		if (g_flSpellsLastUsed[this.iClient] > GetGameTime()-this.flCooldown)
 		{
 			int iSec = RoundToNearest(this.flCooldown - (GetGameTime() - g_flSpellsLastUsed[this.iClient]));
-			Format(sMessage, sizeof(sMessage), "Spell cooldown %i second%s remaining!", iSec, (iSec > 1) ? "s" : "");
+			Format(sMessage, sizeof(sMessage), "魔咒冷却 %i 秒%s 剩余！", iSec, (iSec > 1) ? "s" : "");
 		}
 		else if (flRagePercentage < this.flRageRequirement)
 		{
-			Format(sMessage, sizeof(sMessage), "Not enough rage for spells!");
+			Format(sMessage, sizeof(sMessage), "不够愤怒值使用魔咒！");
 		}
 		else
 		{
 			int iSpellIndex = GetEntProp(iSpellbook, Prop_Send, "m_iSelectedSpellIndex");
 			if (iSpellIndex < 0) return;
-			Format(sMessage, sizeof(sMessage), "Spell: %s", g_strSpellsName[iSpellIndex]);
+			Format(sMessage, sizeof(sMessage), "魔咒: %s", g_strSpellsName[iSpellIndex]);
 		}
 		
-		Format(sMessage, sizeof(sMessage), "%s\nUse attack2 for spell", sMessage);
-		if (g_aSpells[iClient].Length > 1) Format(sMessage, sizeof(sMessage), "%s, and reload to change current spell!", sMessage);
+		Format(sMessage, sizeof(sMessage), "%s\n使用attack2释放魔咒", sMessage);
+		if (g_aSpells[iClient].Length > 1) Format(sMessage, sizeof(sMessage), "%s, 按装填键充能当前魔咒！", sMessage);
 		else Format(sMessage, sizeof(sMessage), "%s!", sMessage);
 		
 		Hud_AddText(iClient, sMessage);

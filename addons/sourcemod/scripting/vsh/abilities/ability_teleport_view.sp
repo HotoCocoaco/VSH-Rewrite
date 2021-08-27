@@ -77,13 +77,13 @@ methodmap CTeleportView < SaxtonHaleBase
 				
 				SDKCall_PlaySpecificSequence(this.iClient, "teleport_in");
 				
-				Hud_AddText(this.iClient, "Teleport-view: TELEPORTED.");
+				Hud_AddText(this.iClient, "瞄准传送: 已传送");
 				return;
 			}
 			
 			//Progress in teleporting
 			TeleportView_ShowPos(this.iClient, g_vecTeleportViewPos[this.iClient]);
-			Hud_AddText(this.iClient, "Teleport-view: TELEPORTING.");
+			Hud_AddText(this.iClient, "瞄准传送: 传送中");
 			return;
 		}
 		else if (g_nTeleportViewMode[this.iClient] == TeleportViewMode_Teleported)
@@ -100,7 +100,7 @@ methodmap CTeleportView < SaxtonHaleBase
 			}
 			
 			//Progress into finishing
-			Hud_AddText(this.iClient, "Teleport-view: TELEPORTED.");
+			Hud_AddText(this.iClient, "瞄准传送: 已传送");
 			return;
 		}
 		else if (g_flTeleportViewCooldownWait[this.iClient] != 0.0 && g_flTeleportViewCooldownWait[this.iClient] > GetGameTime())
@@ -110,7 +110,7 @@ methodmap CTeleportView < SaxtonHaleBase
 			int iSec = RoundToNearest(g_flTeleportViewCooldownWait[this.iClient] - GetGameTime());
 			
 			char sMessage[255];
-			Format(sMessage, sizeof(sMessage), "Teleport-view cooldown %i second%s remaining!", iSec, (iSec > 1) ? "s" : "");
+			Format(sMessage, sizeof(sMessage), "瞄准传送冷却 %i 秒%s 剩余！", iSec, (iSec > 1) ? "s" : "");
 			Hud_AddText(this.iClient, sMessage);
 			return;
 		}
@@ -118,7 +118,7 @@ methodmap CTeleportView < SaxtonHaleBase
 		{
 			//Can use teleport, but not charging
 			
-			Hud_AddText(this.iClient, "Hold reload to use your teleport-view!");
+			Hud_AddText(this.iClient, "按住装填键使用你的瞄准传送！");
 			return;
 		}
 		
@@ -162,7 +162,7 @@ methodmap CTeleportView < SaxtonHaleBase
 			float flPercentage = (GetGameTime() - g_flTeleportViewStartCharge[this.iClient]) / this.flCharge;
 			
 			char sMessage[255];
-			Format(sMessage, sizeof(sMessage), "Teleport-view: %0.2f%%.", flPercentage * 100.0);
+			Format(sMessage, sizeof(sMessage), "瞄准传送: %0.2f%%.", flPercentage * 100.0);
 			Hud_AddText(this.iClient, sMessage);
 		}
 		else
@@ -178,7 +178,7 @@ methodmap CTeleportView < SaxtonHaleBase
 			TF2_AddCondition(this.iClient, TFCond_FreezeInput, 3.0);
 			TF2_AddCondition(this.iClient, TFCond_UberchargedCanteen, 3.0);
 			
-			Hud_AddText(this.iClient, "Teleport-view: TELEPORTING.");
+			Hud_AddText(this.iClient, "瞄准传送: 传送中");
 		}
 		
 		//Show where to teleport

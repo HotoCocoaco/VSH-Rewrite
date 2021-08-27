@@ -106,15 +106,15 @@ methodmap CTeleportSwap < SaxtonHaleBase
 		
 		char sMessage[255];
 		if (this.iCharge > 0)
-			Format(sMessage, sizeof(sMessage), "Teleport-swap: %0.2f%%. Look up and stand up to use teleport-swap.", (float(this.iCharge)/float(this.iMaxCharge))*100.0);
+			Format(sMessage, sizeof(sMessage), "传送置换: %0.2f%%. 向上看站起来来使用传送置换", (float(this.iCharge)/float(this.iMaxCharge))*100.0);
 		else
-			Format(sMessage, sizeof(sMessage), "Hold right click to use your teleport-swap!");
+			Format(sMessage, sizeof(sMessage), "按住右键使用传送置换！");
 		
 		if (g_flTeleportSwapCooldownWait[this.iClient] != 0.0 && g_flTeleportSwapCooldownWait[this.iClient] > GetGameTime())
 		{
 			float flRemainingTime = g_flTeleportSwapCooldownWait[this.iClient]-GetGameTime();
 			int iSec = RoundToNearest(flRemainingTime);
-			Format(sMessage, sizeof(sMessage), "Teleport-swap cooldown %i second%s remaining!", iSec, (iSec > 1) ? "s" : "");
+			Format(sMessage, sizeof(sMessage), "传送置换冷却 %i 秒%s 剩余！", iSec, (iSec > 1) ? "s" : "");
 			Hud_AddText(this.iClient, sMessage);
 			return;
 		}

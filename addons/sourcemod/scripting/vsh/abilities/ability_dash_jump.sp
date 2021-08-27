@@ -70,9 +70,9 @@ methodmap CDashJump < SaxtonHaleBase
 		}
 		
 		if (iCharge >= 100)
-			Format(sMessage, sizeof(sMessage), "Dash charge: %d%%%% - Press reload to use your dash!", iCharge);
+			Format(sMessage, sizeof(sMessage), "冲跳: %d%%%% - 按装填键使用冲跳！", iCharge);
 		else
-			Format(sMessage, sizeof(sMessage), "Dash charge: %d%%%%", iCharge);
+			Format(sMessage, sizeof(sMessage), "冲跳充能: %d%%%%", iCharge);
 		
 		Hud_AddText(this.iClient, sMessage);
 	}

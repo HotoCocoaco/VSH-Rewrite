@@ -216,7 +216,7 @@ methodmap CBodyEat < SaxtonHaleBase
 	
 	public void OnThink()
 	{
-		Hud_AddText(this.iClient, "Aim at dead bodies and press reload to heal up!");
+		Hud_AddText(this.iClient, "瞄准尸体按装填键来治疗！");
 		
 		float lastRageTime = this.flRageLastTime;
 		float eatDuration = this.flEatRageDuration;

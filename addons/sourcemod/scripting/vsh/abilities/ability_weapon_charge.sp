@@ -43,7 +43,7 @@ methodmap CWeaponCharge < SaxtonHaleBase
 		int iClient = this.iClient;
 		float flDuration = this.flRageDuration * (this.bSuperRage ? 2 : 1);
 		
-		Hud_AddText(iClient, "Use your reload key to charge!");
+		Hud_AddText(iClient, "用装填键充能！");
 		
 		//Check if currently rage charging, and not attempting to jump
 		if (g_bChargeRage[iClient] && this.flRageLastTime > GetGameTime() - flDuration && !(g_bChargeJump[iClient] && GetEntityFlags(iClient) & FL_ONGROUND))

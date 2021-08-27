@@ -133,9 +133,9 @@ methodmap CFloatJump < SaxtonHaleBase
 		
 		char sMessage[255];
 		if (this.iJumpCharge > 0)
-			Format(sMessage, sizeof(sMessage), "Float charge: %0.2f%%.", (float(this.iJumpCharge)/float(this.iMaxJumpCharge))*100.0);
+			Format(sMessage, sizeof(sMessage), "漂浮充能: %0.2f%%.", (float(this.iJumpCharge)/float(this.iMaxJumpCharge))*100.0);
 		else
-			Format(sMessage, sizeof(sMessage), "Hold right click to use your float jump!");
+			Format(sMessage, sizeof(sMessage), "按住右键使用你的漂浮跳！");
 		
 		if (g_flFloatJumpEndTime[this.iClient] < GetGameTime() && GetEntityGravity(this.iClient) != 1.0 && GetEntityFlags(this.iClient) & FL_ONGROUND)
 		{
@@ -163,7 +163,7 @@ methodmap CFloatJump < SaxtonHaleBase
 		{
 			float flRemainingTime = g_flFloatJumpCooldownWait[this.iClient]-GetGameTime();
 			int iSec = RoundToNearest(flRemainingTime);
-			Format(sMessage, sizeof(sMessage), "Float cooldown %i second%s remaining!", iSec, (iSec > 1) ? "s" : "");
+			Format(sMessage, sizeof(sMessage), "漂浮冷却 %i 秒%s 剩余！", iSec, (iSec > 1) ? "s" : "");
 			Hud_AddText(this.iClient, sMessage);
 			return;
 		}
