@@ -128,9 +128,9 @@ methodmap CScaldedPyromancer < SaxtonHaleBase
 	public void OnThink()
 	{
 		if (GetGameTime() <= g_flFlamethrowerRemoveTime[this.iClient] && GetGameTime() >= (g_flFlamethrowerRemoveTime[this.iClient] - RAGE_DURATION))
-			Hud_AddText(this.iClient, "HINT: Use your axe to crit players after igniting them!");
+			Hud_AddText(this.iClient, "提示: 在点燃敌人后使用你的斧头爆击他们！");
 		else
-			Hud_AddText(this.iClient, "HINT: Stay near the other Pyromancer so you can crit the ignited players!");
+			Hud_AddText(this.iClient, "提示: 靠近你的纵火犯兄弟以便你能爆击燃烧的玩家！");
 		
 		if (g_flFlamethrowerRemoveTime[this.iClient] != 0.0 && g_flFlamethrowerRemoveTime[this.iClient] <= GetGameTime())
 		{

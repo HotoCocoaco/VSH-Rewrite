@@ -98,7 +98,7 @@ methodmap CHorsemann < SaxtonHaleBase
 		StrCat(sInfo, length, "\n ");
 		StrCat(sInfo, length, "\n能力");
 		StrCat(sInfo, length, "\n- 爬墙");
-		StrCat(sInfo, length, "\n- 传送交换");
+		StrCat(sInfo, length, "\n- 传送置换");
 		StrCat(sInfo, length, "\n ");
 		StrCat(sInfo, length, "\n愤怒");
 		StrCat(sInfo, length, "\n- 变成一个免疫伤害但不能攻击的幽灵8秒");

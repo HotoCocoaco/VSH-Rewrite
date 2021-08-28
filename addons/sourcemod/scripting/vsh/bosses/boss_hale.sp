@@ -125,7 +125,7 @@ methodmap CSaxtonHale < SaxtonHaleBase
 		StrCat(sInfo, length, "\n ");
 		StrCat(sInfo, length, "\n愤怒");
 		StrCat(sInfo, length, "\n- 惊吓中等距离玩家5秒");
-		StrCat(sInfo, length, "\n- 200%% 愤怒: 更长的距离和延长时间刀7.5秒");
+		StrCat(sInfo, length, "\n- 200%% 愤怒: 更长的距离和延长时间到7.5秒");
 	}
 	
 	public void OnSpawn()
