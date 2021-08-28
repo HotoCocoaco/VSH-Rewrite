@@ -1110,7 +1110,7 @@ public void TF2_OnConditionAdded(int iClient, TFCond nCond)
 		if (GetEntProp(iClient, Prop_Send, "m_iTauntItemDefIndex") == ITEM_ROCK_PAPER_SCISSORS)
 		{
 			TF2_RemoveCondition(iClient, TFCond_Taunting);
-			PrintToChat(iClient, "%s%s Rock, Paper, Scissors taunt is disabled in this gamemode", TEXT_TAG, TEXT_ERROR);
+			PrintToChat(iClient, "%s%s 石头剪刀布在此游戏模式中禁用", TEXT_TAG, TEXT_ERROR);
 		}
 	}
 }
@@ -1162,7 +1162,7 @@ public Action Timer_WelcomeMessage(Handle hTimer)
 	if (!g_bEnabled)
 		return Plugin_Stop;
 	
-	PrintToChatAll("%s%s Welcome to Versus Saxton Hale: Rewrite! \nType %s/vsh%s for more info.", TEXT_TAG, TEXT_COLOR, TEXT_DARK, TEXT_COLOR);
+	PrintToChatAll("%s%s 欢迎来到决战霍尔: 重制！ \n输入 %s/vsh%s 获取更多信息", TEXT_TAG, TEXT_COLOR, TEXT_DARK, TEXT_COLOR);
 	return Plugin_Continue;
 }
 
@@ -1220,7 +1220,7 @@ public void OnClientDisconnect(int iClient)
 		int iRank = Rank_GetCurrent(iClient) - 1;
 		if (iRank >= 0)
 		{
-			PrintToChatAll("%s %s%N%s's rank has %sdecreased%s to %s%d%s!", TEXT_TAG, TEXT_DARK, iClient, TEXT_COLOR, TEXT_NEGATIVE, TEXT_COLOR, TEXT_DARK, iRank, TEXT_COLOR);
+			PrintToChatAll("%s %s%N%s的排名已 %s下降%s 到 %s%d%s!", TEXT_TAG, TEXT_DARK, iClient, TEXT_COLOR, TEXT_NEGATIVE, TEXT_COLOR, TEXT_DARK, iRank, TEXT_COLOR);
 			Rank_SetCurrent(iClient, iRank, true);
 		}
 		
@@ -1372,8 +1372,8 @@ public Action Client_OnTakeDamageAlive(int victim, int &attacker, int &inflictor
 					{
 						int iTelefragDamage = g_ConfigConvar.LookupInt("vsh_telefrag_damage");
 						damage = float(iTelefragDamage);
-						PrintCenterText(attacker, "TELEFRAG! You are a pro.");
-						PrintCenterText(victim, "TELEFRAG! Be careful around quantum tunneling devices!");
+						PrintCenterText(attacker, "传送杀! 你是pro");
+						PrintCenterText(victim, "传送杀! 小心那些量子通道!");
 						
 						//Try to retrieve the entity under the player, and hopefully this is the teleporter
 						int iBuilder = 0;
