@@ -42,7 +42,7 @@ void Hud_Think(int iClient)
 				if (IsClientInGame(iBoss) && IsPlayerAlive(iBoss) && boss.bValid && !boss.bMinion)
 				{
 					int iRage = RoundToFloor(float(boss.iRageDamage) / float(boss.iMaxRageDamage) * 100.0);
-					Format(sMessage, sizeof(sMessage), "%s | Boss Rage: %i%%%%", sMessage, iRage);
+					Format(sMessage, sizeof(sMessage), "%s | Boss愤怒: %i%%%%", sMessage, iRage);
 					break;
 				}
 			}
@@ -52,9 +52,9 @@ void Hud_Think(int iClient)
 
 		//Display Client's damage
 		if (g_iPlayerAssistDamage[iClient] <= 0)
-			Format(sMessage, sizeof(sMessage), "Damage: %i", g_iPlayerDamage[iClient]);
+			Format(sMessage, sizeof(sMessage), "伤害: %i", g_iPlayerDamage[iClient]);
 		else
-			Format(sMessage, sizeof(sMessage), "Damage: %i Assist: %i", g_iPlayerDamage[iClient], g_iPlayerAssistDamage[iClient]);
+			Format(sMessage, sizeof(sMessage), "伤害: %i 助伤: %i", g_iPlayerDamage[iClient], g_iPlayerAssistDamage[iClient]);
 
 		Hud_AddText(iClient, sMessage, true);
 		
@@ -62,7 +62,7 @@ void Hud_Think(int iClient)
 		float flPercentage = Tags_GetAirblastPercentage(iClient);
 		if (flPercentage >= 0.0)
 		{
-			Format(sMessage, sizeof(sMessage), "Airblast: %i%%", RoundToFloor(flPercentage * 100.0));
+			Format(sMessage, sizeof(sMessage), "压缩气爆: %i%%", RoundToFloor(flPercentage * 100.0));
 			Hud_AddText(iClient, sMessage);
 		}
 	}
@@ -83,9 +83,9 @@ void Hud_Think(int iClient)
 		if (iObserverTarget != iClient && 0 < iObserverTarget <= MaxClients && IsClientInGame(iObserverTarget) && !SaxtonHale_IsValidBoss(iObserverTarget, false))
 		{
 			if (g_iPlayerAssistDamage[iObserverTarget] <= 0)
-				Format(sMessage, sizeof(sMessage), "%N's Damage: %i", iObserverTarget, g_iPlayerDamage[iObserverTarget]);
+				Format(sMessage, sizeof(sMessage), "%N的伤害: %i", iObserverTarget, g_iPlayerDamage[iObserverTarget]);
 			else
-				Format(sMessage, sizeof(sMessage), "%N's Damage: %i (Assist: %i)", iObserverTarget, g_iPlayerDamage[iObserverTarget], g_iPlayerAssistDamage[iObserverTarget]);
+				Format(sMessage, sizeof(sMessage), "%N的伤害: %i (助伤: %i)", iObserverTarget, g_iPlayerDamage[iObserverTarget], g_iPlayerAssistDamage[iObserverTarget]);
 			
 			Hud_AddText(iClient, sMessage, true);
 		}

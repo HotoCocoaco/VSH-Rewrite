@@ -6,15 +6,15 @@ methodmap CModifiersHot < SaxtonHaleBase
 	
 	public void GetModifiersName(char[] sName, int length)
 	{
-		strcopy(sName, length, "Hot");
+		strcopy(sName, length, "热量");
 	}
 	
 	public void GetModifiersInfo(char[] sInfo, int length)
 	{
-		StrCat(sInfo, length, "\nColor: Red");
+		StrCat(sInfo, length, "\n颜色: 红");
 		StrCat(sInfo, length, "\n ");
-		StrCat(sInfo, length, "\n- Ignites nearby players for 10 seconds, dealing 3 damage");
-		StrCat(sInfo, length, "\n- Boss ignites when taking any damage");
+		StrCat(sInfo, length, "\n- 点燃周围的玩家10秒，造成3伤害");
+		StrCat(sInfo, length, "\n- Boss受伤时点燃");
 	}
 	
 	public int GetRenderColor(int iColor[4])

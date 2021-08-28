@@ -10,16 +10,16 @@ methodmap CModifiersAngry < SaxtonHaleBase
 	
 	public void GetModifiersName(char[] sName, int length)
 	{
-		strcopy(sName, length, "Angry");
+		strcopy(sName, length, "怒了");
 	}
 	
 	public void GetModifiersInfo(char[] sInfo, int length)
 	{
-		StrCat(sInfo, length, "\nColor: Brown");
+		StrCat(sInfo, length, "\n颜色: 棕色");
 		StrCat(sInfo, length, "\n ");
-		StrCat(sInfo, length, "\n- Gains twice as much rage");
-		StrCat(sInfo, length, "\n- Increase max rage percentage cap to 250%%");
-		StrCat(sInfo, length, "\n- Loses rage over time");
+		StrCat(sInfo, length, "\n- 获得两次多的愤怒值");
+		StrCat(sInfo, length, "\n- 增加最大愤怒值到 250%%");
+		StrCat(sInfo, length, "\n- 随时间失去愤怒值");
 	}
 	
 	public int GetRenderColor(int iColor[4])

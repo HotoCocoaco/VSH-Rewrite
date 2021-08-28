@@ -130,7 +130,7 @@ methodmap SaxtonHaleBoss < SaxtonHaleBase
 			float flRage = (float(this.iRageDamage) / float(this.iMaxRageDamage)) * 100.0;
 			
 			char sMessage[255];
-			Format(sMessage, sizeof(sMessage), "Rage: %d%%%s", RoundToFloor(flRage), (flRage >= 100.0) ? " (Rage is ready! Press E to use your Rage!)" : "");
+			Format(sMessage, sizeof(sMessage), "愤怒: %d%%%s", RoundToFloor(flRage), (flRage >= 100.0) ? " (愤怒就绪! 按E使用你的愤怒能力!)" : "");
 			
 			float flHUD[2];
 			flHUD[0] = -1.0;

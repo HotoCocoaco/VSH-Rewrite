@@ -71,13 +71,13 @@ void MenuBoss_DisplayList(int iClient, SaxtonHaleClassType nClassType, MenuBossL
 {
 	Menu hMenuList = new Menu(MenuBoss_SelectList);
 	hMenuList.SetTitle("%s\n---", g_menuBossListInfo[nClassType].sTitle);
-	hMenuList.AddItem("__back__", "<- back");
+	hMenuList.AddItem("__back__", "<- 返回");
 	
 	if (iFlags & MenuBossFlags_Random)
-		hMenuList.AddItem("__random__", "Random");
+		hMenuList.AddItem("__random__", "随机");
 	
 	if (iFlags & MenuBossFlags_None)
-		hMenuList.AddItem("__none__", "None");
+		hMenuList.AddItem("__none__", "无");
 	
 	//Loop through every classes by type
 	ArrayList aClasses = FuncClass_GetAllType(nClassType);
@@ -176,12 +176,12 @@ void MenuBoss_DisplayInfo(int iClient, SaxtonHaleClassType nClassType, const cha
 	//Get Boss info to set title
 	boss.CallFunction(g_menuBossListInfo[nClassType].sGetInfo, sInfo, sizeof(sInfo));
 	if (StrEmpty(sInfo))
-		Format(sInfo, sizeof(sInfo), "%s\n \nThere seems to be nothing here...", sName);
+		Format(sInfo, sizeof(sInfo), "%s\n \n这里看来啥都没有...", sName);
 	else
 		Format(sInfo, sizeof(sInfo), "%s\n \n%s", sName, sInfo);
 	
 	hMenuBossInfo.SetTitle(sInfo);
-	hMenuBossInfo.AddItem("back", "<- Back");
+	hMenuBossInfo.AddItem("back", "<- 返回");
 	hMenuBossInfo.Display(iClient, iTime);
 }
 
@@ -225,15 +225,15 @@ void MenuBoss_DisplayNextList(int iClient)
 	}
 	
 	if (bEmpty)
-		Format(sBuffer, sizeof(sBuffer), "%s\nThe list is empty", sBuffer);
+		Format(sBuffer, sizeof(sBuffer), "%s\n列表是空的", sBuffer);
 	
 	//Set title and display
 	Format(sBuffer, sizeof(sBuffer), "%s\n---", sBuffer);
 	hAdminBossList.SetTitle(sBuffer);
-	hAdminBossList.AddItem("back", "<- back");
-	hAdminBossList.AddItem("boss", "Add New Boss");
-	hAdminBossList.AddItem("bossmulti", "Add New Multi-Boss");
-	hAdminBossList.AddItem("clear", "Clear List");
+	hAdminBossList.AddItem("back", "<- 返回");
+	hAdminBossList.AddItem("boss", "增加新Boss");
+	hAdminBossList.AddItem("bossmulti", "增加新的多人Boss");
+	hAdminBossList.AddItem("clear", "清空列表");
 	hAdminBossList.Display(iClient, MENU_TIME_FOREVER);
 }
 
@@ -261,7 +261,7 @@ public int MenuBoss_SelectNextList(Menu hMenu, MenuAction action, int iClient, i
 	else if (StrEqual(sSelect, "clear"))
 	{
 		g_aNextBoss.Clear();
-		PrintToChatAll("%s %s%N%s cleared all queued bosses.", TEXT_TAG, TEXT_DARK, iClient, TEXT_COLOR);
+		PrintToChatAll("%s %s%N%s 清除了所有队列的boss", TEXT_TAG, TEXT_DARK, iClient, TEXT_COLOR);
 		MenuBoss_DisplayNextList(iClient);
 	}
 	else if (StrEqual(sSelect, "back"))
@@ -278,9 +278,9 @@ void MenuBoss_DisplayNextClient(int iClient)
 {
 	Menu hAdminNextBoss_Client = new Menu(MenuBoss_SelectNextClient);
 	
-	hAdminNextBoss_Client.SetTitle("Select Player to be Boss\n---");
-	hAdminNextBoss_Client.AddItem("back", "<- back");
-	hAdminNextBoss_Client.AddItem("", "None");
+	hAdminNextBoss_Client.SetTitle("选择玩家成为Boss\n---");
+	hAdminNextBoss_Client.AddItem("back", "<- 返回");
+	hAdminNextBoss_Client.AddItem("", "无");
 	
 	for (int i = 1; i <= MaxClients; i++)
 	{
@@ -396,7 +396,7 @@ public void MenuBoss_CallbackNextModifiers(int iClient, MenuBossOption nOption, 
 		//Print chat boss been set
 		char sBuffer[256];
 		nextBoss.GetName(sBuffer, sizeof(sBuffer));
-		PrintToChatAll("%s %s%N%s added next boss %s%s", TEXT_TAG, TEXT_DARK, iClient, TEXT_COLOR, sColor, sBuffer);
+		PrintToChatAll("%s %s%N%s 添加下一个boss %s%s", TEXT_TAG, TEXT_DARK, iClient, TEXT_COLOR, sColor, sBuffer);
 	}
 	else if (view_as<MenuBossOption>(g_menuBossSelect[iClient].nOption[VSHClassType_BossMulti]) != MenuBossOption_Unknown)
 	{
@@ -428,11 +428,11 @@ public void MenuBoss_CallbackNextModifiers(int iClient, MenuBossOption nOption, 
 		{
 			char sModifiersName[256];
 			boss.CallFunction("GetModifiersName", sModifiersName, sizeof(sModifiersName));
-			PrintToChatAll("%s %s%N%s added %s%s %s as the next multi-boss.", TEXT_TAG, TEXT_DARK, iClient, TEXT_COLOR, sColor, sModifiersName, sBossMultiName);
+			PrintToChatAll("%s %s%N%s 添加 %s%s %s 作为下一个多人Boss", TEXT_TAG, TEXT_DARK, iClient, TEXT_COLOR, sColor, sModifiersName, sBossMultiName);
 		}
 		else
 		{
-			PrintToChatAll("%s %s%N%s added %s%s as the next multi-boss.", TEXT_TAG, TEXT_DARK, iClient, TEXT_COLOR, sColor, sBossMultiName);
+			PrintToChatAll("%s %s%N%s 添加 %s%s 作为下一个多人Boss", TEXT_TAG, TEXT_DARK, iClient, TEXT_COLOR, sColor, sBossMultiName);
 		}
 	}
 	else

@@ -11,15 +11,15 @@ methodmap CModifiersJumper < SaxtonHaleBase
 	
 	public void GetModifiersName(char[] sName, int length)
 	{
-		strcopy(sName, length, "Jumper");
+		strcopy(sName, length, "跳跃者");
 	}
 	
 	public void GetModifiersInfo(char[] sInfo, int length)
 	{
-		StrCat(sInfo, length, "\nColor: Blue");
+		StrCat(sInfo, length, "\n颜色: 蓝色");
 		StrCat(sInfo, length, "\n ");
-		StrCat(sInfo, length, "\n- Normal jump is replaced with leap");
-		StrCat(sInfo, length, "\n- 3 seconds cooldown");
+		StrCat(sInfo, length, "\n- 正常跳跃替换为大跳");
+		StrCat(sInfo, length, "\n- 3秒冷却");
 	}
 	
 	public int GetRenderColor(int iColor[4])
@@ -66,13 +66,13 @@ methodmap CModifiersJumper < SaxtonHaleBase
 		char sMessage[256];
 		if (g_flJumpCooldown[this.iClient] == 0.0)
 		{
-			Format(sMessage, sizeof(sMessage), "Press spacebar to leap!");
+			Format(sMessage, sizeof(sMessage), "按空格大跳！");
 		}
 		else
 		{
 			float flRemainingTime = g_flJumpCooldown[this.iClient]-GetGameTime();
 			int iSec = RoundToNearest(flRemainingTime);
-			Format(sMessage, sizeof(sMessage), "Leap cooldown %i second%s remaining!", iSec, (iSec > 1) ? "s" : "");
+			Format(sMessage, sizeof(sMessage), "大跳冷却 %i 秒%s 剩余!", iSec, (iSec > 1) ? "s" : "");
 		}
 		
 		Hud_AddText(this.iClient, sMessage);

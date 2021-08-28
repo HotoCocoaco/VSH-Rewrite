@@ -48,19 +48,19 @@ void Queue_AddPlayerPoints(int iClient, int iPoints)
 {
 	if (g_iClientQueuePoints[iClient] == -1)
 	{
-		PrintToChat(iClient, "%s%s Your queue points do not seem to have loaded.", TEXT_TAG, TEXT_ERROR);
+		PrintToChat(iClient, "%s%s 你的队列点数看起来还未加载", TEXT_TAG, TEXT_ERROR);
 		return;
 	}
 	else if (!Preferences_Get(iClient, VSHPreferences_PickAsBoss))
 	{
-		PrintToChat(iClient, "%s%s You have not been awarded any queue points based on your boss preferences.", TEXT_TAG, TEXT_COLOR);
+		PrintToChat(iClient, "%s%s 你基于你的boss偏好而看起来未获得任何队列点数", TEXT_TAG, TEXT_COLOR);
 		return;
 	}
 
 	g_iClientQueuePoints[iClient] += iPoints;
 	Cookies_SaveQueue(iClient, Queue_PlayerGetPoints(iClient));
 	
-	PrintToChat(iClient, "%s%s You have been awarded %d queue points! (Total: %i)", TEXT_TAG, TEXT_COLOR, iPoints, g_iClientQueuePoints[iClient]);
+	PrintToChat(iClient, "%s%s 你获得了 %d 队列点数！ (总计: %i)", TEXT_TAG, TEXT_COLOR, iPoints, g_iClientQueuePoints[iClient]);
 }
 
 void Queue_SetPlayerPoints(int iClient, int iPoints)

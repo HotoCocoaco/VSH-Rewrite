@@ -237,7 +237,7 @@ public Action Event_RoundArenaStart(Event event, const char[] sName, bool bDontB
 		if (!StrEmpty(sMessage)) StrCat(sMessage, sizeof(sMessage), "\n");
 		
 		//Get client name
-		Format(sMessage, sizeof(sMessage), "%s%N became", sMessage, iClient);
+		Format(sMessage, sizeof(sMessage), "%s%N 变成了", sMessage, iClient);
 		
 		//Display text who is what boss and modifiers with health
 		if (boss.bModifiers)
@@ -260,11 +260,11 @@ public Action Event_RoundArenaStart(Event event, const char[] sName, bool bDontB
 		
 		//Get Boss name and health
 		boss.CallFunction("GetBossName", sBuffer, sizeof(sBuffer));
-		Format(sMessage, sizeof(sMessage), "%s %s with %d HP!", sMessage, sBuffer, boss.iMaxHealth);
+		Format(sMessage, sizeof(sMessage), "%s %s 并拥有 %d HP!", sMessage, sBuffer, boss.iMaxHealth);
 	
 		//Get rank
 		if (Rank_IsHealthEnabled() && Rank_GetCurrent(iClient) > 0)
-			Format(sMessage, sizeof(sMessage), "%s\nRank %d (-%.0f%%%% health)", sMessage, Rank_GetCurrent(iClient), Rank_GetPrecentageLoss(iClient) * 100.0);
+			Format(sMessage, sizeof(sMessage), "%s\n排名 %d (-%.0f%%%% 生命值)", sMessage, Rank_GetCurrent(iClient), Rank_GetPrecentageLoss(iClient) * 100.0);
 	}
 	
 	if (!bAllowModifiersColor)
@@ -289,7 +289,7 @@ public Action Event_RoundArenaStart(Event event, const char[] sName, bool bDontB
 	int iNextPlayer = Queue_GetPlayerFromRank(1);
 	if (0 < iNextPlayer <= MaxClients && IsClientInGame(iNextPlayer))
 	{
-		PrintToChat(iNextPlayer, "%s================%s\nYou are about to be the next boss!", TEXT_DARK, TEXT_COLOR);
+		PrintToChat(iNextPlayer, "%s================%s\n你即将成为下一个boss!", TEXT_DARK, TEXT_COLOR);
 		Rank_DisplayClient(iNextPlayer);
 		PrintToChat(iNextPlayer, "%s================", TEXT_DARK);
 	}
@@ -334,7 +334,7 @@ public Action Event_RoundEnd(Event event, const char[] sName, bool bDontBroadcas
 		if (iClientRank != 0 && Rank_IsEnabled())
 		{
 			int iRank = Rank_GetCurrent(iClientRank) + 1;
-			PrintToChatAll("%s %s%N%s's rank has %sincreased%s to %s%d%s!", TEXT_TAG, TEXT_DARK, iClientRank, TEXT_COLOR, TEXT_POSITIVE, TEXT_COLOR, TEXT_DARK, iRank, TEXT_COLOR);
+			PrintToChatAll("%s %s%N%s的排名 %s提升%s 到 %s%d%s!", TEXT_TAG, TEXT_DARK, iClientRank, TEXT_COLOR, TEXT_POSITIVE, TEXT_COLOR, TEXT_DARK, iRank, TEXT_COLOR);
 			Rank_SetCurrent(iClientRank, iRank, true);
 		}
 	}
@@ -359,7 +359,7 @@ public Action Event_RoundEnd(Event event, const char[] sName, bool bDontBroadcas
 			int iRank = Rank_GetCurrent(iClientRank) - 1;
 			if (iRank >= 0)
 			{
-				PrintToChatAll("%s %s%N%s's rank has %sdecreased%s to %s%d%s!", TEXT_TAG, TEXT_DARK, iClientRank, TEXT_COLOR, TEXT_NEGATIVE, TEXT_COLOR, TEXT_DARK, iRank, TEXT_COLOR);
+				PrintToChatAll("%s %s%N%s的排名 %s下降%s 到 %s%d%s!", TEXT_TAG, TEXT_DARK, iClientRank, TEXT_COLOR, TEXT_NEGATIVE, TEXT_COLOR, TEXT_DARK, iRank, TEXT_COLOR);
 				Rank_SetCurrent(iClientRank, iRank, true);
 			}
 		}
@@ -442,7 +442,7 @@ public Action Event_RoundEnd(Event event, const char[] sName, bool bDontBroadcas
 		if (boss.bValid && !boss.bMinion)
 		{
 			if (!StrEmpty(sMessage)) StrCat(sMessage, sizeof(sMessage), "\n");
-			Format(sMessage, sizeof(sMessage), "%s%N as", sMessage, iClient);
+			Format(sMessage, sizeof(sMessage), "%s%N 作为", sMessage, iClient);
 			
 			//Get Modifiers name
 			if (boss.bModifiers)
@@ -456,9 +456,9 @@ public Action Event_RoundEnd(Event event, const char[] sName, bool bDontBroadcas
 			
 			//Format with health
 			if (IsPlayerAlive(iClient))
-				Format(sMessage, sizeof(sMessage), "%s %s had %d of %d HP left", sMessage, sBuffer, boss.iHealth, boss.iMaxHealth);
+				Format(sMessage, sizeof(sMessage), "%s %s 还有 %d 总量 %d HP 剩余", sMessage, sBuffer, boss.iHealth, boss.iMaxHealth);
 			else
-				Format(sMessage, sizeof(sMessage), "%s %s died with %d max HP", sMessage, sBuffer, boss.iMaxHealth);
+				Format(sMessage, sizeof(sMessage), "%s %s 以 %d 最大HP死去", sMessage, sBuffer, boss.iMaxHealth);
 		}
 	}
 
@@ -471,7 +471,7 @@ public Action Event_RoundEnd(Event event, const char[] sName, bool bDontBroadcas
 			Format(sBuffer, sizeof(sBuffer), sMessage);
 
 			if (!SaxtonHale_IsValidBoss(iClient, false))
-				Format(sBuffer, sizeof(sBuffer), "%s\nYour damage: %d | Your assist: %d", sBuffer, g_iPlayerDamage[iClient], g_iPlayerAssistDamage[iClient]);
+				Format(sBuffer, sizeof(sBuffer), "%s\n你的伤害: %d | 你的助伤: %d", sBuffer, g_iPlayerDamage[iClient], g_iPlayerAssistDamage[iClient]);
 
 			Hud_Display(iClient, CHANNEL_INTRO, sBuffer, flHUD, 10.0);
 		}

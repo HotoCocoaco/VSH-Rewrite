@@ -47,7 +47,7 @@ void MenuWeapon_Refresh()
 	
 	// Weapon Menu
 	g_hMenuWeaponMain = new Menu(MenuWeapon_SelectMain);
-	g_hMenuWeaponMain.SetTitle("Class Menu");
+	g_hMenuWeaponMain.SetTitle("兵种菜单");
 	
 	//Loop through each class
 	for (int iClass = 1; iClass < sizeof(g_strClassName); iClass++)
@@ -101,22 +101,22 @@ void MenuWeapon_Refresh()
 			else
 			{
 				//If there nothing in both class slot and index...
-				Format(buffer, sizeof(buffer), "%s\n\nThere seems to be nothing here...", buffer);
+				Format(buffer, sizeof(buffer), "%s\n\n看起来这里什么都没有...", buffer);
 			}
 			
 			//Set everything above as title
 			g_hMenuWeaponSlot[iClass][iSlot].SetTitle(buffer);
 
 			//Add exit button to WeaponSlot
-			g_hMenuWeaponSlot[iClass][iSlot].AddItem("back", "<- Back");
+			g_hMenuWeaponSlot[iClass][iSlot].AddItem("back", "<- 返回");
 		}
 		
 		//Add exit button to WeaponClass
-		g_hMenuWeaponClass[iClass].AddItem("back", "<- Back");
+		g_hMenuWeaponClass[iClass].AddItem("back", "<- 返回");
 	}
 	
 	//Add exit button to WeaponMain
-	g_hMenuWeaponMain.AddItem("back", "<- Back");
+	g_hMenuWeaponMain.AddItem("back", "<- 返回");
 	g_hMenuWeaponMain.Pagination = MENU_NO_PAGINATION;
 }
 

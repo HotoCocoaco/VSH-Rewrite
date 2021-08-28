@@ -12,25 +12,25 @@ void Menu_Init()
 	// Error Menu
 	g_hMenuError = new Menu(Menu_SelectError);
 	g_hMenuError.SetTitle("You found an error menu - you're not supposed to be here... oops!\nYou probably want to tell an admin about this...");
-	g_hMenuError.AddItem("back", "<- Main Menu");
+	g_hMenuError.AddItem("back", "<- 主菜单");
 	
 	// Main Menu
 	g_hMenuMain = new Menu(Menu_SelectMain);
 	g_hMenuMain.SetTitle("[VSH REWRITE] - %s.%s", PLUGIN_VERSION, PLUGIN_VERSION_REVISION);
-	g_hMenuMain.AddItem("class", "Class & Weapon Menu (!vshclass)");
-	g_hMenuMain.AddItem("boss", "Bosses Info (!vshboss)");
-	g_hMenuMain.AddItem("bossmulti", "Multi-Bosses Info (!vshmultiboss)");
-	g_hMenuMain.AddItem("modifiers", "Modifiers Info (!vshmodifiers)");
-	g_hMenuMain.AddItem("queue", "Queue List (!vshnext)");
-	g_hMenuMain.AddItem("preference", "Settings (!vshsettings)");
-	g_hMenuMain.AddItem("credit", "Credits (!vshcredits)");
+	g_hMenuMain.AddItem("class", "兵种 & 武器菜单 (!vshclass)");
+	g_hMenuMain.AddItem("boss", "Boss信息 (!vshboss)");
+	g_hMenuMain.AddItem("bossmulti", "多人Boss信息 (!vshmultiboss)");
+	g_hMenuMain.AddItem("modifiers", "修改器信息 (!vshmodifiers)");
+	g_hMenuMain.AddItem("queue", "队列列表 (!vshnext)");
+	g_hMenuMain.AddItem("preference", "设置 (!vshsettings)");
+	g_hMenuMain.AddItem("credit", "鸣谢 (!vshcredits)");
 	
 	// Credits
 	g_hMenuCredits = new Menu(Menu_SelectCredits);
-	Format(buffer, sizeof(buffer), "Credits");
+	Format(buffer, sizeof(buffer), "鸣谢");
 	Format(buffer, sizeof(buffer), "%s \n", buffer);
-	Format(buffer, sizeof(buffer), "%s \nCoder: 42", buffer);
-	Format(buffer, sizeof(buffer), "%s \nOriginal Coder: Kenzzer", buffer);
+	Format(buffer, sizeof(buffer), "%s \n代码贡献者: 42", buffer);
+	Format(buffer, sizeof(buffer), "%s \n原始代码贡献者: Kenzzer", buffer);
 	Format(buffer, sizeof(buffer), "%s \n", buffer);
 	Format(buffer, sizeof(buffer), "%s \nEggman - The creator of the first VSH", buffer);
 	Format(buffer, sizeof(buffer), "%s \nKirillian - Several boss model addition", buffer);
@@ -38,8 +38,9 @@ void Menu_Init()
 	Format(buffer, sizeof(buffer), "%s \nAlex Turtle & Chillax - Original Rewrite test subjects", buffer);
 	Format(buffer, sizeof(buffer), "%s \nwo - Test subject", buffer);
 	Format(buffer, sizeof(buffer), "%s \nRedSun - Host community!", buffer);
+	Format(buffer, sizeof(buffer), "%s \n热可可 - 汉化此插件!", buffer);
 	g_hMenuCredits.SetTitle(buffer);
-	g_hMenuCredits.AddItem("back", "<- Back");
+	g_hMenuCredits.AddItem("back", "<- 返回");
 	
 	MenuAdmin_Init();
 	MenuBoss_Init();
@@ -93,7 +94,7 @@ void Menu_DisplayQueue(int iClient)
 	Menu hMenuQueue = new Menu(Menu_SelectQueue);
 	
 	char buffer[512];
-	Format(buffer, sizeof(buffer), "Queue List:");
+	Format(buffer, sizeof(buffer), "队列列表:");
 
 	for (int i = 1; i <= 8; i++)
 	{
@@ -107,12 +108,12 @@ void Menu_DisplayQueue(int iClient)
 	
 	int iPoints = Queue_PlayerGetPoints(iClient);
 	if (iPoints >= 0)
-		Format(buffer, sizeof(buffer), "%s\nYour queue points: %i", buffer, iPoints);
+		Format(buffer, sizeof(buffer), "%s\n你的队列点数: %i", buffer, iPoints);
 	else
-		Format(buffer, sizeof(buffer), "%s\nYour queue points are still loading, try again later", buffer, iPoints);
+		Format(buffer, sizeof(buffer), "%s\n你的队列点数还在加载，稍后再试", buffer, iPoints);
 	
 	hMenuQueue.SetTitle(buffer);
-	hMenuQueue.AddItem("back", "<- Back");
+	hMenuQueue.AddItem("back", "<- 返回");
 	hMenuQueue.Display(iClient, MENU_TIME_FOREVER);
 }
 
@@ -133,7 +134,7 @@ void Menu_DisplayPreferences(int iClient)
 {
 	//Create new menu, and display whenever if it enabled or not
 	Menu hMenuPreferences = new Menu(Menu_SelectPreferences);
-	hMenuPreferences.SetTitle("Toggle Preferences");
+	hMenuPreferences.SetTitle("开关偏好");
 	
 	for (SaxtonHalePreferences nPreferences; nPreferences < view_as<SaxtonHalePreferences>(sizeof(g_strPreferencesName)); nPreferences++)
 	{
@@ -142,14 +143,14 @@ void Menu_DisplayPreferences(int iClient)
 		
 		char buffer[512];
 		if (Preferences_Get(iClient, nPreferences))
-			Format(buffer, sizeof(buffer), "%s (Enabled)", g_strPreferencesName[nPreferences]);
+			Format(buffer, sizeof(buffer), "%s (已开启)", g_strPreferencesName[nPreferences]);
 		else
-			Format(buffer, sizeof(buffer), "%s (Disabled)", g_strPreferencesName[nPreferences]);
+			Format(buffer, sizeof(buffer), "%s (已关闭)", g_strPreferencesName[nPreferences]);
 		
 		hMenuPreferences.AddItem(g_strPreferencesName[nPreferences], buffer);
 	}
 	
-	hMenuPreferences.AddItem("back", "<- Back");
+	hMenuPreferences.AddItem("back", "<- 返回");
 	hMenuPreferences.Display(iClient, MENU_TIME_FOREVER);
 }
 

@@ -283,7 +283,7 @@ bool Dome_Start(int iCP = 0)
 	GameRules_SetPropFloat("m_flCapturePointEnableTime", 0.0);
 	g_flDomeStart = GetGameTime();
 	EmitSoundToAll(DOME_START_SOUND);
-	PrintHintTextToAll("The dome is now active!");
+	PrintHintTextToAll("穹顶已激活!");
 	
 	g_iDomeEntRef = EntIndexToEntRef(iDome);
 	RequestFrame(Dome_Frame_Prepare);

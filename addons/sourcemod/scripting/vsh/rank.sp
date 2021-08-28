@@ -45,17 +45,17 @@ public void Rank_DisplayClient(int iClient, bool bTag = false)
 {
 	char sFormat[512];
 	if (bTag)
-		Format(sFormat, sizeof(sFormat), "%s%s You are currently rank %s%d%s.", TEXT_TAG, TEXT_COLOR, TEXT_DARK, Rank_GetCurrent(iClient), TEXT_COLOR);
+		Format(sFormat, sizeof(sFormat), "%s%s 你当前的排名是 %s%d%s.", TEXT_TAG, TEXT_COLOR, TEXT_DARK, Rank_GetCurrent(iClient), TEXT_COLOR);
 	else
-		Format(sFormat, sizeof(sFormat), "%sYou are currently rank %s%d%s.", TEXT_COLOR, TEXT_DARK, Rank_GetCurrent(iClient), TEXT_COLOR);
+		Format(sFormat, sizeof(sFormat), "%s你目前排名 %s%d%s.", TEXT_COLOR, TEXT_DARK, Rank_GetCurrent(iClient), TEXT_COLOR);
 	
 	SaxtonHaleNextBoss nextBoss = SaxtonHaleNextBoss(iClient);
 	if (nextBoss.bSpecialClassRound)
-		Format(sFormat, sizeof(sFormat), "%s, the next round will be a special class round - your rank remains unchanged.", sFormat);
+		Format(sFormat, sizeof(sFormat), "%s, 下回合将是特殊兵种回合 - 你的排名不会改变", sFormat);
 	else if (!Preferences_Get(iClient, VSHPreferences_Rank))
-		Format(sFormat, sizeof(sFormat), "%s, your rank preference is disabled - your rank remains unchanged.", sFormat);
+		Format(sFormat, sizeof(sFormat), "%s, 你的排名偏好已禁用 - 你的排名不会改变", sFormat);
 	else if (g_iTotalAttackCount < Rank_GetPlayerRequirement(iClient))
-		Format(sFormat, sizeof(sFormat), "%s, you need %s%d%s enemy players to affect your rank.", sFormat, TEXT_DARK, Rank_GetPlayerRequirement(iClient), TEXT_COLOR);
+		Format(sFormat, sizeof(sFormat), "%s, 你需要 %s%d%s 敌人来影响你的排名", sFormat, TEXT_DARK, Rank_GetPlayerRequirement(iClient), TEXT_COLOR);
 	else
 		Format(sFormat, sizeof(sFormat), "%s.", sFormat);
 	

@@ -8,31 +8,31 @@ void MenuAdmin_Init()
 {
 	// Main Admin menu
 	g_hMenuAdminMain = new Menu(MenuAdmin_SelectMain);
-	g_hMenuAdminMain.SetTitle("Admin Menu");
-	g_hMenuAdminMain.AddItem("config", "Refresh VSH Config (!vshrefresh)");
-	g_hMenuAdminMain.AddItem("queue", "Add Queue (!vshqueue)");
-	g_hMenuAdminMain.AddItem("special", "Force Special Round (!vshspecial)");
-	g_hMenuAdminMain.AddItem("dome", "Force Start Dome (!vshdome)");
-	g_hMenuAdminMain.AddItem("boss", "Set Next Boss & Modifiers (!vshsetboss)");
-	g_hMenuAdminMain.AddItem("rage", "Set Rage (!vshrage)");
+	g_hMenuAdminMain.SetTitle("管理员菜单");
+	g_hMenuAdminMain.AddItem("config", "刷新VSH配置 (!vshrefresh)");
+	g_hMenuAdminMain.AddItem("queue", "增加队列 (!vshqueue)");
+	g_hMenuAdminMain.AddItem("special", "强制特殊回合 (!vshspecial)");
+	g_hMenuAdminMain.AddItem("dome", "强制开始穹顶 (!vshdome)");
+	g_hMenuAdminMain.AddItem("boss", "设置下一个Boss & 修改器 (!vshsetboss)");
+	g_hMenuAdminMain.AddItem("rage", "设置愤怒值 (!vshrage)");
 	
 	// Queue menu
 	g_hMenuAdminQueue = new Menu(MenuAdmin_SelectQueue);
-	g_hMenuAdminQueue.SetTitle("Add queue points to self");
+	g_hMenuAdminQueue.SetTitle("给自己增加队列点数");
 	g_hMenuAdminQueue.AddItem("1", "1");
 	g_hMenuAdminQueue.AddItem("5", "5");
 	g_hMenuAdminQueue.AddItem("10", "10");
 	g_hMenuAdminQueue.AddItem("50", "50");
 	g_hMenuAdminQueue.AddItem("100", "100");
 	g_hMenuAdminQueue.AddItem("500", "500");
-	g_hMenuAdminQueue.AddItem("back", "<- Back");
+	g_hMenuAdminQueue.AddItem("back", "<- 返回");
 	
 	// Special round menu
 	g_hMenuAdminSpecial = new Menu(MenuAdmin_SelectSpecial);
-	g_hMenuAdminSpecial.SetTitle("Force set special round");
-	g_hMenuAdminSpecial.AddItem("random", "Random Class");
-	g_hMenuAdminSpecial.AddItem("class", "Select Class");
-	g_hMenuAdminSpecial.AddItem("back", "<- Back");
+	g_hMenuAdminSpecial.SetTitle("强制设置特殊回合");
+	g_hMenuAdminSpecial.AddItem("random", "随机兵种");
+	g_hMenuAdminSpecial.AddItem("class", "选择兵种");
+	g_hMenuAdminSpecial.AddItem("back", "<- 返回");
 	
 	// Special round, slecting specific class menu
 	g_hMenuAdminSpecialClass = new Menu(MenuAdmin_SelectSpecialClass);

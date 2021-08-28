@@ -541,8 +541,8 @@ public void Tags_OnBackstab(int iClient, int iTarget, TagsParams tParams)
 	//Anounce both attacker and victim the backstab
 	EmitSoundToClient(iClient, SOUND_BACKSTAB);
 	EmitSoundToClient(iTarget, SOUND_BACKSTAB);
-	PrintCenterText(iClient, "You backstabbed the boss!");
-	PrintCenterText(iTarget, "You were backstabbed!");
+	PrintCenterText(iClient, "你背刺了boss！");
+	PrintCenterText(iTarget, "你被背刺了！");
 	
 	//Play boss backstab sound
 	char sSound[255];
@@ -579,7 +579,7 @@ public void Tags_OnBackstabChain(int iClient, int iTarget, TagsParams tParams)
 	
 	//Message
 	char sMessage[255];
-	Format(sMessage, sizeof(sMessage), "%N vs %N\nTotal backstab: %d/%d", iClient, iTarget, iTotalBackstab, iRequiredBackstab);
+	Format(sMessage, sizeof(sMessage), "%N vs %N\n总计背刺: %d/%d", iClient, iTarget, iTotalBackstab, iRequiredBackstab);
 	PrintHintTextToAll(sMessage);
 	
 	if (iTotalBackstab == iRequiredBackstab)
@@ -588,8 +588,8 @@ public void Tags_OnBackstabChain(int iClient, int iTarget, TagsParams tParams)
 
 public void Tags_OnMarketGardened(int iClient, int iTarget, TagsParams tParams)
 {
-	PrintCenterText(iClient, "You market gardened him!");
-	PrintCenterText(iTarget, "You were just market gardened!");
+	PrintCenterText(iClient, "你花园铲了它！");
+	PrintCenterText(iTarget, "你被花园铲了！");
 	
 	EmitSoundToAll(SOUND_DOUBLEDONK, iClient);
 }

@@ -9,15 +9,15 @@ methodmap CModifiersSpeed < SaxtonHaleBase
 	
 	public void GetModifiersName(char[] sName, int length)
 	{
-		strcopy(sName, length, "Speedy");
+		strcopy(sName, length, "速度");
 	}
 	
 	public void GetModifiersInfo(char[] sInfo, int length)
 	{
-		StrCat(sInfo, length, "\nColor: Green");
+		StrCat(sInfo, length, "\n颜色: 绿色");
 		StrCat(sInfo, length, "\n ");
-		StrCat(sInfo, length, "\n- Faster movement speed");
-		StrCat(sInfo, length, "\n- 20%% less rage gain");
+		StrCat(sInfo, length, "\n- 更快的移动速度");
+		StrCat(sInfo, length, "\n- 获得愤怒值减少20%%");
 	}
 	
 	public int GetRenderColor(int iColor[4])

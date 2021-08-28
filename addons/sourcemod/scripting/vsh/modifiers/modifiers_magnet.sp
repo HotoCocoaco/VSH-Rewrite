@@ -10,15 +10,15 @@ methodmap CModifiersMagnet < SaxtonHaleBase
 	
 	public void GetModifiersName(char[] sName, int length)
 	{
-		strcopy(sName, length, "Magnet");
+		strcopy(sName, length, "磁力");
 	}
 	
 	public void GetModifiersInfo(char[] sInfo, int length)
 	{
-		StrCat(sInfo, length, "\nColor: Pink");
+		StrCat(sInfo, length, "\n颜色: 粉色");
 		StrCat(sInfo, length, "\n ");
-		StrCat(sInfo, length, "\n- Pulls itself and enemy player toward eachother");
-		StrCat(sInfo, length, "\n- 10%% movement speed penalty");
+		StrCat(sInfo, length, "\n- 将自身和敌方玩家拉向对方");
+		StrCat(sInfo, length, "\n- 10%% 移动速度减益");
 	}
 	
 	public int GetRenderColor(int iColor[4])

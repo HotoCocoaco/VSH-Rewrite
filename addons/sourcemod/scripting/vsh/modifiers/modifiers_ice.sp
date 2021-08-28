@@ -13,15 +13,15 @@ methodmap CModifiersIce < SaxtonHaleBase
 	
 	public void GetModifiersName(char[] sName, int length)
 	{
-		strcopy(sName, length, "Ice");
+		strcopy(sName, length, "冰霜");
 	}
 	
 	public void GetModifiersInfo(char[] sInfo, int length)
 	{
-		StrCat(sInfo, length, "\nColor: Light Blue");
+		StrCat(sInfo, length, "\n颜色: 浅蓝色");
 		StrCat(sInfo, length, "\n ");
-		StrCat(sInfo, length, "\n- Every stomp slows nearby players");
-		StrCat(sInfo, length, "\n- Stomp deals no damage");
+		StrCat(sInfo, length, "\n- 每次踩中减速周围玩家");
+		StrCat(sInfo, length, "\n- 踩中不能造成伤害");
 	}
 	
 	public int GetRenderColor(int iColor[4])

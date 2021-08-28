@@ -218,7 +218,7 @@ void NextBoss_SetNextBoss()
 			g_nNextBossSpecialClass = view_as<TFClassType>(GetRandomInt(1, sizeof(g_strClassName)-1));
 		
 		ClassLimit_SetSpecialRound(g_nNextBossSpecialClass);
-		PrintToChatAll("%s%s SPECIAL ROUND: %N versus %s", TEXT_TAG, TEXT_COLOR, iMainBoss, g_strClassName[g_nNextBossSpecialClass]);
+		PrintToChatAll("%s%s 特殊回合: %N 对战 %s", TEXT_TAG, TEXT_COLOR, iMainBoss, g_strClassName[g_nNextBossSpecialClass]);
 		
 		g_bNextBossSpecialClass = false;
 		g_nNextBossSpecialClass = TFClass_Unknown;

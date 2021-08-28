@@ -10,15 +10,15 @@ methodmap CModifiersElectric < SaxtonHaleBase
 	
 	public void GetModifiersName(char[] sName, int length)
 	{
-		strcopy(sName, length, "Electric");
+		strcopy(sName, length, "闪电");
 	}
 	
 	public void GetModifiersInfo(char[] sInfo, int length)
 	{
-		StrCat(sInfo, length, "\nColor: Yellow");
+		StrCat(sInfo, length, "\n颜色: 黄色");
 		StrCat(sInfo, length, "\n ");
-		StrCat(sInfo, length, "\n- Every attack damages nearby players");
-		StrCat(sInfo, length, "\n- Every attack deals 15%% less damage");
+		StrCat(sInfo, length, "\n- 每次攻击伤害周围的玩家");
+		StrCat(sInfo, length, "\n- 每次攻击的伤害减少 15%%");
 	}
 	
 	public int GetRenderColor(int iColor[4])

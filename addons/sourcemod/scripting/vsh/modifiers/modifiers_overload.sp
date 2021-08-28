@@ -9,16 +9,16 @@ methodmap CModifiersOverload < SaxtonHaleBase
 	
 	public void GetModifiersName(char[] sName, int length)
 	{
-		strcopy(sName, length, "Overload");
+		strcopy(sName, length, "超载");
 	}
 	
 	public void GetModifiersInfo(char[] sInfo, int length)
 	{
-		StrCat(sInfo, length, "\nColor: Orange");
+		StrCat(sInfo, length, "\n颜色: 橙色");
 		StrCat(sInfo, length, "\n ");
-		StrCat(sInfo, length, "\n- Normal Rage becomes Super Rage");
-		StrCat(sInfo, length, "\n- 65%% less rage gain");
-		StrCat(sInfo, length, "\n- Rage percentage can't go above 100%%");
+		StrCat(sInfo, length, "\n- 普通的愤怒变成超级愤怒");
+		StrCat(sInfo, length, "\n- 获得愤怒减少 65%%");
+		StrCat(sInfo, length, "\n- 愤怒百分比不能超过100%%");
 	}
 	
 	public int GetRenderColor(int iColor[4])

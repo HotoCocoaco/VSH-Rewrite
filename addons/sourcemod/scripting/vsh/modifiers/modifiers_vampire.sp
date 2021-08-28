@@ -18,15 +18,15 @@ methodmap CModifiersVampire < SaxtonHaleBase
 	
 	public void GetModifiersName(char[] sName, int length)
 	{
-		strcopy(sName, length, "Vampire");
+		strcopy(sName, length, "吸血");
 	}
 	
 	public void GetModifiersInfo(char[] sInfo, int length)
 	{
-		StrCat(sInfo, length, "\nColor: Purple");
+		StrCat(sInfo, length, "\n颜色: 紫色");
 		StrCat(sInfo, length, "\n ");
-		StrCat(sInfo, length, "\n- Gain health on player death");
-		StrCat(sInfo, length, "\n- Health decays over time");
+		StrCat(sInfo, length, "\n- 玩家死亡后获得生命值");
+		StrCat(sInfo, length, "\n- 生命值随时间减少");
 	}
 	
 	public int GetRenderColor(int iColor[4])

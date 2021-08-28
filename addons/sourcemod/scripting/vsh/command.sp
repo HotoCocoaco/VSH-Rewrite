@@ -218,13 +218,13 @@ public Action Command_Preferences(int iClient, int iArgs)
 				}
 				else
 				{
-					PrintToChat(iClient, "%s%s Your preferences are still loading, try again later.", TEXT_TAG, TEXT_ERROR);
+					PrintToChat(iClient, "%s%s 你的偏好还在载入，稍后再试.", TEXT_TAG, TEXT_ERROR);
 					return Plugin_Handled;
 				}
 			}
 		}
 		
-		PrintToChat(iClient, "%s%s Invalid preferences entered.", TEXT_TAG, TEXT_ERROR);
+		PrintToChat(iClient, "%s%s 输入了无效的偏好.", TEXT_TAG, TEXT_ERROR);
 		return Plugin_Handled;
 	}
 }
