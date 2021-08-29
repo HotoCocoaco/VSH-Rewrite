@@ -10,7 +10,7 @@ mkdir -p package/addons/sourcemod/gamedata
 cp -r addons/sourcemod/plugins/saxtonhale.smx package/addons/sourcemod/plugins
 cp -r ../addons/sourcemod/configs/vsh package/addons/sourcemod/configs
 cp -r ../addons/sourcemod/gamedata/vsh.txt package/addons/sourcemod/gamedata
-# cp -r ../materials package
-# cp -r ../models package
-# cp -r ../sound package
+cp -r ../materials package
+cp -r ../models package
+cp -r ../sound package
 cp -r ../LICENSE package
