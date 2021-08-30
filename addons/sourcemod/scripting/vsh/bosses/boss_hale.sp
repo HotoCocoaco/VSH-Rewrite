@@ -38,7 +38,7 @@ static char g_strHaleKillScout[][] = {
 };
 /*	//No soldier voicelines
 static char g_strHaleKillSoldier[][] = {
-	
+
 };
 */
 static char g_strHaleKillPyro[][] = {
@@ -104,18 +104,18 @@ methodmap CSaxtonHale < SaxtonHaleBase
 		boss.CallFunction("CreateAbility", "CBraveJump");
 		CScareRage scareAbility = boss.CallFunction("CreateAbility", "CScareRage");
 		scareAbility.flRadius = 800.0;
-		
+
 		boss.iBaseHealth = 800;
 		boss.iHealthPerPlayer = 800;
 		boss.nClass = TFClass_Soldier;
 		boss.iMaxRageDamage = 2500;
 	}
-	
+
 	public void GetBossName(char[] sName, int length)
 	{
 		strcopy(sName, length, "萨克斯顿 霍尔");
 	}
-	
+
 	public void GetBossInfo(char[] sInfo, int length)
 	{
 		StrCat(sInfo, length, "\n生命值: 中等");
@@ -127,7 +127,7 @@ methodmap CSaxtonHale < SaxtonHaleBase
 		StrCat(sInfo, length, "\n- 惊吓中等距离玩家5秒");
 		StrCat(sInfo, length, "\n- 200%% 愤怒: 更长的距离和延长时间到7.5秒");
 	}
-	
+
 	public void OnSpawn()
 	{
 		char attribs[128];
@@ -137,19 +137,19 @@ methodmap CSaxtonHale < SaxtonHaleBase
 			SetEntPropEnt(this.iClient, Prop_Send, "m_hActiveWeapon", iWeapon);
 		/*
 		Fist attributes:
-		
+
 		2: damage bonus
 		252: reduction in push force taken from damage
 		259: Deals 3x falling damage to the player you land on
 		214: kill_eater
 		*/
 	}
-	
+
 	public void GetModel(char[] sModel, int length)
 	{
 		strcopy(sModel, length, HALE_MODEL);
 	}
-	
+
 	public void GetSound(char[] sSound, int length, SaxtonHaleSound iSoundType)
 	{
 		switch (iSoundType)
@@ -163,13 +163,13 @@ methodmap CSaxtonHale < SaxtonHaleBase
 			case VSHSound_Backstab: strcopy(sSound, length, g_strHaleBackStabbed[GetRandomInt(0,sizeof(g_strHaleBackStabbed)-1)]);
 		}
 	}
-	
+
 	public void GetSoundAbility(char[] sSound, int length, const char[] sType)
 	{
 		if (strcmp(sType, "CBraveJump") == 0)
 			strcopy(sSound, length, g_strHaleJump[GetRandomInt(0,sizeof(g_strHaleJump)-1)]);
 	}
-	
+
 	public void GetSoundKill(char[] sSound, int length, TFClassType nClass)
 	{
 		switch (nClass)
@@ -185,14 +185,14 @@ methodmap CSaxtonHale < SaxtonHaleBase
 			case TFClass_Spy: strcopy(sSound, length, g_strHaleKillSpy[GetRandomInt(0,sizeof(g_strHaleKillSpy)-1)]);
 		}
 	}
-	
+
 	public Action OnSoundPlayed(int clients[MAXPLAYERS], int &numClients, char sample[PLATFORM_MAX_PATH], int &channel, float &volume, int &level, int &pitch, int &flags, char soundEntry[PLATFORM_MAX_PATH], int &seed)
 	{
 		if (strncmp(sample, "vo/", 3) == 0)//Block voicelines
 			return Plugin_Handled;
 		return Plugin_Continue;
 	}
-	
+
 	public void Precache()
 	{
 		PrecacheModel(HALE_MODEL);
@@ -213,7 +213,7 @@ methodmap CSaxtonHale < SaxtonHaleBase
 		for (int i = 0; i < sizeof(g_strHaleKillBuilding); i++) PrepareSound(g_strHaleKillBuilding[i]);
 		for (int i = 0; i < sizeof(g_strHaleLastMan); i++) PrepareSound(g_strHaleLastMan[i]);
 		for (int i = 0; i < sizeof(g_strHaleBackStabbed); i++) PrepareSound(g_strHaleBackStabbed[i]);
-		
+
 		AddFileToDownloadsTable("materials/models/player/hwm_saxton_hale/tongue_saxxy.vmt");
 		AddFileToDownloadsTable("materials/models/player/hwm_saxton_hale/saxton_hat_saxxy.vmt");
 		AddFileToDownloadsTable("materials/models/player/hwm_saxton_hale/saxton_hat_saxxy.vtf");
@@ -246,7 +246,7 @@ methodmap CSaxtonHale < SaxtonHaleBase
 		AddFileToDownloadsTable("materials/models/player/hwm_saxton_hale/shades/eye-saxxy.vtf");
 		AddFileToDownloadsTable("materials/models/player/hwm_saxton_hale/shades/inv.vmt");
 		AddFileToDownloadsTable("materials/models/player/hwm_saxton_hale/shades/null.vtf");
-		
+
 		AddFileToDownloadsTable("models/player/saxton_hale_jungle_inferno/saxton_hale.mdl");
 		AddFileToDownloadsTable("models/player/saxton_hale_jungle_inferno/saxton_hale.phy");
 		AddFileToDownloadsTable("models/player/saxton_hale_jungle_inferno/saxton_hale.sw.vtx");

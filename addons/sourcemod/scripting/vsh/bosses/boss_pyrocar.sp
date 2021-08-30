@@ -428,6 +428,11 @@ methodmap CPyroCar < SaxtonHaleBase
 			}
 		}
 	}
+	
+	public bool IsBossHidden()
+	{
+		return true;
+	}
 };
 
 public Action Timer_RemoveLessHealing(Handle hTimer, int iSerial)

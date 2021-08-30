@@ -580,7 +580,7 @@ public void OnPluginStart()
 	SaxtonHaleFunction("FindAbility", ET_Single, Param_String);
 	SaxtonHaleFunction("DestroyAbility", ET_Ignore, Param_String);
 	
-	//General functions
+	//General functions 通常功能
 	SaxtonHaleFunction("OnThink", ET_Ignore);
 	SaxtonHaleFunction("OnSpawn", ET_Ignore);
 	SaxtonHaleFunction("OnRage", ET_Ignore);
