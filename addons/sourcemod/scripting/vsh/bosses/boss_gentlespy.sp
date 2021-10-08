@@ -72,16 +72,16 @@ methodmap CGentleSpy < SaxtonHaleBase
 		boss.flHealthExponential = 1.05;
 		boss.nClass = TFClass_Spy;
 		boss.iMaxRageDamage = 2000;
-		
+
 		g_bFirstCloak[boss.iClient] = false;
 		g_bIsCloaked[boss.iClient] = false;
 	}
-	
+
 	public void GetBossName(char[] sName, int length)
 	{
 		strcopy(sName, length, "绅士间谍");
 	}
-	
+
 	public void GetBossInfo(char[] sInfo, int length)
 	{
 		StrCat(sInfo, length, "\n生命值: 中等");
@@ -95,13 +95,13 @@ methodmap CGentleSpy < SaxtonHaleBase
 		StrCat(sInfo, length, "\n- 有着高伤害和穿透性的大使手枪");
 		StrCat(sInfo, length, "\n- 200%% 愤怒: 设置隐形能量为100%%");
 	}
-	
+
 	public void OnSpawn()
 	{
 		int iClient = this.iClient;
 		int iWeapon;
 		char attribs[128];
-		
+
 		Format(attribs, sizeof(attribs), "2 ; 8.0 ; 4 ; 1.34 ; 37 ; 0.0 ; 106 ; 0.0 ; 117 ; 0.0 ; 389 ; 1.0");
 		iWeapon = this.CallFunction("CreateWeapon", 61, "tf_weapon_revolver", 100, TFQual_Collectors, attribs);
 		if (iWeapon > MaxClients)
@@ -111,7 +111,7 @@ methodmap CGentleSpy < SaxtonHaleBase
 		}
 		/*
 		Ambassador attributes:
-		
+
 		2: Damage bonus
 		4: Clip size
 		37: mult_maxammo_primary
@@ -119,37 +119,37 @@ methodmap CGentleSpy < SaxtonHaleBase
 		117: Attrib_Dmg_Falloff_Increased	//Doesnt even work thanks valve
 		389: Shot penetrates
 		*/
-		
+
 		Format(attribs, sizeof(attribs), "83 ; 0.33 ; 85 ; 0.0 ; 221 ; 0.5");
 		iWeapon = this.CallFunction("CreateWeapon", 30, "tf_weapon_invis", 100, TFQual_Collectors, attribs);
 		if (iWeapon > MaxClients)
 			SetEntPropFloat(iClient, Prop_Send, "m_flCloakMeter", 0.0);
 		/*
 		Invis Watch attributes:
-		
+
 		83: cloak duration
 		85: cloak regeneration rate
 		221: Attrib_DecloakRate
 		*/
-		
+
 		Format(attribs, sizeof(attribs), "2 ; 4.55 ; 252 ; 0.5 ; 259 ; 1.0");
 		iWeapon = this.CallFunction("CreateWeapon", 194, "tf_weapon_knife", 100, TFQual_Collectors, attribs);
 		if (iWeapon > MaxClients)
 			SetEntPropEnt(iClient, Prop_Send, "m_hActiveWeapon", iWeapon);
 		/*
 		Knife attributes:
-		
+
 		2: damage bonus
 		252: reduction in push force taken from damage
 		259: Deals 3x falling damage to the player you land on
 		*/
 	}
-	
+
 	public void GetModel(char[] sModel, int length)
 	{
 		strcopy(sModel, length, GENTLE_SPY_MODEL);
 	}
-	
+
 	public void GetSound(char[] sSound, int length, SaxtonHaleSound iSoundType)
 	{
 		switch (iSoundType)
@@ -162,18 +162,18 @@ methodmap CGentleSpy < SaxtonHaleBase
 			case VSHSound_Backstab: strcopy(sSound, length, g_strGentleSpyBackStabbed[GetRandomInt(0,sizeof(g_strGentleSpyBackStabbed)-1)]);
 		}
 	}
-	
+
 	public void GetSoundKill(char[] sSound, int length, TFClassType nClass)
 	{
 		strcopy(sSound, length, g_strGentleSpyKill[GetRandomInt(0,sizeof(g_strGentleSpyKill)-1)]);
 	}
-	
+
 	public void GetMusicInfo(char[] sSound, int length, float &time)
 	{
 		strcopy(sSound, length, GENTLE_SPY_THEME);
 		time = 148.0;
 	}
-	
+
 	public Action OnSoundPlayed(int clients[MAXPLAYERS], int &numClients, char sample[PLATFORM_MAX_PATH], int &channel, float &volume, int &level, int &pitch, int &flags, char soundEntry[PLATFORM_MAX_PATH], int &seed)
 	{
 		//Block sounds if cloaked
@@ -181,11 +181,11 @@ methodmap CGentleSpy < SaxtonHaleBase
 			return Plugin_Handled;
 		return Plugin_Continue;
 	}
-	
+
 	public void OnRage()
 	{
 		int iClient = this.iClient;
-		
+
 		//Give cloak mater
 		float flCloak;
 		if (this.bSuperRage)
@@ -198,11 +198,11 @@ methodmap CGentleSpy < SaxtonHaleBase
 			flCloak += 50.0;
 			if (flCloak > 100.0) flCloak = 100.0;
 		}
-		
+
 		SetEntPropFloat(iClient, Prop_Send, "m_flCloakMeter", flCloak);
-		
+
 		int iPlayerCount = SaxtonHale_GetAliveAttackPlayers();
-		
+
 		//Add ammo to primary weapon
 		int iPrimaryWep = GetPlayerWeaponSlot(iClient, WeaponSlot_Primary);
 		if (IsValidEntity(iPrimaryWep))
@@ -215,13 +215,13 @@ methodmap CGentleSpy < SaxtonHaleBase
 			SetEntPropEnt(iClient, Prop_Send, "m_hActiveWeapon", iPrimaryWep);
 		}
 	}
-	
+
 	public void OnThink()
 	{
 		float flCloak = GetEntPropFloat(this.iClient, Prop_Send, "m_flCloakMeter");
 		if (flCloak < 0.5)
 			flCloak = 0.0;
-		
+
 		//Cloak regen rate attribute didnt take into effect until proper cloak done, shitty temp fix below aeiou
 		if (!g_bFirstCloak[this.iClient])
 		{
@@ -231,12 +231,12 @@ methodmap CGentleSpy < SaxtonHaleBase
 				flCloak = 50.0;
 			else
 				flCloak = 0.0;
-			
+
 			SetEntPropFloat(this.iClient, Prop_Send, "m_flCloakMeter", flCloak);
 		}
-				
+
 		if (TF2_IsPlayerInCondition(this.iClient, TFCond_Cloaked) || TF2_IsPlayerInCondition(this.iClient, TFCond_CloakFlicker))
-		{	
+		{
 			if (!g_bIsCloaked[this.iClient])
 			{
 				//Cloak started
@@ -249,63 +249,63 @@ methodmap CGentleSpy < SaxtonHaleBase
 				if (iInvisWatch > MaxClients && IsValidEntity(iInvisWatch))
 					TF2Attrib_SetByDefIndex(iInvisWatch, ATTRIB_JUMP_HEIGHT, 3.0);
 			}
-			
+
 			//Remove all cond in the list if have one
 			for (int i = 0; i < sizeof(g_nGentleSpyCloak); i++)
 				if (TF2_IsPlayerInCondition(this.iClient, g_nGentleSpyCloak[i]))
 					TF2_RemoveCondition(this.iClient, g_nGentleSpyCloak[i]);
 		}
 		else
-		{					
+		{
 			if (g_bIsCloaked[this.iClient])
 			{
 				//Cloak ended
 				g_bIsCloaked[this.iClient] = false;
 				this.flSpeed /= 1.4;
 				//TF2_RemoveCondition(this.iClient, TFCond_DefenseBuffMmmph);
-				
+
 				int iInvisWatch = GetPlayerWeaponSlot(this.iClient, WeaponSlot_InvisWatch);
 				if (iInvisWatch > MaxClients && IsValidEntity(iInvisWatch))
 					TF2Attrib_RemoveByDefIndex(iInvisWatch, ATTRIB_JUMP_HEIGHT);
 			}
 		}
 	}
-	
+
 	public void GetHudText(char[] sMessage, int iLength)
 	{
 		float flCloak = GetEntPropFloat(this.iClient, Prop_Send, "m_flCloakMeter");
 		if (flCloak > 99.5)
-			Format(sMessage, iLength, "%s\n%0.0f%%%% Cloak: You can use cloak!", sMessage, flCloak);
+			Format(sMessage, iLength, "%s\n%0.0f%%%% 隐形：你可以使用隐形！", sMessage, flCloak);
 		else if (flCloak < 10.5)
-			Format(sMessage, iLength, "%s\n%0.0f%%%% Cloak: Gain cloak by using rage!", sMessage, flCloak);
+			Format(sMessage, iLength, "%s\n%0.0f%%%% 隐形：使用愤怒技能来获得隐形能量！", sMessage, flCloak);
 		else
-			Format(sMessage, iLength, "%s\n%0.0f%%%% Cloak", sMessage, flCloak);
+			Format(sMessage, iLength, "%s\n%0.0f%%%% 隐形", sMessage, flCloak);
 	}
-	
+
 	public void GetHudColor(int iColor[4])
 	{
 		float flCloak = GetEntPropFloat(this.iClient, Prop_Send, "m_flCloakMeter");
-		
+
 		iColor[0] = RoundToNearest(2.55 * (100.0 - flCloak));
 		iColor[1] = 255;
 		iColor[2] = RoundToNearest(2.55 * (100.0 - flCloak));
 		iColor[3] = 255;
 	}
-	
+
 	public Action OnAttackDamage(int victim, int &inflictor, float &damage, int &damagetype, int &weapon, float damageForce[3], float damagePosition[3], int damagecustom)
 	{
 		if (damagetype & DMG_FALL && TF2_IsPlayerInCondition(this.iClient, TFCond_Cloaked))
 		{
 			return Plugin_Stop;
 		}
-		
+
 		return Plugin_Continue;
 	}
-	
+
 	public void OnButton(int &buttons)
 	{
 		int iClient = this.iClient;
-		
+
 		//Prevent boss from uncloaking while in air
 		if (buttons & IN_ATTACK2 && TF2_IsPlayerInCondition(iClient, TFCond_Cloaked))
 		{
@@ -313,21 +313,21 @@ methodmap CGentleSpy < SaxtonHaleBase
 				buttons -= IN_ATTACK2;
 		}
 	}
-	
+
 	public void Destroy()
 	{
 		int iClient = this.iClient;
-		
+
 		g_bFirstCloak[iClient] = false;
 		g_bIsCloaked[iClient] = false;
 	}
-	
+
 	public void Precache()
 	{
 		PrecacheModel(GENTLE_SPY_MODEL);
-		
+
 		PrepareSound(GENTLE_SPY_THEME);
-		
+
 		for (int i = 0; i < sizeof(g_strGentleSpyRoundStart); i++) PrecacheSound(g_strGentleSpyRoundStart[i]);
 		for (int i = 0; i < sizeof(g_strGentleSpyWin); i++) PrecacheSound(g_strGentleSpyWin[i]);
 		for (int i = 0; i < sizeof(g_strGentleSpyLose); i++) PrecacheSound(g_strGentleSpyLose[i]);
@@ -335,13 +335,13 @@ methodmap CGentleSpy < SaxtonHaleBase
 		for (int i = 0; i < sizeof(g_strGentleSpyKill); i++) PrecacheSound(g_strGentleSpyKill[i]);
 		for (int i = 0; i < sizeof(g_strGentleSpyLastMan); i++) PrecacheSound(g_strGentleSpyLastMan[i]);
 		for (int i = 0; i < sizeof(g_strGentleSpyBackStabbed); i++) PrecacheSound(g_strGentleSpyBackStabbed[i]);
-		
+
 		AddFileToDownloadsTable("materials/freak_fortress_2/gentlespy_tex/stylish_spy_blue.vmt");
 		AddFileToDownloadsTable("materials/freak_fortress_2/gentlespy_tex/stylish_spy_blue.vtf");
 		AddFileToDownloadsTable("materials/freak_fortress_2/gentlespy_tex/stylish_spy_blue_invun.vmt");
 		AddFileToDownloadsTable("materials/freak_fortress_2/gentlespy_tex/stylish_spy_blue_invun.vtf");
 		AddFileToDownloadsTable("materials/freak_fortress_2/gentlespy_tex/stylish_spy_normal.vtf");
-		
+
 		AddFileToDownloadsTable("models/freak_fortress_2/gentlespy/the_gentlespy_v1.mdl");
 		AddFileToDownloadsTable("models/freak_fortress_2/gentlespy/the_gentlespy_v1.sw.vtx");
 		AddFileToDownloadsTable("models/freak_fortress_2/gentlespy/the_gentlespy_v1.vvd");

@@ -87,9 +87,9 @@ methodmap CDemoPan < SaxtonHaleBase
 	{
 		StrCat(sInfo, length, "\n生命值: 中等");
 		StrCat(sInfo, length, "\n ");
-		StrCat(sInfo, length, "\nAbilities");
-		StrCat(sInfo, length, "\n- Brave Jump");
-		StrCat(sInfo, length, "\n- Chargin' Targe with large knockback on impact, reload to charge");
+		StrCat(sInfo, length, "\n能力");
+		StrCat(sInfo, length, "\n- 超级跳");
+		StrCat(sInfo, length, "\n- 冲锋盾，撞击时有强大击退，装填键冲锋");
 		StrCat(sInfo, length, "\n ");
 		StrCat(sInfo, length, "\n愤怒");
 		StrCat(sInfo, length, "\n- 5秒完全操纵的冲锋");

@@ -9,7 +9,7 @@
 #define PYROCAR_HEALINGREDUCTION		0.5
 
 static char g_strPyrocarRoundStart[][] =  {
-	"vsh_rewrite/pyrocar/pyrocar_intro.mp3", 
+	"vsh_rewrite/pyrocar/pyrocar_intro.mp3",
 	"vsh_rewrite/pyrocar/pyrocar_theme.mp3"
 };
 
@@ -26,7 +26,7 @@ static char g_strPyrocarRage[][] =  {
 };
 
 static char g_strPyrocarKill[][] =  {
-	"vsh_rewrite/pyrocar/pyrocar_w.mp3", 
+	"vsh_rewrite/pyrocar/pyrocar_w.mp3",
 	"vsh_rewrite/pyrocar/pyrocar_team.mp3",
 	"vsh_rewrite/pyrocar/pyrocar_backlines.mp3",
 	"vsh_rewrite/pyrocar/pyrocar_besthat.mp3",
@@ -83,7 +83,7 @@ methodmap CPyroCar < SaxtonHaleBase
 	{
 		//boss.CallFunction("CreateAbility", "CFloatJump");
 		boss.CallFunction("CreateAbility", "CRageGas");
-		
+
 		boss.iHealthPerPlayer = 600;
 		boss.flHealthExponential = 1.05;
 		boss.nClass = TFClass_Pyro;
@@ -91,12 +91,12 @@ methodmap CPyroCar < SaxtonHaleBase
 		boss.flSpeed = 350.0;
 		boss.flSpeedMult = 0.08;
 	}
-	
+
 	public void GetBossName(char[] sName, int length)
 	{
 		strcopy(sName, length, "Pyrocar");
 	}
-	
+
 	public void GetBossInfo(char[] sInfo, int length)
 	{
 		StrCat(sInfo, length, "\n生命值: 中等");
@@ -111,7 +111,7 @@ methodmap CPyroCar < SaxtonHaleBase
 		StrCat(sInfo, length, "\n- 油湿周围的敌人并获得速度加成8秒");
 		StrCat(sInfo, length, "\n- 200%% 愤怒: 增加额外速度并延长时间到12秒");
 	}
-	
+
 	public void OnSpawn()
 	{
 		char attribs[256];
@@ -123,13 +123,13 @@ methodmap CPyroCar < SaxtonHaleBase
 			SetEntPropEnt(this.iClient, Prop_Send, "m_hActiveWeapon", g_iPyrocarPrimary[this.iClient]);
 			//TF2_SetAmmo(this.iClient, WeaponSlot_Primary, 0);	//Reset ammo for TF2 to give correct amount of ammo
 		}
-		
+
 		g_iPyrocarMelee[this.iClient] = -1;
 		g_flPyrocarGasCharge[this.iClient] = 0.0;
-			
+
 		/*
 		Backburner attributes:
-		
+
 		24: allow crits from behind
 		37: mult_maxammo_primary
 		59: self dmg push force decreased
@@ -150,24 +150,24 @@ methodmap CPyroCar < SaxtonHaleBase
 		863: flame random life time offset
 		865: flame up speed
 		*/
-		
-		
+
+
 		int iRandom = GetRandomInt(0, sizeof(g_iCosmetics)-1);
 		int iWearable = this.CallFunction("CreateWeapon", g_iCosmetics[iRandom], "tf_wearable", 1, TFQual_Collectors, "");
 		if (iWearable > MaxClients)
 			SetEntProp(iWearable, Prop_Send, "m_nModelIndexOverrides", g_iPyrocarCosmetics[iRandom]);
 	}
-	
+
 	public void OnThink()
 	{
 		char attribs[256];
-		
+
 		int iWaterLevel = GetEntProp(this.iClient, Prop_Send, "m_nWaterLevel");
 		//0 - not in water (WL_NotInWater)
 		//1 - feet in water (WL_Feet)
 		//2 - waist in water (WL_Waist)
-		//3 - head in water (WL_Eyes) 
-		
+		//3 - head in water (WL_Eyes)
+
 		//Give Neon if Pyrocar is underwater
 		if (iWaterLevel >= 3)
 		{
@@ -203,7 +203,7 @@ methodmap CPyroCar < SaxtonHaleBase
 				}
 			}
 		}
-		
+
 		//Check if Gas Passer has been used
 		int iSecondaryWep = GetPlayerWeaponSlot(this.iClient, WeaponSlot_Secondary);
 		if (IsValidEntity(iSecondaryWep))
@@ -227,10 +227,10 @@ methodmap CPyroCar < SaxtonHaleBase
 					SetEntPropEnt(this.iClient, Prop_Send, "m_hActiveWeapon", g_iPyrocarMelee[this.iClient]);
 			}
 		}
-		
+
 		//Prevent marked-for-death to be removed
 		int iTeam = GetClientTeam(this.iClient);
-		
+
 		for (int i = 1; i <= MaxClients; i++)
 		{
 			if (IsClientInGame(i) && IsPlayerAlive(i) && GetClientTeam(i) > 1 && GetClientTeam(i) != iTeam)
@@ -246,11 +246,11 @@ methodmap CPyroCar < SaxtonHaleBase
 				}
 			}
 		}
-		
+
 		//Handle Pyrocar's M2 ability
 		if (GameRules_GetRoundState() == RoundState_Preround)
 			return;
-		
+
 		//Jetpack regen
 		if (g_iPyrocarJetpack[this.iClient] == GetPlayerWeaponSlot(this.iClient, WeaponSlot_Secondary))
 		{
@@ -264,18 +264,18 @@ methodmap CPyroCar < SaxtonHaleBase
 			if (g_flPyrocarJetpackCharge[this.iClient] < 100.0)
 				g_flPyrocarJetpackCharge[this.iClient] += 0.15;
 		}
-		
+
 	}
-	
+
 	public void GetHudText(char[] sMessage, int iLength)
 	{
 		float flGasCharge = g_flPyrocarGasCharge[this.iClient]/g_flGasMinCharge * 100.0;
 		if (flGasCharge < 100.0)
-			Format(sMessage, iLength, "%s\nDeal damage to charge your gas: %0.2f%%.", sMessage, flGasCharge);
+			Format(sMessage, iLength, "%s\n造成伤害来充能你的汽油: %0.2f%%.", sMessage, flGasCharge);
 		else
-			Format(sMessage, iLength, "%s\nHold right click to throw your gas! %0.2f%%.", sMessage, flGasCharge);
+			Format(sMessage, iLength, "%s\n按住右键使用你的汽油！ %0.2f%%.", sMessage, flGasCharge);
 	}
-	
+
 	public void GetHudColor(int iColor[4])
 	{
 		float flGasCharge = g_flPyrocarGasCharge[this.iClient]/g_flGasMinCharge * 100.0;
@@ -298,7 +298,7 @@ methodmap CPyroCar < SaxtonHaleBase
 			iColor = {0, 255, 0, 255};
 		}
 	}
-	
+
 	public Action OnAttackDamage(int victim, int &inflictor, float &damage, int &damagetype, int &weapon, float damageForce[3], float damagePosition[3], int damagecustom)
 	{
 		if (TF2_IsPlayerInCondition(victim, TFCond_Ubercharged)) return Plugin_Continue;
@@ -317,20 +317,20 @@ methodmap CPyroCar < SaxtonHaleBase
 					}
 				}
 			}
-			
+
 			g_hPyrocarHealTimer[victim] = CreateTimer(0.4, Timer_RemoveLessHealing, GetClientSerial(victim));
-			
+
 			//Deal constant damage for flamethrower
 			damage = 8.0;
 		}
-		
+
 		//Deal constant damage for afterburn
 		if (damagetype == TF_DMG_AFTERBURN || damagetype == TF_DMG_GAS_AFTERBURN)
 			damage = 2.0;
-			
+
 		if (g_flPyrocarGasCharge[this.iClient] <= g_iMaxGasPassers * g_flGasMinCharge)
 			g_flPyrocarGasCharge[this.iClient] += damage;
-			
+
 		if (g_flPyrocarGasCharge[this.iClient] > g_iMaxGasPassers * g_flGasMinCharge)
 			g_flPyrocarGasCharge[this.iClient] = g_iMaxGasPassers * g_flGasMinCharge;
 		//Any kind of crit deals 2.5x damage, bonus damage does not give extra gas charge
@@ -338,10 +338,10 @@ methodmap CPyroCar < SaxtonHaleBase
 		{
 			damage *= 2.5;
 		}
-			
+
 		return Plugin_Changed;
 	}
-	
+
 	public Action OnAttackBuilding(int victim, int &inflictor, float &damage, int &damagetype, int &weapon, float damageForce[3], float damagePosition[3], int damagecustom)
 	{
 		//Buildings take constant damage
@@ -350,7 +350,7 @@ methodmap CPyroCar < SaxtonHaleBase
 			damage = 20.0;
 		}
 	}
-	
+
 	public void GetSound(char[] sSound, int length, SaxtonHaleSound iSoundType)
 	{
 		switch (iSoundType)
@@ -363,26 +363,26 @@ methodmap CPyroCar < SaxtonHaleBase
 			case VSHSound_Lastman: strcopy(sSound, length, g_strPyrocarLastMan[GetRandomInt(0,sizeof(g_strPyrocarLastMan)-1)]);
 		}
 	}
-	
+
 	public void GetSoundKill(char[] sSound, int length, TFClassType nClass)
 	{
 		strcopy(sSound, length, g_strPyrocarKill[GetRandomInt(0, sizeof(g_strPyrocarKill) - 1)]);
 	}
-	
+
 	public Action OnSoundPlayed(int clients[MAXPLAYERS], int &numClients, char sample[PLATFORM_MAX_PATH], int &channel, float &volume, int &level, int &pitch, int &flags, char soundEntry[PLATFORM_MAX_PATH], int &seed)
 	{
 		if (strncmp(sample, "vo/", 3) == 0)//Block voicelines
 			return Plugin_Handled;
 		return Plugin_Continue;
 	}
-	
+
 	public void Destroy()
 	{
 		for (int iClient = 1; iClient <= MaxClients; iClient++)
 		{
 			g_hPyrocarHealTimer[iClient] = null;
 			g_hGasTimer[iClient] = null;
-			
+
 			if (IsClientInGame(iClient))
 			{
 				for (int iSlot = 0; iSlot <= WeaponSlot_BuilderEngie; iSlot++)
@@ -397,12 +397,12 @@ methodmap CPyroCar < SaxtonHaleBase
 			}
 		}
 	}
-	
+
 	public void Precache()
 	{
 		for (int i = 0; i < sizeof(g_iCosmetics); i++)
 			g_iPyrocarCosmetics[i] = PrecacheModel(g_strPrecacheCosmetics[i]);
-			
+
 		for (int i = 0; i < sizeof(g_strPyrocarRoundStart); i++) PrepareSound(g_strPyrocarRoundStart[i]);
 		for (int i = 0; i < sizeof(g_strPyrocarWin); i++) PrepareSound(g_strPyrocarWin[i]);
 		for (int i = 0; i < sizeof(g_strPyrocarLose); i++) PrepareSound(g_strPyrocarLose[i]);
@@ -411,18 +411,18 @@ methodmap CPyroCar < SaxtonHaleBase
 		for (int i = 0; i < sizeof(g_strPyrocarKillBuilding); i++) PrepareSound(g_strPyrocarKillBuilding[i]);
 		for (int i = 0; i < sizeof(g_strPyrocarLastMan); i++) PrepareSound(g_strPyrocarLastMan[i]);
 	}
-	
+
 	public void OnButtonPress(int button)
 	{
 		if (button == IN_ATTACK2 && g_flPyrocarGasCharge[this.iClient] > g_flGasMinCharge && g_iPyrocarJetpack[this.iClient] == GetPlayerWeaponSlot(this.iClient, WeaponSlot_Secondary))
 		{
 			g_flPyrocarGasCharge[this.iClient] -= g_flGasMinCharge;
-			
+
 			int iSecondaryWep = GetPlayerWeaponSlot(this.iClient, WeaponSlot_Secondary);
 			if (IsValidEntity(iSecondaryWep))
 			{
 				TF2_RemoveItemInSlot(this.iClient, WeaponSlot_Secondary);
-				
+
 				iSecondaryWep = this.CallFunction("CreateWeapon", ITEM_GAS_PASSER, "tf_weapon_jar_gas", 100, TFQual_Unusual, "");
 				SetEntPropFloat(this.iClient, Prop_Send, "m_flItemChargeMeter", 100.0, 1);
 			}
@@ -436,7 +436,7 @@ public Action Timer_RemoveLessHealing(Handle hTimer, int iSerial)
 	if (0 < iClient <= MaxClients && g_hPyrocarHealTimer[iClient] == hTimer)
 	{
 		g_hPyrocarHealTimer[iClient] = null;
-		
+
 		if (IsClientInGame(iClient))
 		{
 			for (int iSlot = 0; iSlot <= WeaponSlot_BuilderEngie; iSlot++)
@@ -459,7 +459,7 @@ public Action Timer_EffectEnd(Handle hTimer, int iClient)
 		TF2_RemoveCondition(iClient, TFCond_Gas);
 		TF2_RemoveCondition(iClient, TFCond_MarkedForDeath);
 	}
-	
+
 	g_bUnderEffect[iClient] = false;
 	g_hGasTimer[iClient] = null;
 }

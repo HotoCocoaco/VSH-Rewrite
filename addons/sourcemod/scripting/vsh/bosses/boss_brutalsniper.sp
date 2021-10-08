@@ -251,10 +251,10 @@ methodmap CBrutalSniper < SaxtonHaleBase
 
 		switch (GetEntProp(iWeapon, Prop_Send, "m_iItemDefinitionIndex"))
 		{
-			case ITEM_KUKRI: StrCat(sMessage, iLength, "\nKukri: Default");
-			case ITEM_TRIBALMAN_SHIV: StrCat(sMessage, iLength, "\nTribalman Shiv: 10 seconds bleed, 15%% dmg penalty");
-			case ITEM_BUSHWACKA: StrCat(sMessage, iLength, "\nBushwacka: Always crit, 20%% dmg vulnerability");
-			case ITEM_SHAHANSHAH: StrCat(sMessage, iLength, "\nShahanshah: +15%% dmg when <50%% health, -15%% dmg when >50%% health");
+			case ITEM_KUKRI: StrCat(sMessage, iLength, "\n反曲刀：默认");
+			case ITEM_TRIBALMAN_SHIV: StrCat(sMessage, iLength, "\n部落者刮刀: 10秒流血, 15%%伤害降低");
+			case ITEM_BUSHWACKA: StrCat(sMessage, iLength, "\n灌木丛: 永远爆击, 受到的伤害增加20%%");
+			case ITEM_SHAHANSHAH: StrCat(sMessage, iLength, "\n诸王之王: 当 <50%% 生命值时 +15%% 伤害, 当 >50%% 生命值时 -15%% 伤害");
 		}
 	}
 
