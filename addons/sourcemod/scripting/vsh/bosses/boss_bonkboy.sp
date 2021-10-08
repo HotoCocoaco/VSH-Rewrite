@@ -71,8 +71,8 @@ methodmap CBonkBoy < SaxtonHaleBase
 		rageCond.AddCond(TFCond_SpeedBuffAlly);			//Speed boost effect
 		
 		boss.flSpeed = 400.0;
-		boss.iBaseHealth = 700;
-		boss.iHealthPerPlayer = 650;
+		boss.iHealthPerPlayer = 500;
+		boss.flHealthExponential = 1.05;
 		boss.nClass = TFClass_Scout;
 		boss.iMaxRageDamage = 1500;
 		
@@ -192,7 +192,7 @@ methodmap CBonkBoy < SaxtonHaleBase
 			GetAngleVectors(vecEye, vecVel, NULL_VECTOR, NULL_VECTOR);
 			ScaleVector(vecVel, 500.0);
 			
-			GetEntPropVector(this.iClient, Prop_Data, "m_vecVelocity", vecVictim);
+			GetEntPropVector(victim, Prop_Data, "m_vecVelocity", vecVictim);
 			AddVectors(vecVictim, vecVel, vecVictim);
 			TeleportEntity(victim, NULL_VECTOR, NULL_VECTOR, vecVictim);
 		}

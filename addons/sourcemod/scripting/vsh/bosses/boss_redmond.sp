@@ -46,8 +46,8 @@ methodmap CRedmond < SaxtonHaleBase
 		weaponSpells.flRageRequirement = 0.0;
 		weaponSpells.flCooldown = 5.0;
 		
-		boss.iBaseHealth = 500;
-		boss.iHealthPerPlayer = 700;
+		boss.iHealthPerPlayer = 550;
+		boss.flHealthExponential = 1.05;
 		boss.nClass = TFClass_Spy;
 		boss.iMaxRageDamage = 2500;
 	}
@@ -79,28 +79,6 @@ methodmap CRedmond < SaxtonHaleBase
 		StrCat(sInfo, length, "\n愤怒");
 		StrCat(sInfo, length, "\n- 获得一个魔眼！魔咒");
 		StrCat(sInfo, length, "\n- 200%% 愤怒: 获得3个魔眼！魔咒");
-	}
-	
-	public void OnDeath(Event eventInfo)
-	{
-		if (!g_bRoundStarted) return;
-		
-		for (int iClient = 1; iClient <= MaxClients; iClient++)
-		{
-			SaxtonHaleBase boss = SaxtonHaleBase(iClient);
-			if (boss.bValid && IsPlayerAlive(iClient))
-			{
-				char sType[128];
-				boss.CallFunction("GetBossType", sType, sizeof(sType));
-				if (StrEqual(sType, "CBlutarch"))
-				{
-					char sSound[PLATFORM_MAX_PATH];
-					strcopy(sSound, sizeof(sSound), g_strRedmondDeath[GetRandomInt(0,sizeof(g_strRedmondDeath)-1)]);
-					BroadcastSoundToTeam(TFTeam_Spectator, sSound);
-					return;
-				}
-			}
-		}
 	}
 	
 	public Action OnAttackDamage(int victim, int &inflictor, float &damage, int &damagetype, int &weapon, float damageForce[3], float damagePosition[3], int damagecustom)
@@ -135,6 +113,7 @@ methodmap CRedmond < SaxtonHaleBase
 			case VSHSound_Rage: strcopy(sSound, length, g_strRedmondRage[GetRandomInt(0,sizeof(g_strRedmondRage)-1)]);
 			case VSHSound_Lastman: strcopy(sSound, length, g_strRedmondLastMan[GetRandomInt(0,sizeof(g_strRedmondLastMan)-1)]);
 			case VSHSound_Backstab: strcopy(sSound, length, g_strRedmondBackstabbed[GetRandomInt(0,sizeof(g_strRedmondBackstabbed)-1)]);
+			case VSHSound_Death: strcopy(sSound, length, g_strRedmondDeath[GetRandomInt(0,sizeof(g_strRedmondDeath)-1)]);
 		}
 	}
 		

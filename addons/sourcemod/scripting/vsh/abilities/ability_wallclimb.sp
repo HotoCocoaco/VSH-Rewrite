@@ -49,7 +49,7 @@ methodmap CWallClimb < SaxtonHaleBase
 			g_flWallClimbMaxHorizontalVelocity[this.iClient] = val;
 		}
 	}
-	
+
 	public CWallClimb(CWallClimb ability)
 	{
 		//Default values, these can be changed if needed
@@ -58,43 +58,43 @@ methodmap CWallClimb < SaxtonHaleBase
 		ability.flHorizontalSpeedMult = 1.2;  //Horizontal speed multiplier, for better mobility if the boss is trying to go anywhere besides straight up
 		ability.flMaxHorizontalVelocity = 600.0;  //Horizontal speed limit because we don't want the boss to fly around the map at light speed
 	}
-	
+
 	public Action OnAttackCritical(int iWeapon, bool &bResult)
 	{
 		int iClient = this.iClient;
-		
+
 		char sClassname[64];
 		float vecClientEyePos[3], vecClientEyeAng[3];
 		GetClientEyePosition(iClient, vecClientEyePos);
 		GetClientEyeAngles(iClient, vecClientEyeAng);
-		
+
 		//Check for colliding entities
 		TR_TraceRayFilter(vecClientEyePos, vecClientEyeAng, MASK_PLAYERSOLID, RayType_Infinite, TraceRay_DontHitEntity, iClient);
-		
+
 		if (!TR_DidHit(INVALID_HANDLE)) return;
-		
+
 		int iEntity = TR_GetEntityIndex(INVALID_HANDLE);
 		GetEdictClassname(iEntity, sClassname, sizeof(sClassname));
-		
+
 		if (strcmp(sClassname, "worldspawn") != 0 && strncmp(sClassname, "prop_", 5) != 0)
 			return;
-		
+
 		float vecNormal[3];
 		TR_GetPlaneNormal(INVALID_HANDLE, vecNormal);
 		GetVectorAngles(vecNormal, vecNormal);
-		
+
 		if (vecNormal[0] >= 30.0 && vecNormal[0] <= 330.0) return;
 		if (vecNormal[0] <= -30.0) return;
-		
+
 		float vecPos[3];
 		TR_GetEndPosition(vecPos);
 		float flDistance = GetVectorDistance(vecClientEyePos, vecPos);
-		
+
 		if (flDistance >= this.flMaxDistance) return;
-		
+
 		float vecVelocity[3];
 		GetEntPropVector(iClient, Prop_Data, "m_vecVelocity", vecVelocity);
-		
+
 		//Increase horizontal velocity
 		vecVelocity[0] *= this.flHorizontalSpeedMult;
 		vecVelocity[1] *= this.flHorizontalSpeedMult;
@@ -106,15 +106,15 @@ methodmap CWallClimb < SaxtonHaleBase
 			vecVelocity[0] *= this.flMaxHorizontalVelocity / flSpeed;
 			vecVelocity[1] *= this.flMaxHorizontalVelocity / flSpeed;
 		}
-		
+
 		//Set vertical velocity, the main part of this ability
 		vecVelocity[2] = this.flMaxHeight;
-		
+
 		TeleportEntity(iClient, NULL_VECTOR, NULL_VECTOR, vecVelocity);
 	}
-	
-	public void OnThink()
+
+	public void GetHudText(char[] sMessage, int iLength)
 	{
-		Hud_AddText(this.iClient, "使用近战武器攻击墙面来爬墙!");
+		StrCat(sMessage, iLength, "\nClimb walls by hitting them with your melee weapon!");
 	}
 };

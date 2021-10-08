@@ -20,7 +20,7 @@ methodmap CTeleportSwap < SaxtonHaleBase
 			g_iTeleportSwapMaxCharge[this.iClient] = val;
 		}
 	}
-	
+
 	property int iCharge
 	{
 		public get()
@@ -34,7 +34,7 @@ methodmap CTeleportSwap < SaxtonHaleBase
 			if (g_iTeleportSwapCharge[this.iClient] < 0) g_iTeleportSwapCharge[this.iClient] = 0;
 		}
 	}
-	
+
 	property int iChargeBuild
 	{
 		public get()
@@ -46,7 +46,7 @@ methodmap CTeleportSwap < SaxtonHaleBase
 			g_iTeleportSwapChargeBuild[this.iClient] = val;
 		}
 	}
-	
+
 	property float flCooldown
 	{
 		public get()
@@ -58,7 +58,7 @@ methodmap CTeleportSwap < SaxtonHaleBase
 			g_flTeleportSwapCooldown[this.iClient] = val;
 		}
 	}
-	
+
 	property float flStunDuration
 	{
 		public get()
@@ -70,7 +70,7 @@ methodmap CTeleportSwap < SaxtonHaleBase
 			g_flTeleportSwapStunDuration[this.iClient] = val;
 		}
 	}
-	
+
 	property float flEyeAngleRequirement
 	{
 		public get()
@@ -82,11 +82,11 @@ methodmap CTeleportSwap < SaxtonHaleBase
 			//Cap value to prevent impossible angle
 			if (val < -89.0)
 				val = -89.0;
-			
+
 			g_flTeleportSwapEyeAngleRequirement[this.iClient] = val;
 		}
 	}
-	
+
 	public CTeleportSwap(CTeleportSwap ability)
 	{
 		//Default values, these can be changed if needed
@@ -95,62 +95,63 @@ methodmap CTeleportSwap < SaxtonHaleBase
 		ability.flCooldown = 30.0;
 		ability.flStunDuration = 1.0;
 		ability.flEyeAngleRequirement = -60.0;	//How far up should the boss look for the ability to trigger? Minimum value is -89.0 (all the way up)
-		
+
 		g_iTeleportSwapCharge[ability.iClient] = 0;
 		g_flTeleportSwapCooldownWait[ability.iClient] = GetGameTime() + ability.flCooldown;
 	}
-	
+
 	public void OnThink()
 	{
-		if (GameRules_GetRoundState() == RoundState_Preround) return;
-		
-		char sMessage[255];
-		if (this.iCharge > 0)
-			Format(sMessage, sizeof(sMessage), "传送置换: %0.2f%%. 向上看站起来来使用传送置换", (float(this.iCharge)/float(this.iMaxCharge))*100.0);
-		else
-			Format(sMessage, sizeof(sMessage), "按住右键使用传送置换！");
-		
+		if (g_flTeleportSwapCooldownWait[this.iClient] <= GetGameTime())
+		{
+			g_flTeleportSwapCooldownWait[this.iClient] = 0.0;
+
+			if (g_bTeleportSwapHoldingChargeButton[this.iClient])
+				this.iCharge += this.iChargeBuild;
+			else
+				this.iCharge -= this.iChargeBuild*2;
+		}
+	}
+
+	public void GetHudText(char[] sMessage, int iLength)
+	{
 		if (g_flTeleportSwapCooldownWait[this.iClient] != 0.0 && g_flTeleportSwapCooldownWait[this.iClient] > GetGameTime())
 		{
-			float flRemainingTime = g_flTeleportSwapCooldownWait[this.iClient]-GetGameTime();
-			int iSec = RoundToNearest(flRemainingTime);
-			Format(sMessage, sizeof(sMessage), "传送置换冷却 %i 秒%s 剩余！", iSec, (iSec > 1) ? "s" : "");
-			Hud_AddText(this.iClient, sMessage);
-			return;
+			int iSec = RoundToNearest(g_flTeleportSwapCooldownWait[this.iClient]-GetGameTime());
+			Format(sMessage, iLength, "%s\nTeleport-swap cooldown %i second%s remaining!", sMessage, iSec, (iSec > 1) ? "s" : "");
 		}
-		
-		Hud_AddText(this.iClient, sMessage);
-		
-		g_flTeleportSwapCooldownWait[this.iClient] = 0.0;
-		
-		if (g_bTeleportSwapHoldingChargeButton[this.iClient])
-			this.iCharge += this.iChargeBuild;
+		else if (this.iCharge > 0)
+		{
+			Format(sMessage, iLength, "%s\nTeleport-swap: %0.2f%%. Look up and stand up to use teleport-swap.", sMessage, (float(this.iCharge)/float(this.iMaxCharge))*100.0);
+		}
 		else
-			this.iCharge -= this.iChargeBuild*2;
+		{
+			Format(sMessage, iLength, "%s\nHold right click to use your teleport-swap!", sMessage);
+		}
 	}
-	
+
 	public void OnButtonHold(int button)
 	{
 		if (button == IN_ATTACK2)
 			g_bTeleportSwapHoldingChargeButton[this.iClient] = true;
 	}
-	
+
 	public void OnButtonRelease(int button)
 	{
 		if (button == IN_ATTACK2)
 		{
 			if (TF2_IsPlayerInCondition(this.iClient, TFCond_Dazed))//Can't teleport-swap if stunned
 				return;
-			
+
 			if (!(GetEntityFlags(this.iClient) & FL_ONGROUND))
 				return;
-			
+
 			g_bTeleportSwapHoldingChargeButton[this.iClient] = false;
 			if (g_flTeleportSwapCooldownWait[this.iClient] != 0.0 && g_flTeleportSwapCooldownWait[this.iClient] > GetGameTime()) return;
-			
+
 			float vecAng[3];
 			GetClientEyeAngles(this.iClient, vecAng);
-			
+
 			if ((vecAng[0] <= this.flEyeAngleRequirement) && (this.iCharge >= this.iMaxCharge))
 			{
 				//get random valid attack player
@@ -158,30 +159,30 @@ methodmap CTeleportSwap < SaxtonHaleBase
 				for (int i = 1; i <= MaxClients; i++)
 					if (SaxtonHale_IsValidAttack(i) && IsPlayerAlive(i))
 						aClients.Push(i);
-				
+
 				if (aClients.Length == 0)
 				{
 					//Nobody in list? okay...
 					delete aClients;
 					return;
 				}
-				
+
 				aClients.Sort(Sort_Random, Sort_Integer);
-				
+
 				int iClient[2];
-				
+
 				iClient[0] = this.iClient;
 				iClient[1] = aClients.Get(0);
 				delete aClients;
-				
+
 				TF2_TeleportSwap(iClient);
-				
+
 				TF2_StunPlayer(iClient[0], this.flStunDuration, 0.0, TF_STUNFLAGS_GHOSTSCARE|TF_STUNFLAG_NOSOUNDOREFFECT, iClient[1]);
 				TF2_AddCondition(iClient[0], TFCond_DefenseBuffMmmph, this.flStunDuration);
-				
+
 				g_flTeleportSwapCooldownWait[this.iClient] = GetGameTime()+this.flCooldown;
 				this.iCharge = 0;
-				
+
 				char sSound[PLATFORM_MAX_PATH];
 				this.CallFunction("GetSoundAbility", sSound, sizeof(sSound), "CTeleportSwap");
 				if (!StrEmpty(sSound))

@@ -197,14 +197,18 @@ void Tags_OnThink(int iClient)
 	}
 }
 
-void Tags_PlayerHurt(int iVictim, int iAttacker, int iDamage)
+void Tags_OnTakeDamage(int iVictim, int iAttacker, float flDamage, int iWeapon)
 {
-	if (SaxtonHale_IsValidBoss(iVictim) && SaxtonHale_IsValidAttack(iAttacker))
+	if (SaxtonHale_IsValidBoss(iVictim) && SaxtonHale_IsValidAttack(iAttacker) && !TF2_IsUbercharged(iVictim))
 	{
-		if (g_iTagsAirblastRequirement[iAttacker] > 0)
+		int iPrimary = TF2_GetItemInSlot(iAttacker, WeaponSlot_Primary);
+		if (iPrimary == INVALID_ENT_REFERENCE)
+			return;
+		
+		if (g_iTagsAirblastRequirement[iAttacker] > 0 && iPrimary == iWeapon)
 		{
 			bool bFull = (g_iTagsAirblastDamage[iAttacker] >= g_iTagsAirblastRequirement[iAttacker]);
-			g_iTagsAirblastDamage[iAttacker] += iDamage;
+			g_iTagsAirblastDamage[iAttacker] += RoundToNearest(flDamage);
 			
 			if (g_iTagsAirblastDamage[iAttacker] >= g_iTagsAirblastRequirement[iAttacker])
 			{
@@ -213,10 +217,7 @@ void Tags_PlayerHurt(int iVictim, int iAttacker, int iDamage)
 				if (!bFull)
 				{
 					EmitSoundToClient(iAttacker, SOUND_METERFULL);	//Alert player meter is fully
-					
-					int iPrimary = TF2_GetItemInSlot(iAttacker, WeaponSlot_Primary);
-					if (iPrimary > MaxClients)
-						SetEntPropFloat(iPrimary, Prop_Send, "m_flNextSecondaryAttack", 0.0);	//Allow airblast to be used
+					SetEntPropFloat(iPrimary, Prop_Send, "m_flNextSecondaryAttack", 0.0);	//Allow airblast to be used
 				}
 			}
 		}
@@ -440,6 +441,29 @@ public void Tags_AddAttrib(int iClient, int iTarget, TagsParams tParams)
 	CreateDataTimer(flDuration, Timer_ResetAttrib, data);
 	data.WriteCell(iRef);
 	data.WriteCell(iIndex);
+}
+
+public void Tags_RemoveAttrib(int iClient, int iTarget, TagsParams tParams)
+{
+	if (iTarget <= 0 || !IsValidEdict(iTarget))
+		return;
+	
+	int iRef = EntIndexToEntRef(iTarget);
+	int iIndex = tParams.GetInt("index");
+	
+	TF2Attrib_RemoveByDefIndex(iTarget, iIndex);
+	TF2Attrib_ClearCache(iTarget);
+	
+	//Find in array thats using added attrib and remove it
+	int iLength = g_aAttrib.Length;
+	for (int iPos = 0; iPos < iLength; iPos++)
+	{
+		if (g_aAttrib.Get(iPos, TagsAttrib_Ref) == iRef && g_aAttrib.Get(iPos, TagsAttrib_Index) == iIndex)
+		{
+			g_aAttrib.Erase(iPos);
+			return;
+		}
+	}
 }
 
 public void Tags_AreaOfEffect(int iClient, int iTarget, TagsParams tParams)

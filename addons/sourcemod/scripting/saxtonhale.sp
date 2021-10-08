@@ -22,7 +22,7 @@
 
 #include "include/saxtonhale.inc"
 
-#define PLUGIN_VERSION 					"1.4.2"
+#define PLUGIN_VERSION 					"1.5.0"
 #define PLUGIN_VERSION_REVISION 		"manual"
 
 #if !defined SP_MAX_EXEC_PARAMS
@@ -164,7 +164,7 @@ enum
 };
 
 // Beam types, encoded as a byte
-enum 
+enum
 {
 	BEAM_POINTS = 0,
 	BEAM_ENTPOINT,
@@ -197,7 +197,7 @@ enum
 
 char g_strPreferencesName[][] = {
 	"Boss Selection",
-	"Rank Mode",
+	"",
 	"Multi Boss",
 	"Music",
 	"Revival"
@@ -379,8 +379,6 @@ ConVar tf_arena_preround_time;
 #include "vsh/bosses/boss_horsemann.sp"
 #include "vsh/bosses/boss_painiscupcakes.sp"
 #include "vsh/bosses/boss_pyrocar.sp"
-#include "vsh/bosses/boss_pyromancer_scorched.sp"
-#include "vsh/bosses/boss_pyromancer_scalded.sp"
 #include "vsh/bosses/boss_redmond.sp"
 #include "vsh/bosses/boss_seeldier.sp"
 #include "vsh/bosses/boss_seeman.sp"
@@ -391,7 +389,6 @@ ConVar tf_arena_preround_time;
 #include "vsh/bosses/boss_merasmus.sp"
 
 #include "vsh/bossesmulti/bossmulti_mannbrothers.sp"
-#include "vsh/bossesmulti/bossmulti_pyromancers.sp"
 #include "vsh/bossesmulti/bossmulti_seemanseeldier.sp"
 
 #include "vsh/modifiers/modifiers_angry.sp"
@@ -438,12 +435,10 @@ ConVar tf_arena_preround_time;
 #include "vsh/forward.sp"
 #include "vsh/hud.sp"
 #include "vsh/native.sp"
-#include "vsh/network.sp"
 #include "vsh/nextboss.sp"
 #include "vsh/preferences.sp"
 #include "vsh/property.sp"
 #include "vsh/queue.sp"
-#include "vsh/rank.sp"
 #include "vsh/sdk.sp"
 #include "vsh/stocks.sp"
 
@@ -476,7 +471,7 @@ public void OnPluginStart()
 {
 	//OnLibraryAdded dont always call TF2Items on plugin start
 	g_bTF2Items = LibraryExists("TF2Items");
-	
+
 	AddMultiTargetFilter("@hale", BossTargetFilter, "all bosses", false);
 	AddMultiTargetFilter("@boss", BossTargetFilter, "all bosses", false);
 	AddMultiTargetFilter("@!hale", BossTargetFilter, "all non-bosses", false);
@@ -501,14 +496,14 @@ public void OnPluginStart()
 
 	//Allow client 0 (server/console) use admin commands
 	Client_AddFlag(0, ClientFlags_Admin);
-	
+
 	//Client 0 also used to call boss function and fetch data without needing active boss (precache, menus etc)
 	//Modifiers should always be enabled, so modifiers function can be called
 	SaxtonHaleBase boss = SaxtonHaleBase(0);
 	boss.bModifiers = true;
-	
+
 	Config_Init();
-	
+
 	ClassLimit_Init();
 	Command_Init();
 	Console_Init();
@@ -522,64 +517,63 @@ public void OnPluginStart()
 	FuncStack_Init();
 	Menu_Init();
 	NextBoss_Init();
-	Rank_Init();
 	SDK_Init();
 	TagsCall_Init();
 	TagsCore_Init();
 	TagsName_Init();
-	
+
 	SaxtonHaleFunction func;
-	
+
 	//Boss functions
 	SaxtonHaleFunction("CreateBoss", ET_Single, Param_String);
 	SaxtonHaleFunction("IsBossHidden", ET_Single);
 	SaxtonHaleFunction("IsBossType", ET_Single, Param_String);
 	SaxtonHaleFunction("SetBossType", ET_Ignore, Param_String);
-	
+
 	func = SaxtonHaleFunction("GetBossType", ET_Ignore, Param_String, Param_Cell);
 	func.SetParam(1, Param_String, VSHArrayType_Dynamic, 2);
-	
+
 	func = SaxtonHaleFunction("GetBossName", ET_Ignore, Param_String, Param_Cell);
 	func.SetParam(1, Param_String, VSHArrayType_Dynamic, 2);
-	
+
 	func = SaxtonHaleFunction("GetBossInfo", ET_Ignore, Param_String, Param_Cell);
 	func.SetParam(1, Param_String, VSHArrayType_Dynamic, 2);
-	
+
 	//Multi Boss Functions
 	SaxtonHaleFunction("CreateBossMulti", ET_Single, Param_String);
 	SaxtonHaleFunction("IsBossMultiHidden", ET_Single);
 	SaxtonHaleFunction("IsBossMultiType", ET_Single, Param_String);
 	SaxtonHaleFunction("SetBossMultiType", ET_Ignore, Param_String);
 	SaxtonHaleFunction("GetBossMultiList", ET_Ignore, Param_Cell);
-	
+
 	func = SaxtonHaleFunction("GetBossMultiType", ET_Ignore, Param_String, Param_Cell);
 	func.SetParam(1, Param_String, VSHArrayType_Dynamic, 2);
-	
+
 	func = SaxtonHaleFunction("GetBossMultiName", ET_Ignore, Param_String, Param_Cell);
 	func.SetParam(1, Param_String, VSHArrayType_Dynamic, 2);
-	
+
 	func = SaxtonHaleFunction("GetBossMultiInfo", ET_Ignore, Param_String, Param_Cell);
 	func.SetParam(1, Param_String, VSHArrayType_Dynamic, 2);
-	
+
 	//Modifiers functions
 	SaxtonHaleFunction("CreateModifiers", ET_Single, Param_String);
 	SaxtonHaleFunction("IsModifiersHidden", ET_Single);
 	SaxtonHaleFunction("SetModifiersType", ET_Ignore, Param_String);
-	
+
 	func = SaxtonHaleFunction("GetModifiersType", ET_Ignore, Param_String, Param_Cell);
 	func.SetParam(1, Param_String, VSHArrayType_Dynamic, 2);
-	
+
 	func = SaxtonHaleFunction("GetModifiersName", ET_Ignore, Param_String, Param_Cell);
 	func.SetParam(1, Param_String, VSHArrayType_Dynamic, 2);
-	
+
 	func = SaxtonHaleFunction("GetModifiersInfo", ET_Ignore, Param_String, Param_Cell);
 	func.SetParam(1, Param_String, VSHArrayType_Dynamic, 2);
-	
+
 	//Ability functions 能力功能
 	SaxtonHaleFunction("CreateAbility", ET_Single, Param_String);
 	SaxtonHaleFunction("FindAbility", ET_Single, Param_String);
 	SaxtonHaleFunction("DestroyAbility", ET_Ignore, Param_String);
-	
+
 	//General functions
 	SaxtonHaleFunction("OnThink", ET_Ignore);
 	SaxtonHaleFunction("OnSpawn", ET_Ignore);
@@ -589,79 +583,89 @@ public void OnPluginStart()
 	SaxtonHaleFunction("OnCommandKeyValues", ET_Hook, Param_String);
 	SaxtonHaleFunction("OnAttackCritical", ET_Hook, Param_Cell, Param_CellByRef);
 	SaxtonHaleFunction("OnVoiceCommand", ET_Hook, Param_String, Param_String);
+	SaxtonHaleFunction("OnStartTouch", ET_Hook, Param_Cell);
 	SaxtonHaleFunction("OnWeaponSwitchPost", ET_Ignore, Param_Cell);
-	
+	SaxtonHaleFunction("OnConditionAdded", ET_Ignore, Param_Cell);
+	SaxtonHaleFunction("OnConditionRemoved", ET_Ignore, Param_Cell);
+
 	func = SaxtonHaleFunction("OnSoundPlayed", ET_Hook, Param_Array, Param_CellByRef, Param_String, Param_CellByRef, Param_FloatByRef, Param_CellByRef, Param_CellByRef, Param_CellByRef, Param_String, Param_CellByRef);
 	func.SetParam(1, Param_Array, VSHArrayType_Static, MAXPLAYERS);
 	func.SetParam(3, Param_String, VSHArrayType_Static, PLATFORM_MAX_PATH);
 	func.SetParam(9, Param_String, VSHArrayType_Static, PLATFORM_MAX_PATH);
-	
+
 	//Damage/Death functions 伤害/死亡功能
 	SaxtonHaleFunction("OnPlayerKilled", ET_Ignore, Param_Cell, Param_Cell);
 	SaxtonHaleFunction("OnDeath", ET_Ignore, Param_Cell);
-	
+
 	func = SaxtonHaleFunction("OnAttackBuilding", ET_Hook, Param_Cell, Param_CellByRef, Param_FloatByRef, Param_CellByRef, Param_CellByRef, Param_Array, Param_Array, Param_Cell);
 	func.SetParam(6, Param_Array, VSHArrayType_Static, 3);
 	func.SetParam(7, Param_Array, VSHArrayType_Static, 3);
-	
+
 	func = SaxtonHaleFunction("OnAttackDamage", ET_Hook, Param_Cell, Param_CellByRef, Param_FloatByRef, Param_CellByRef, Param_CellByRef, Param_Array, Param_Array, Param_Cell);
 	func.SetParam(6, Param_Array, VSHArrayType_Static, 3);
 	func.SetParam(7, Param_Array, VSHArrayType_Static, 3);
-	
+
 	func = SaxtonHaleFunction("OnTakeDamage", ET_Hook, Param_CellByRef, Param_CellByRef, Param_FloatByRef, Param_CellByRef, Param_CellByRef, Param_Array, Param_Array, Param_Cell);
 	func.SetParam(6, Param_Array, VSHArrayType_Static, 3);
 	func.SetParam(7, Param_Array, VSHArrayType_Static, 3);
-	
+
 	//Button functions 按钮功能
 	SaxtonHaleFunction("OnButton", ET_Ignore, Param_CellByRef);
 	SaxtonHaleFunction("OnButtonPress", ET_Ignore, Param_Cell);
 	SaxtonHaleFunction("OnButtonHold", ET_Ignore, Param_Cell);
 	SaxtonHaleFunction("OnButtonRelease", ET_Ignore, Param_Cell);
-	
+
 	//Building functions 建筑功能
 	SaxtonHaleFunction("OnBuild", ET_Single, Param_Cell, Param_Cell);
 	SaxtonHaleFunction("OnBuildObject", ET_Event, Param_Cell);
 	SaxtonHaleFunction("OnDestroyObject", ET_Event, Param_Cell);
 	SaxtonHaleFunction("OnObjectSapped", ET_Event, Param_Cell);
-	
+
 	//Retrieve array/strings 检索
 	func = SaxtonHaleFunction("GetModel", ET_Ignore, Param_String, Param_Cell);
 	func.SetParam(1, Param_String, VSHArrayType_Dynamic, 2);
-	
+
 	func = SaxtonHaleFunction("GetSound", ET_Ignore, Param_String, Param_Cell, Param_Cell);
 	func.SetParam(1, Param_String, VSHArrayType_Dynamic, 2);
-	
+
 	func = SaxtonHaleFunction("GetSoundKill", ET_Ignore, Param_String, Param_Cell, Param_Cell);
 	func.SetParam(1, Param_String, VSHArrayType_Dynamic, 2);
-	
+
 	func = SaxtonHaleFunction("GetSoundAbility", ET_Ignore, Param_String, Param_Cell, Param_String);
 	func.SetParam(1, Param_String, VSHArrayType_Dynamic, 2);
-	
+
 	func = SaxtonHaleFunction("GetRenderColor", ET_Ignore, Param_Array);
 	func.SetParam(1, Param_Array, VSHArrayType_Static, 4);
-	
+
 	func = SaxtonHaleFunction("GetMusicInfo", ET_Ignore, Param_String, Param_Cell, Param_FloatByRef);
 	func.SetParam(1, Param_String, VSHArrayType_Dynamic, 2);
-	
+
 	func = SaxtonHaleFunction("GetRageMusicInfo", ET_Ignore, Param_String, Param_Cell, Param_FloatByRef);
 	func.SetParam(1, Param_String, VSHArrayType_Dynamic, 2);
-	
-	//Misc functions 其他功能
+
+	func = SaxtonHaleFunction("GetHudText", ET_Ignore, Param_String, Param_Cell);
+	func.SetParam(1, Param_String, VSHArrayType_Dynamic, 2);
+
+	func = SaxtonHaleFunction("GetHudColor", ET_Ignore, Param_Array);
+	func.SetParam(1, Param_Array, VSHArrayType_Static, 4);
+
+	//Misc functions
 	SaxtonHaleFunction("Precache", ET_Ignore);
 	SaxtonHaleFunction("CalculateMaxHealth", ET_Single);
+	SaxtonHaleFunction("CanHealTarget", ET_Hook, Param_Cell, Param_CellByRef);
 	SaxtonHaleFunction("AddRage", ET_Ignore, Param_Cell);
 	SaxtonHaleFunction("CreateWeapon", ET_Single, Param_Cell, Param_String, Param_Cell, Param_Cell, Param_String);
 	SaxtonHaleFunction("Destroy", ET_Ignore);
-	
+
 	//Register base constructor
 	SaxtonHale_RegisterClass("SaxtonHaleBoss", VSHClassType_Core);
 	SaxtonHale_RegisterClass("SaxtonHaleBossMulti", VSHClassType_Core);
 	SaxtonHale_RegisterClass("SaxtonHaleModifiers", VSHClassType_Core);
 	SaxtonHale_RegisterClass("SaxtonHaleAbility", VSHClassType_Core);
-	
+
 	//Register normal bosses 注册普通Boss
 	SaxtonHale_RegisterClass("CSaxtonHale", VSHClassType_Boss);
-	
+
 	SaxtonHale_RegisterClass("CAnnouncer", VSHClassType_Boss);
 	SaxtonHale_RegisterClass("CBlutarch", VSHClassType_Boss);
 	SaxtonHale_RegisterClass("CBonkBoy", VSHClassType_Boss);
@@ -674,25 +678,22 @@ public void OnPluginStart()
 	SaxtonHale_RegisterClass("CPainisCupcake", VSHClassType_Boss);
 	SaxtonHale_RegisterClass("CPyroCar", VSHClassType_Boss);
 	SaxtonHale_RegisterClass("CRedmond", VSHClassType_Boss);
-	SaxtonHale_RegisterClass("CScaldedPyromancer", VSHClassType_Boss);
-	SaxtonHale_RegisterClass("CScorchedPyromancer", VSHClassType_Boss);
 	SaxtonHale_RegisterClass("CSeeldier", VSHClassType_Boss);
 	SaxtonHale_RegisterClass("CSeeMan", VSHClassType_Boss);
 	SaxtonHale_RegisterClass("CUberRanger", VSHClassType_Boss);
 	SaxtonHale_RegisterClass("CVagineer", VSHClassType_Boss);
 	SaxtonHale_RegisterClass("CYeti", VSHClassType_Boss);
-	
+
 	//Register multi bosses 注册多重Boss
 	SaxtonHale_RegisterClass("CMannBrothers", VSHClassType_BossMulti);
-	SaxtonHale_RegisterClass("CPyromancers", VSHClassType_BossMulti);
 	SaxtonHale_RegisterClass("CSeeManSeeldier", VSHClassType_BossMulti);
-	
+
 	//Register minions 注册小弟
 	SaxtonHale_RegisterClass("CSeeldierMinion", VSHClassType_Boss);
 	SaxtonHale_RegisterClass("CAnnouncerMinion", VSHClassType_Boss);
 	SaxtonHale_RegisterClass("CMinionRanger", VSHClassType_Boss);
 	SaxtonHale_RegisterClass("CZombie", VSHClassType_Boss);
-	
+
 	//Register ability 注册能力
 	SaxtonHale_RegisterClass("CBodyEat", VSHClassType_Ability);
 	SaxtonHale_RegisterClass("CBomb", VSHClassType_Ability);
@@ -719,7 +720,7 @@ public void OnPluginStart()
 	SaxtonHale_RegisterClass("CWeaponFists", VSHClassType_Ability);
 	SaxtonHale_RegisterClass("CWeaponSentry", VSHClassType_Ability);
 	SaxtonHale_RegisterClass("CWeaponSpells", VSHClassType_Ability);
-	
+
 	//Register modifiers 注册修改器
 	SaxtonHale_RegisterClass("CModifiersAngry", VSHClassType_Modifier);
 	SaxtonHale_RegisterClass("CModifiersElectric", VSHClassType_Modifier);
@@ -730,20 +731,20 @@ public void OnPluginStart()
 	SaxtonHale_RegisterClass("CModifiersOverload", VSHClassType_Modifier);
 	SaxtonHale_RegisterClass("CModifiersSpeed", VSHClassType_Modifier);
 	SaxtonHale_RegisterClass("CModifiersVampire", VSHClassType_Modifier);
-	
+
 	//Init our convars 一些cvars
 	g_ConfigConvar.Create("vsh_force_load", "-1", "Force enable VSH on map start? (-1 for default, 0 for force disable, 1 for force enable)", _, true, -1.0, true, 1.0);
 	g_ConfigConvar.Create("vsh_boss_ping_limit", "200", "Max ping/latency to allow player to play as boss (-1 for no limit)", _, true, -1.0);
 	g_ConfigConvar.Create("vsh_telefrag_damage", "9001.0", "Damage amount to boss from telefrag", _, true, 0.0);
 	g_ConfigConvar.Create("vsh_music_enable", "1", "Enable boss music?", _, true, 0.0, true, 1.0);
 	g_ConfigConvar.Create("vsh_rps_enable", "1", "Allow everyone use Rock Paper Scissors Taunt?", _, true, 0.0, true, 1.0);
-	
+
 	//Incase of lateload, call client join functions
 	for (int iClient = 1; iClient <= MaxClients; iClient++)
 	{
 		if (IsClientConnected(iClient))
 			OnClientConnected(iClient);
-		
+
 		if (IsClientInGame(iClient))
 		{
 			OnClientPutInServer(iClient);
@@ -757,7 +758,7 @@ public void OnLibraryAdded(const char[] sName)
 	if (StrEqual(sName, "TF2Items"))
 	{
 		g_bTF2Items = true;
-		
+
 		//We cant allow TF2Items load while GiveNamedItem already hooked due to crash
 		if (SDK_IsGiveNamedItemActive())
 			PluginStop(true, "[VSH] DO NOT LOAD TF2ITEMS MIDGAME WHILE VSH IS ALREADY LOADED!!!!");
@@ -769,7 +770,7 @@ public void OnLibraryRemoved(const char[] sName)
 	if (StrEqual(sName, "TF2Items"))
 	{
 		g_bTF2Items = false;
-		
+
 		//TF2Items unloaded with GiveNamedItem unhooked, we can now safely hook GiveNamedItem ourself
 		for (int iClient = 1; iClient <= MaxClients; iClient++)
 			if (IsClientInGame(iClient))
@@ -787,7 +788,7 @@ public void OnPluginEnd()
 			boss.CallFunction("Destroy");
 		}
 	}
-	
+
 	Plugin_Cvars(false);
 }
 
@@ -892,15 +893,15 @@ public void OnMapStart()
 	char sMapName[64];
 	GetCurrentMap(sMapName, sizeof(sMapName));
 	GetMapDisplayName(sMapName, sMapName, sizeof(sMapName));
-	
+
 	int iForceLoad = g_ConfigConvar.LookupInt("vsh_force_load");
-	
+
 	if (iForceLoad == 0)
 	{
 		g_bEnabled = false;
 	}
 	else if ((iForceLoad == 1)
-		|| (StrContains(sMapName, "vsh_", false) != -1 && StrContains(sMapName, "vsh_dr_", false) == -1) 
+		|| (StrContains(sMapName, "vsh_", false) != -1 && StrContains(sMapName, "vsh_dr_", false) == -1)
 		|| (StrContains(sMapName, "ff2_", false) != -1)
 		|| (StrContains(sMapName, "arena_", false) != -1))
 	{
@@ -915,7 +916,7 @@ public void OnMapStart()
 		//Precache every bosses/abilities/modifiers registered
 		SaxtonHaleBase boss = SaxtonHaleBase(0); //client index doesn't matter
 		ArrayList aClass = FuncClass_GetAll();
-		
+
 		int iLength = aClass.Length;
 		for (int i = 0; i < iLength; i++)
 		{
@@ -924,7 +925,7 @@ public void OnMapStart()
 			if (boss.StartFunction(sType, "Precache"))
 				Call_Finish();
 		}
-		
+
 		delete aClass;
 
 		for (int i = 1; i <= 4; i++)
@@ -942,15 +943,15 @@ public void OnMapStart()
 		PrecacheSound(SOUND_BACKSTAB);
 		PrecacheSound(SOUND_DOUBLEDONK);
 		PrecacheSound(SOUND_NULL);
-		
+
 		g_iSpritesLaserbeam = PrecacheModel("materials/sprites/laserbeam.vmt", true);
 		g_iSpritesGlow = PrecacheModel("materials/sprites/glow01.vmt", true);
-		
+
 		Dome_MapStart();
-		
+
 		CreateTimer(60.0, Timer_WelcomeMessage);
 		CreateTimer(240.0, Timer_WelcomeMessage, _, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
-		
+
 		g_bEnabled = true;
 	}
 	else
@@ -994,13 +995,16 @@ public void OnEntityCreated(int iEntity, const char[] sClassname)
 {
 	if (!g_bEnabled || iEntity <= 0 || iEntity > 2048)
 		return;
-	
-	Network_ResetEntity(iEntity);
-	
+
 	for (int iClient = 1; iClient <= MaxClients; iClient++)
 		if (SaxtonHale_IsValidBoss(iClient))
 			SaxtonHaleBase(iClient).CallFunction("OnEntityCreated", iEntity, sClassname);
-	
+
+	if (StrContains(sClassname, "tf_projectile_healing_bolt") == 0)
+	{
+		SDKHook(iEntity, SDKHook_StartTouch, Crossbow_OnTouch);
+	}
+
 	if (StrContains(sClassname, "tf_projectile_") == 0)
 	{
 		SDKHook(iEntity, SDKHook_StartTouchPost, Tags_OnProjectileTouch);
@@ -1019,7 +1023,7 @@ public void OnEntityCreated(int iEntity, const char[] sClassname)
 	else if (StrEqual(sClassname, "trigger_capture_area"))
 	{
 		SDKHook(iEntity, SDKHook_Spawn, Dome_TriggerSpawn);
-		
+
 		SDKHook(iEntity, SDKHook_StartTouch, Dome_TriggerTouch);
 		SDKHook(iEntity, SDKHook_Touch, Dome_TriggerTouch);
 		SDKHook(iEntity, SDKHook_EndTouch, Dome_TriggerTouch);
@@ -1035,22 +1039,52 @@ public void OnEntityCreated(int iEntity, const char[] sClassname)
 	}
 }
 
+public Action Crossbow_OnTouch(int iEntity, int iToucher)
+{
+	if (iToucher <= 0 || iToucher > MaxClients || !IsClientInGame(iToucher))
+		return Plugin_Continue;
+
+	int iClient = GetEntPropEnt(iEntity, Prop_Send, "m_hOwnerEntity");
+	if (iClient <= 0 || iClient > MaxClients || !IsClientInGame(iClient))
+		return Plugin_Continue;
+
+	if (GetClientTeam(iClient) == GetClientTeam(iToucher))
+	{
+		if (SaxtonHale_IsValidBoss(iClient))
+		{
+			bool bReturn = true;
+			Action action = SaxtonHaleBase(iClient).CallFunction("CanHealTarget", iToucher, bReturn);
+			if (action >= Plugin_Changed && !bReturn)
+			{
+				RemoveEntity(iEntity);
+				return Plugin_Handled;
+			}
+			else
+			{
+				return Plugin_Continue;
+			}
+		}
+
+		if (SaxtonHale_IsValidBoss(iToucher))
+		{
+			RemoveEntity(iEntity);
+			return Plugin_Handled;
+		}
+	}
+
+	return Plugin_Continue;
+}
+
 public Action ItemPack_OnTouch(int iEntity, int iToucher)
 {
 	if (!g_bEnabled) return Plugin_Continue;
 	if (g_iTotalRoundPlayed <= 0) return Plugin_Continue;
-	
+
 	//Don't allow valid non-attack players pick health and ammo packs
 	if (!SaxtonHale_IsValidAttack(iToucher))
 		return Plugin_Handled;
 
 	return Plugin_Continue;
-}
-
-public void OnEntityDestroyed(int iEntity)
-{
-	if (0 < iEntity < 2049)
-		Network_ResetEntity(iEntity);
 }
 
 void Frame_InitVshPreRoundTimer(int iTime)
@@ -1089,13 +1123,13 @@ public void Frame_CallJarate(DataPack data)
 	data.Reset();
 	int iClient = GetClientOfUserId(data.ReadCell());
 	TagsParams tParams = data.ReadCell();
-	
+
 	if (iClient <= 0 || iClient > MaxClients || !IsClientInGame(iClient) || !IsPlayerAlive(iClient))
 	{
 		delete tParams;
 		return;
 	}
-	
+
 	TagsCore_CallAll(iClient, TagsCall_Jarate, tParams);
 	delete tParams;
 }
@@ -1104,7 +1138,10 @@ public void TF2_OnConditionAdded(int iClient, TFCond nCond)
 {
 	if (!g_bEnabled) return;
 	if (g_iTotalRoundPlayed <= 0) return;
-	
+
+	if (SaxtonHale_IsValidBoss(iClient))
+		SaxtonHaleBase(iClient).CallFunction("OnConditionAdded", nCond);
+
 	if (!g_ConfigConvar.LookupInt("vsh_rps_enable"))
 	{
 		if (GetEntProp(iClient, Prop_Send, "m_iTauntItemDefIndex") == ITEM_ROCK_PAPER_SCISSORS)
@@ -1113,6 +1150,15 @@ public void TF2_OnConditionAdded(int iClient, TFCond nCond)
 			PrintToChat(iClient, "%s%s Rock, Paper, Scissors taunt is disabled in this gamemode", TEXT_TAG, TEXT_ERROR);
 		}
 	}
+}
+
+public void TF2_OnConditionRemoved(int iClient, TFCond nCond)
+{
+	if (!g_bEnabled) return;
+	if (g_iTotalRoundPlayed <= 0) return;
+
+	if (SaxtonHale_IsValidBoss(iClient))
+		SaxtonHaleBase(iClient).CallFunction("OnConditionRemoved", nCond);
 }
 
 public Action Timer_RoundStartSound(Handle hTimer, int iClient)
@@ -1132,13 +1178,13 @@ public Action Timer_Music(Handle hTimer, SaxtonHaleBase boss)
 {
 	if (g_hTimerBossMusic != hTimer)
 		return Plugin_Stop;
-	
+
 	if (!boss.bValid)
 	{
 		g_hTimerBossMusic = null;
 		return Plugin_Stop;
 	}
-	
+
 	if (StrEmpty(g_sBossMusic))
 		return Plugin_Stop;
 
@@ -1148,7 +1194,7 @@ public Action Timer_Music(Handle hTimer, SaxtonHaleBase boss)
 		{
 			//Stop current music before playing another one
 			StopSound(iClient, SNDCHAN_AUTO, g_sBossMusic);
-			
+
 			if (Preferences_Get(iClient, VSHPreferences_Music))
 				EmitSoundToClient(iClient, g_sBossMusic);
 		}
@@ -1161,7 +1207,7 @@ public Action Timer_WelcomeMessage(Handle hTimer)
 {
 	if (!g_bEnabled)
 		return Plugin_Stop;
-	
+
 	PrintToChatAll("%s%s Welcome to Versus Saxton Hale: Rewrite! \nType %s/vsh%s for more info.", TEXT_TAG, TEXT_COLOR, TEXT_DARK, TEXT_COLOR);
 	return Plugin_Continue;
 }
@@ -1176,8 +1222,6 @@ public Action Timer_EntityCleanup(Handle hTimer, int iRef)
 
 public void OnClientConnected(int iClient)
 {
-	Network_ResetClient(iClient);
-
 	g_iPlayerDamage[iClient] = 0;
 	g_iPlayerAssistDamage[iClient] = 0;
 	g_iClientFlags[iClient] = 0;
@@ -1185,11 +1229,10 @@ public void OnClientConnected(int iClient)
 
 	ClassLimit_SetMainClass(iClient, TFClass_Unknown);
 	ClassLimit_SetDesiredClass(iClient, TFClass_Unknown);
-	
+
 	//-1 as unknown
 	Preferences_SetAll(iClient, -1);
 	Queue_SetPlayerPoints(iClient, -1);
-	Rank_SetCurrent(iClient, -1);
 }
 
 public void OnClientPutInServer(int iClient)
@@ -1198,8 +1241,9 @@ public void OnClientPutInServer(int iClient)
 	SDK_HookGiveNamedItem(iClient);
 	SDKHook(iClient, SDKHook_PreThink, Client_OnThink);
 	SDKHook(iClient, SDKHook_OnTakeDamageAlive, Client_OnTakeDamageAlive);
+	SDKHook(iClient, SDKHook_StartTouch, Client_OnStartTouch);
 	SDKHook(iClient, SDKHook_WeaponSwitchPost, Client_OnWeaponSwitchPost);
-	
+
 	Cookies_OnClientJoin(iClient);
 }
 
@@ -1213,20 +1257,7 @@ public void OnClientPostAdminCheck(int iClient)
 public void OnClientDisconnect(int iClient)
 {
 	SaxtonHaleBase boss = SaxtonHaleBase(iClient);
-	
-	if (Rank_GetClient() == iClient && Rank_IsEnabled())
-	{
-		//Ur not going anywhere kiddo
-		int iRank = Rank_GetCurrent(iClient) - 1;
-		if (iRank >= 0)
-		{
-			PrintToChatAll("%s %s%N%s's rank has %sdecreased%s to %s%d%s!", TEXT_TAG, TEXT_DARK, iClient, TEXT_COLOR, TEXT_NEGATIVE, TEXT_COLOR, TEXT_DARK, iRank, TEXT_COLOR);
-			Rank_SetCurrent(iClient, iRank, true);
-		}
-		
-		Rank_ClearClient();
-	}
-	
+
 	if (boss.bValid)
 	{
 		boss.CallFunction("Destroy");
@@ -1239,11 +1270,10 @@ public void OnClientDisconnect(int iClient)
 
 	ClassLimit_SetMainClass(iClient, TFClass_Unknown);
 	ClassLimit_SetDesiredClass(iClient, TFClass_Unknown);
-	
+
 	Preferences_SetAll(iClient, -1);
 	Queue_SetPlayerPoints(iClient, -1);
-	Rank_SetCurrent(iClient, -1);
-	
+
 	NextBoss_DeleteClient(iClient);
 }
 
@@ -1255,20 +1285,20 @@ public void OnClientDisconnect_Post(int iClient)
 public void Client_OnThink(int iClient)
 {
 	if (!g_bEnabled) return;
-	
+
 	Dome_OnThink(iClient);
-	
+
 	if (g_iTotalRoundPlayed <= 0) return;
-	
+
 	SaxtonHaleBase boss = SaxtonHaleBase(iClient);
 	if (boss.bValid)
 		boss.CallFunction("OnThink");
 	else
 	{
 		Tags_OnThink(iClient);
-		
+
 		TFClassType nClass = TF2_GetPlayerClass(iClient);
-		
+
 		int iActiveWep = GetEntPropEnt(iClient, Prop_Send, "m_hActiveWeapon");
 
 		int iIndex = -1;
@@ -1283,7 +1313,7 @@ public void Client_OnThink(int iClient)
 		{
 			//Get amount of active players
 			int iPlayerCount = SaxtonHale_GetAliveAttackPlayers();
-			
+
 			//Check minicrit from index
 			int iMinicrit = g_ConfigIndex.IsMinicrit(iIndex);
 			if (iMinicrit == 1)
@@ -1299,7 +1329,7 @@ public void Client_OnThink(int iClient)
 				else if (iMinicrit != 0 && iPlayerCount <= 3)	//Give minicrit if less than 3 players and not 0 in config
 					TF2_AddCondition(iClient, TFCond_Buffed, 0.05);
 			}
-			
+
 			//Check crit from index
 			int iCrit = g_ConfigIndex.IsCrit(iIndex);
 			if (iCrit == 1)
@@ -1317,7 +1347,7 @@ public void Client_OnThink(int iClient)
 			}
 		}
 	}
-	
+
 	Hud_Think(iClient);
 }
 
@@ -1325,43 +1355,45 @@ public Action Client_OnTakeDamageAlive(int victim, int &attacker, int &inflictor
 {
 	if (!g_bEnabled) return Plugin_Continue;
 	if (g_iTotalRoundPlayed <= 0) return Plugin_Continue;
-	
+
 	Action finalAction = Plugin_Continue;
-	
+
 	if (0 < victim <= MaxClients && IsClientInGame(victim) && GetClientTeam(victim) > 1)
 	{
 		SaxtonHaleBase bossVictim = SaxtonHaleBase(victim);
 		SaxtonHaleBase bossAttacker = SaxtonHaleBase(attacker);
-		
+
 		Action action = Plugin_Continue;
-		
+
 		if (bossVictim.bValid)
 		{
 			action = bossVictim.CallFunction("OnTakeDamage", attacker, inflictor, damage, damagetype, weapon, damageForce, damagePosition, damagecustom);
 			if (action > finalAction)
 				finalAction = action;
 		}
-		
+
 		if (0 < attacker <= MaxClients && victim != attacker && bossAttacker.bValid)
 		{
 			action = bossAttacker.CallFunction("OnAttackDamage", victim, inflictor, damage, damagetype, weapon, damageForce, damagePosition, damagecustom);
 			if (action > finalAction)
 				finalAction = action;
 		}
-		
+
 		//Stop immediately if returning Plugin_Stop
 		if (finalAction == Plugin_Stop)
 			return finalAction;
-		
+
 		//Call damage tags
 		action = TagsDamage_OnTakeDamage(victim, attacker, inflictor, damage, damagetype, weapon, damageForce, damagePosition, damagecustom);
 		if (action > finalAction)
 			finalAction = action;
-		
+
+		Tags_OnTakeDamage(victim, attacker, damage, weapon);
+
 		char sWeaponClass[64];
 		if (weapon > MaxClients)
 			GetEdictClassname(weapon, sWeaponClass, sizeof(sWeaponClass));
-		
+
 		if (0 < attacker <= MaxClients && IsClientInGame(attacker))
 		{
 			if (!bossAttacker.bValid)
@@ -1374,7 +1406,7 @@ public Action Client_OnTakeDamageAlive(int victim, int &attacker, int &inflictor
 						damage = float(iTelefragDamage);
 						PrintCenterText(attacker, "TELEFRAG! You are a pro.");
 						PrintCenterText(victim, "TELEFRAG! Be careful around quantum tunneling devices!");
-						
+
 						//Try to retrieve the entity under the player, and hopefully this is the teleporter
 						int iBuilder = 0;
 						int iGroundEntity = GetEntPropEnt(attacker, Prop_Send, "m_hGroundEntity");
@@ -1407,16 +1439,29 @@ public Action Client_OnTakeDamageAlive(int victim, int &attacker, int &inflictor
 	return finalAction;
 }
 
+public Action Client_OnStartTouch(int iClient, int iToucher)
+{
+	if (!g_bEnabled) return Plugin_Continue;
+	if (g_iTotalRoundPlayed <= 0) return Plugin_Continue;
+
+	SaxtonHaleBase boss = SaxtonHaleBase(iClient);
+
+	if (0 < iClient <= MaxClients && boss.bValid)
+		return boss.CallFunction("OnStartTouch", iToucher);
+
+	return Plugin_Continue;
+}
+
 public Action Client_OnWeaponSwitchPost(int iClient, int iWeapon)
 {
 	if (!g_bEnabled) return Plugin_Continue;
 	if (g_iTotalRoundPlayed <= 0) return Plugin_Continue;
-	
+
 	SaxtonHaleBase boss = SaxtonHaleBase(iClient);
-	
+
 	if (0 < iClient <= MaxClients && boss.bValid)
 		return boss.CallFunction("OnWeaponSwitchPost", iWeapon);
-	
+
 	return Plugin_Continue;
 }
 
@@ -1424,32 +1469,32 @@ public Action Building_OnTakeDamage(int building, int &attacker, int &inflictor,
 {
 	if (!g_bEnabled) return Plugin_Continue;
 	if (g_iTotalRoundPlayed <= 0) return Plugin_Continue;
-	
+
 	SaxtonHaleBase bossAttacker = SaxtonHaleBase(attacker);
-	
+
 	if (0 < attacker <= MaxClients && bossAttacker.bValid)
 		return bossAttacker.CallFunction("OnAttackBuilding", building, inflictor, damage, damagetype, weapon, damageForce, damagePosition, damagecustom);
-		
+
 	return Plugin_Continue;
 }
 
 public bool BossTargetFilter(char[] sPattern, ArrayList aClients)
 {
 	bool bTargetBoss = StrContains(sPattern, "@!") == -1;
-	
+
 	for (int iClient = 1; iClient <= MaxClients; iClient++)
 	{
 		if (IsClientInGame(iClient) && aClients.FindValue(iClient) == -1)
 		{
 			bool bIsBoss = SaxtonHale_IsValidBoss(iClient, false);
-			
+
 			if (bTargetBoss && bIsBoss)
 				aClients.Push(iClient);
 			else if (!bTargetBoss && !bIsBoss)
 				aClients.Push(iClient);
 		}
 	}
-	
+
 	return true;
 }
 
@@ -1457,16 +1502,16 @@ public Action OnClientCommandKeyValues(int iClient, KeyValues kv)
 {
 	if (!g_bEnabled) return Plugin_Continue;
 	if (iClient <= 0 || iClient > MaxClients || !IsClientInGame(iClient)) return Plugin_Continue;
-	
+
 	SaxtonHaleBase boss = SaxtonHaleBase(iClient);
 	if (boss.bValid)
 	{
 		char sCommand[64];
 		kv.GetSectionName(sCommand, sizeof(sCommand));
-		
+
 		return boss.CallFunction("OnCommandKeyValues", sCommand);
 	}
-	
+
 	return Plugin_Continue;
 }
 
@@ -1535,7 +1580,7 @@ public Action TF2_CalcIsAttackCritical(int iClient, int iWeapon, char[] sWepClas
 {
 	if (!g_bEnabled) return Plugin_Continue;
 	if (g_iTotalRoundPlayed <= 0) return Plugin_Continue;
-	
+
 	SaxtonHaleBase boss = SaxtonHaleBase(iClient);
 	if (boss.bValid)
 	{
@@ -1545,12 +1590,12 @@ public Action TF2_CalcIsAttackCritical(int iClient, int iWeapon, char[] sWepClas
 	{
 		int iIndex = GetEntProp(iWeapon, Prop_Send, "m_iItemDefinitionIndex");
 		int iSlot = TF2_GetItemSlot(iIndex, TF2_GetPlayerClass(iClient));
-		
+
 		if (WeaponSlot_Primary <= iSlot <= WeaponSlot_BuilderEngie)
 		{
 			TagsParams tParams = new TagsParams();
 			TagsCore_CallSlot(iClient, TagsCall_Attack, iSlot, tParams);
-			
+
 			//Override crit result
 			int iResult;
 			if (tParams.GetIntEx("attackcrit", iResult))
@@ -1559,10 +1604,10 @@ public Action TF2_CalcIsAttackCritical(int iClient, int iWeapon, char[] sWepClas
 				delete tParams;
 				return Plugin_Changed;
 			}
-			
+
 			delete tParams;
 		}
-		
+
 		return Plugin_Continue;
 	}
 }
@@ -1586,13 +1631,13 @@ public Action TF2Items_OnGiveNamedItem(int client, char[] classname, int itemDef
 Action GiveNamedItem(int iClient, const char[] sClassname, int iIndex)
 {
 	if (!g_bEnabled) return Plugin_Continue;
-	
+
 	SaxtonHaleBase boss = SaxtonHaleBase(iClient);
 	if (boss.bValid)
 		return boss.CallFunction("OnGiveNamedItem", sClassname, iIndex);
 	else if (g_ConfigIndex.IsRestricted(iIndex))
 		return Plugin_Handled;
-	
+
 	return Plugin_Continue;
 }
 

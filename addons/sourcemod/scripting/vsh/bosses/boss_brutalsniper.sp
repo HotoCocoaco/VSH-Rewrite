@@ -77,21 +77,21 @@ methodmap CBrutalSniper < SaxtonHaleBase
 	public CBrutalSniper(CBrutalSniper boss)
 	{
 		boss.CallFunction("CreateAbility", "CBraveJump");
-		
+
 		CScareRage scareAbility = boss.CallFunction("CreateAbility", "CScareRage");
 		scareAbility.flRadius = 200.0;
-		
-		boss.iBaseHealth = 800;
-		boss.iHealthPerPlayer = 800;
+
+		boss.iHealthPerPlayer = 600;
+		boss.flHealthExponential = 1.05;
 		boss.nClass = TFClass_Sniper;
 		boss.iMaxRageDamage = 2500;
 	}
-	
+
 	public void GetBossName(char[] sName, int length)
 	{
 		strcopy(sName, length, "残忍基督弓手");
 	}
-	
+
 	public void GetBossInfo(char[] sInfo, int length)
 	{
 		StrCat(sInfo, length, "\n生命值: 中等");
@@ -109,29 +109,29 @@ methodmap CBrutalSniper < SaxtonHaleBase
 		StrCat(sInfo, length, "\n- 惊吓近距离的敌人5秒");
 		StrCat(sInfo, length, "\n- 200%% 愤怒: 更远距离的惊吓并延长时间刀7.5秒");
 	}
-	
+
 	public void OnSpawn()
 	{
 		int iClient = this.iClient;
 		int iWeapon;
 		char attribs[128];
-		
+
 		Format(attribs, sizeof(attribs), "2 ; 2.1 ; 6 ; 0.3 ; 280 ; 19 ; 551 ; 1.0");
 		iWeapon = this.CallFunction("CreateWeapon", 56, "tf_weapon_compound_bow", 100, TFQual_Collectors, attribs);
-		if (IsValidEntity(iWeapon)) 
+		if (IsValidEntity(iWeapon))
 		{
 			SetEntProp(iWeapon, Prop_Send, "m_iClip1", 0);
 			SetEntProp(iClient, Prop_Send, "m_iAmmo", 0, _, 1);
 		}
 		/*
 		Huntsman attributes:
-		
+
 		2: Damage bonus
 		6: faster firing speed
 		280: override_projectile_type
 		551: special_taunt
 		*/
-		
+
 		g_iBrutalSniperWeaponCooldown[this.iClient][0] = BRUTALSNIPER_MAXWEAPONS - 2;	//Kukri
 		Format(attribs, sizeof(attribs), "2 ; 2.80 ; 252 ; 0.5 ; 259 ; 1.0");
 		iWeapon = this.CallFunction("CreateWeapon", ITEM_KUKRI, "tf_weapon_club", 100, TFQual_Collectors, attribs);
@@ -139,20 +139,20 @@ methodmap CBrutalSniper < SaxtonHaleBase
 			SetEntPropEnt(iClient, Prop_Send, "m_hActiveWeapon", iWeapon);
 		/*
 		Kukri attributes:
-		
+
 		2: damage bonus
 		252: reduction in push force taken from damage
 		259: Deals 3x falling damage to the player you land on
 		*/
 	}
-	
+
 	public void OnPlayerKilled(Event event, int iVictim)
 	{
 		int iClient = this.iClient;
-		
+
 		char sWeapon[50];
 		event.GetString("weapon", sWeapon, sizeof(sWeapon));
-		
+
 		//Check if player is killed from Sniper's melee or bleed
 		if (StrContains(sWeapon, "club", false) != -1
 			|| StrContains(sWeapon, "kukri", false) != -1
@@ -165,34 +165,34 @@ methodmap CBrutalSniper < SaxtonHaleBase
 			{
 				//Remove Sniper's melee weapon and generate a new one
 				TF2_RemoveItemInSlot(iClient, WeaponSlot_Melee);
-				
+
 				int iRandom = -1;
 				int iIndex;
 				//Get a random melee weapon thats not in cooldown
 				while (iRandom == -1)
-				{					
+				{
 					iRandom = GetRandomInt(0, (BRUTALSNIPER_MAXWEAPONS - 1));
-					
+
 					//Check if that weapon is not in cooldown
 					if (g_iBrutalSniperWeaponCooldown[iClient][iRandom] == 0)
 						g_iBrutalSniperWeaponCooldown[iClient][iRandom] = BRUTALSNIPER_MAXWEAPONS - 1;	//Give new cooldown
 					else
 						iRandom = -1;	//Try find another number
 				}
-				
+
 				//Reduce all melee cooldown
 				for (int i = 0; i < BRUTALSNIPER_MAXWEAPONS; i++)
 					if (g_iBrutalSniperWeaponCooldown[iClient][i] > 0)
 						g_iBrutalSniperWeaponCooldown[iClient][i] --;
-				
+
 				//Attribute for all melee weapons
 				char attribs[128];
 				Format(attribs, sizeof(attribs), "2 ; 2.80 ; 252 ; 0.5 ; 259 ; 1.0");
-				
+
 				//Get new melee from random
 				switch (iRandom)
 				{
-					case 0: 
+					case 0:
 					{
 						iIndex = ITEM_KUKRI;
 						//Default weapon, no extra attributes
@@ -218,9 +218,9 @@ methodmap CBrutalSniper < SaxtonHaleBase
 						//225: decrease in damage when health >50% of max
 					}
 				}
-				
+
 				if (iIndex <= 0) return;
-				
+
 				//Generate new melee weapon
 				int iNewMelee = this.CallFunction("CreateWeapon", iIndex, "tf_weapon_club", 100, TFQual_Unusual, attribs);
 				if (iNewMelee > MaxClients)
@@ -233,60 +233,51 @@ methodmap CBrutalSniper < SaxtonHaleBase
 			}
 		}
 	}
-	
+
 	public void OnThink()
 	{
-		int iClient = this.iClient;
-		
-		int iActiveWeapon = GetEntPropEnt(iClient, Prop_Send, "m_hActiveWeapon");
-		
+		int iActiveWeapon = GetEntPropEnt(this.iClient, Prop_Send, "m_hActiveWeapon");
+
 		//Crit if holding Bushwacka
 		if (IsValidEntity(iActiveWeapon) && GetEntProp(iActiveWeapon, Prop_Send, "m_iItemDefinitionIndex") == ITEM_BUSHWACKA)
-			TF2_AddCondition(iClient, TFCond_CritOnDamage, 0.05);
-		
-		char sMessage[255];
-		int iColor[4];
-		
-		int iWeapon = TF2_GetItemInSlot(iClient, WeaponSlot_Melee);
-		
-		if (iWeapon <= MaxClients) return;
-		
-		int iIndex = GetEntProp(iWeapon, Prop_Send, "m_iItemDefinitionIndex");
-		switch(iIndex)
-		{
-			case ITEM_KUKRI:
-			{
-				Format(sMessage, sizeof(sMessage), "反曲刀: 默认");
-				iColor[0] = 192; iColor[1] = 192; iColor[2] = 192;
-			}
-			case ITEM_TRIBALMAN_SHIV:
-			{
-				Format(sMessage, sizeof(sMessage), "部落者刮刀: 10秒流血, 15%%伤害降低");
-				iColor[0] = 192; iColor[1] = 32; iColor[2] = 0;
-			}
-			case ITEM_BUSHWACKA:
-			{
-				Format(sMessage, sizeof(sMessage), "灌木丛: 永远爆击, 受到的伤害增加20%%");
-				iColor[0] = 224; iColor[1] = 160; iColor[2] = 0;
-			}
-			case ITEM_SHAHANSHAH:
-			{
-				Format(sMessage, sizeof(sMessage), "诸王之王: 当 <50%% 生命值时 +15%% 伤害, 当 >50%% 生命值时 -15%% 伤害");
-				iColor[0] = 144; iColor[1] = 92; iColor[2] = 0;
-			}
-		}
-		
-		iColor[3] = 255;
-		
-		Hud_AddText(iClient, sMessage);
-		Hud_SetColor(iClient, iColor);
+			TF2_AddCondition(this.iClient, TFCond_CritOnDamage, 0.05);
 	}
-	
+
+	public void GetHudText(char[] sMessage, int iLength)
+	{
+		int iWeapon = TF2_GetItemInSlot(this.iClient, WeaponSlot_Melee);
+		if (iWeapon <= MaxClients)
+			return;
+
+		switch (GetEntProp(iWeapon, Prop_Send, "m_iItemDefinitionIndex"))
+		{
+			case ITEM_KUKRI: StrCat(sMessage, iLength, "\nKukri: Default");
+			case ITEM_TRIBALMAN_SHIV: StrCat(sMessage, iLength, "\nTribalman Shiv: 10 seconds bleed, 15%% dmg penalty");
+			case ITEM_BUSHWACKA: StrCat(sMessage, iLength, "\nBushwacka: Always crit, 20%% dmg vulnerability");
+			case ITEM_SHAHANSHAH: StrCat(sMessage, iLength, "\nShahanshah: +15%% dmg when <50%% health, -15%% dmg when >50%% health");
+		}
+	}
+
+	public void GetHudColor(int iColor[4])
+	{
+		int iWeapon = TF2_GetItemInSlot(this.iClient, WeaponSlot_Melee);
+		if (iWeapon <= MaxClients)
+			return;
+
+		switch (GetEntProp(iWeapon, Prop_Send, "m_iItemDefinitionIndex"))
+		{
+			case ITEM_KUKRI: iColor = {192, 192, 192, 255};
+			case ITEM_TRIBALMAN_SHIV: iColor = {192, 32, 0, 255};
+			case ITEM_BUSHWACKA: iColor = {224, 160, 0, 255};
+			case ITEM_SHAHANSHAH: iColor = {144, 92, 0, 255};
+		}
+	}
+
 	public void OnRage()
 	{
 		int iClient = this.iClient;
 		int iPlayerCount = SaxtonHale_GetAliveAttackPlayers();
-		
+
 		//Add ammo to huntsman
 		int iPrimaryWep = GetPlayerWeaponSlot(iClient, WeaponSlot_Primary);
 		if (IsValidEntity(iPrimaryWep))
@@ -300,12 +291,12 @@ methodmap CBrutalSniper < SaxtonHaleBase
 			SetEntPropEnt(iClient, Prop_Send, "m_hActiveWeapon", iPrimaryWep);
 		}
 	}
-	
+
 	public void GetModel(char[] sModel, int length)
 	{
 		strcopy(sModel, length, BRUTALSNIPER_MODEL);
 	}
-	
+
 	public void GetSound(char[] sSound, int length, SaxtonHaleSound iSoundType)
 	{
 		switch (iSoundType)
@@ -318,20 +309,20 @@ methodmap CBrutalSniper < SaxtonHaleBase
 			case VSHSound_Backstab: strcopy(sSound, length, g_strBrutalSniperBackStabbed[GetRandomInt(0,sizeof(g_strBrutalSniperBackStabbed)-1)]);
 		}
 	}
-	
+
 	public void GetSoundAbility(char[] sSound, int length, const char[] sType)
 	{
 		if (strcmp(sType, "CBraveJump") == 0)
 			strcopy(sSound, length, g_strBrutalSniperJump[GetRandomInt(0,sizeof(g_strBrutalSniperJump)-1)]);
 	}
-	
+
 	public void GetSoundKill(char[] sSound, int length, TFClassType nClass)
 	{
 		int iClient = this.iClient;
 		int iPrimary = GetPlayerWeaponSlot(iClient, WeaponSlot_Primary);
 		int iMelee = GetPlayerWeaponSlot(iClient, WeaponSlot_Melee);
 		int iActiveWep = GetEntPropEnt(iClient, Prop_Send, "m_hActiveWeapon");
-		
+
 		if (iActiveWep == iPrimary && GetRandomInt(0, 1))
 			strcopy(sSound, length, g_strBrutalSniperKillPrimary[GetRandomInt(0,sizeof(g_strBrutalSniperKillPrimary)-1)]);
 		else if (iActiveWep == iMelee && GetRandomInt(0, 3))
@@ -339,19 +330,19 @@ methodmap CBrutalSniper < SaxtonHaleBase
 		else
 			strcopy(sSound, length, g_strBrutalSniperKill[GetRandomInt(0,sizeof(g_strBrutalSniperKill)-1)]);
 	}
-	
+
 	public void GetMusicInfo(char[] sSound, int length, float &time)
 	{
 		strcopy(sSound, length, BRUTALSNIPER_THEME);
 		time = 132.0;
 	}
-	
+
 	public void Precache()
 	{
 		PrecacheModel(BRUTALSNIPER_MODEL);
-		
+
 		PrepareSound(BRUTALSNIPER_THEME);
-		
+
 		for (int i = 0; i < sizeof(g_strBrutalSniperRoundStart); i++) PrecacheSound(g_strBrutalSniperRoundStart[i]);
 		for (int i = 0; i < sizeof(g_strBrutalSniperWin); i++) PrecacheSound(g_strBrutalSniperWin[i]);
 		for (int i = 0; i < sizeof(g_strBrutalSniperLose); i++) PrecacheSound(g_strBrutalSniperLose[i]);
@@ -362,14 +353,14 @@ methodmap CBrutalSniper < SaxtonHaleBase
 		for (int i = 0; i < sizeof(g_strBrutalSniperKillMelee); i++) PrecacheSound(g_strBrutalSniperKillMelee[i]);
 		for (int i = 0; i < sizeof(g_strBrutalSniperLastMan); i++) PrecacheSound(g_strBrutalSniperLastMan[i]);
 		for (int i = 0; i < sizeof(g_strBrutalSniperBackStabbed); i++) PrecacheSound(g_strBrutalSniperBackStabbed[i]);
-		
+
 		AddFileToDownloadsTable("materials/models/player/saxton_hale/sniper_head.vtf");
 		AddFileToDownloadsTable("materials/models/player/saxton_hale/sniper_head_red.vmt");
 		AddFileToDownloadsTable("materials/models/player/saxton_hale/sniper_lens.vmt");
 		AddFileToDownloadsTable("materials/models/player/saxton_hale/sniper_lens.vtf");
 		AddFileToDownloadsTable("materials/models/player/saxton_hale/sniper_red.vmt");
 		AddFileToDownloadsTable("materials/models/player/saxton_hale/sniper_red.vtf");
-		
+
 		AddFileToDownloadsTable("models/player/saxton_hale/cbs_v4.mdl");
 		AddFileToDownloadsTable("models/player/saxton_hale/cbs_v4.phy");
 		AddFileToDownloadsTable("models/player/saxton_hale/cbs_v4.sw.vtx");

@@ -51,7 +51,7 @@ methodmap CWeaponSpells < SaxtonHaleBase
 			g_flSpellsCooldown[this.iClient] = val;
 		}
 	}
-	
+
 	property float flRageRequirement
 	{
 		public get()
@@ -63,34 +63,34 @@ methodmap CWeaponSpells < SaxtonHaleBase
 			g_flRageRequirement[this.iClient] = val;
 		}
 	}
-	
+
 	public CWeaponSpells(CWeaponSpells ability)
 	{
 		ability.flRageRequirement = 0.25;
 		ability.flCooldown = 0.0;
 		g_rageSpells[ability.iClient] = haleSpells_Invalid;
-		
+
 		g_bSpellsRage[ability.iClient] = false;
-		
+
 		if (g_aSpells[ability.iClient] == null)
 			g_aSpells[ability.iClient] = new ArrayList();
 		g_aSpells[ability.iClient].Clear();
 	}
-	
+
 	public void AddSpells(haleSpells spells)
 	{
 		g_aSpells[this.iClient].Push(spells);
 	}
-	
+
 	public void RageSpells(haleSpells spells)
 	{
 		g_rageSpells[this.iClient] = spells;
 	}
-	
+
 	public void OnSpawn()
 	{
 		int iClient = this.iClient;
-		
+
 		//Create and equip spellbook
 		char attribs[128];
 		Format(attribs, sizeof(attribs), "547 ; 0.5");
@@ -102,59 +102,58 @@ methodmap CWeaponSpells < SaxtonHaleBase
 				SetEntProp(iSpellbook, Prop_Send, "m_iSelectedSpellIndex", view_as<int>(g_aSpells[iClient].Get(0)));
 		}
 	}
-	
-	public void OnThink()
+
+	public void GetHudText(char[] sMessage, int iLength)
 	{
-		int iClient = this.iClient;
-		
-		int iSpellbook = GetSpellbook(iClient);
-		if (iSpellbook <= MaxClients) return;
-		
+		int iSpellbook = GetSpellbook(this.iClient);
+		if (iSpellbook <= MaxClients)
+			return;
+
 		float flRagePercentage = float(this.iRageDamage) / float(this.iMaxRageDamage);
-		
-		char sMessage[128];
-		
+
 		if (g_flSpellsLastUsed[this.iClient] > GetGameTime()-this.flCooldown)
 		{
 			int iSec = RoundToNearest(this.flCooldown - (GetGameTime() - g_flSpellsLastUsed[this.iClient]));
-			Format(sMessage, sizeof(sMessage), "魔咒冷却 %i 秒%s 剩余！", iSec, (iSec > 1) ? "s" : "");
+			Format(sMessage, iLength, "%s\nSpell cooldown %i second%s remaining!", sMessage, iSec, (iSec > 1) ? "s" : "");
 		}
 		else if (flRagePercentage < this.flRageRequirement)
 		{
-			Format(sMessage, sizeof(sMessage), "不够愤怒值使用魔咒！");
+			Format(sMessage, iLength, "%s\nNot enough rage for spells!", sMessage);
 		}
 		else
 		{
 			int iSpellIndex = GetEntProp(iSpellbook, Prop_Send, "m_iSelectedSpellIndex");
-			if (iSpellIndex < 0) return;
-			Format(sMessage, sizeof(sMessage), "魔咒: %s", g_strSpellsName[iSpellIndex]);
+			if (iSpellIndex < 0)
+				return;
+
+			Format(sMessage, iLength, "%s\nSpell: %s", sMessage, g_strSpellsName[iSpellIndex]);
 		}
-		
-		Format(sMessage, sizeof(sMessage), "%s\n使用attack2释放魔咒", sMessage);
-		if (g_aSpells[iClient].Length > 1) Format(sMessage, sizeof(sMessage), "%s, 按装填键充能当前魔咒！", sMessage);
-		else Format(sMessage, sizeof(sMessage), "%s!", sMessage);
-		
-		Hud_AddText(iClient, sMessage);
+
+		Format(sMessage, iLength, "%s\nUse attack2 for spell", sMessage);
+		if (g_aSpells[this.iClient].Length > 1)
+			Format(sMessage, iLength, "%s, and reload to change current spell!", sMessage);
+		else
+			Format(sMessage, iLength, "%s!", sMessage);
 	}
-	
+
 	public void OnRage()
 	{
 		if (g_rageSpells[this.iClient] == view_as<int>(haleSpells_Invalid))
 			return;
-		
+
 		int iClient = this.iClient;
-		
+
 		//Set spellbook to specified rare
 		int iSpellbook = GetSpellbook(iClient);
 		if (iSpellbook == -1) return;
 		haleSpells spellIndex = view_as<haleSpells>(GetEntProp(iSpellbook, Prop_Send, "m_iSelectedSpellIndex"));
 		SetEntProp(iSpellbook, Prop_Send, "m_iSelectedSpellIndex", view_as<int>(g_rageSpells[iClient]));
-		
+
 		//Force player use spell
 		g_bSpellsRage[iClient] = true;
 		Client_ForceUseAction(iClient);
 		float flDuration = 0.85;
-		
+
 		if (this.bSuperRage)
 		{
 			int iRef = EntIndexToEntRef(iClient);
@@ -162,44 +161,44 @@ methodmap CWeaponSpells < SaxtonHaleBase
 			CreateTimer(1.70, Timer_ForceUseAction, iRef);
 			flDuration = 2.55;
 		}
-		
+
 		//Create timer to set spell back to what it used to be
 		DataPack data;
 		CreateDataTimer(flDuration, Timer_SetSpellIndex, data);
 		data.WriteCell(EntIndexToEntRef(iClient));
 		data.WriteCell(spellIndex);
 	}
-	
+
 	public Action OnCommandKeyValues(const char[] sCommand)
 	{
 		if (StrEqual(sCommand, "+use_action_slot_item_server"))
 		{
 			//Check whenever if we should allow him to use spell
 			int iClient = this.iClient;
-			
+
 			if (g_bSpellsRage[iClient])
 			{
 				//Rage
 				g_bSpellsRage[iClient] = false;
 				return Plugin_Continue;
 			}
-			
+
 			float flRagePercentage = float(this.iRageDamage) / float(this.iMaxRageDamage);
 			if (flRagePercentage >= this.flRageRequirement && g_flSpellsLastUsed[this.iClient] <= GetGameTime()-this.flCooldown)
 			{
 				//Normal spell, remove rage on use
 				this.iRageDamage -= RoundToFloor(this.flRageRequirement * float(this.iMaxRageDamage));
-				
+
 				//spell cooldowns, set timer after used
 				g_flSpellsLastUsed[this.iClient] = GetGameTime();
-				
-				
+
+
 				//Play ability sound if boss have one
 				char sSound[PLATFORM_MAX_PATH];
 				this.CallFunction("GetSoundAbility", sSound, sizeof(sSound), "CWeaponSpells");
 				if (!StrEmpty(sSound))
 					EmitSoundToAll(sSound, this.iClient, SNDCHAN_VOICE, SNDLEVEL_SCREAMING);
-				
+
 				return Plugin_Continue;
 			}
 			else
@@ -208,14 +207,14 @@ methodmap CWeaponSpells < SaxtonHaleBase
 				return Plugin_Handled;
 			}
 		}
-		
+
 		return Plugin_Continue;
 	}
-	
+
 	public void OnButtonPress(int button)
 	{
 		int iClient = this.iClient;
-		
+
 		if (button == IN_RELOAD && g_aSpells[iClient].Length > 1)
 		{
 			float flRagePercentage = float(this.iRageDamage) / float(this.iMaxRageDamage);
@@ -223,10 +222,10 @@ methodmap CWeaponSpells < SaxtonHaleBase
 			{
 				int iSpellbook = GetSpellbook(iClient);
 				if (iSpellbook == -1) return;
-				
+
 				//Get current spell
 				haleSpells spellIndex = view_as<haleSpells>(GetEntProp(iSpellbook, Prop_Send, "m_iSelectedSpellIndex"));
-				
+
 				int i = 0;
 				while (i < g_aSpells[iClient].Length)
 				{
@@ -239,10 +238,10 @@ methodmap CWeaponSpells < SaxtonHaleBase
 						spellIndex = g_aSpells[iClient].Get(i);
 						break;
 					}
-					
+
 					i++;
 				}
-				
+
 				SetEntProp(iSpellbook, Prop_Send, "m_iSelectedSpellIndex", view_as<int>(spellIndex));
 			}
 		}
@@ -261,7 +260,7 @@ stock int GetSpellbook(int iClient)
 	while ((iSpellbook = FindEntityByClassname(iSpellbook, "tf_weapon_spellbook")) != -1)
 		if (IsValidEntity(iSpellbook) && GetEntPropEnt(iSpellbook, Prop_Send, "m_hOwnerEntity") == iClient && !GetEntProp(iSpellbook, Prop_Send, "m_bDisguiseWeapon"))
 			return iSpellbook;
-	
+
 	return -1;
 }
 
@@ -270,12 +269,12 @@ public Action Timer_SetSpellIndex(Handle hTimer, DataPack data)
 	data.Reset();
 	int iClient = EntRefToEntIndex(data.ReadCell());
 	haleSpells spellIndex = data.ReadCell();
-	
+
 	if (iClient <= 0 || iClient > MaxClients || !IsClientInGame(iClient)) return;
-	
+
 	int iSpellbook = GetSpellbook(iClient);
 	if (iSpellbook == -1) return;
-	
+
 	SetEntProp(iSpellbook, Prop_Send, "m_iSelectedSpellIndex", view_as<int>(spellIndex));
 }
 
@@ -283,7 +282,7 @@ public Action Timer_ForceUseAction(Handle hTimer, int iRef)
 {
 	int iClient = EntRefToEntIndex(iRef);
 	if (iClient <= 0 || iClient > MaxClients || !IsClientInGame(iClient)) return;
-	
+
 	g_bSpellsRage[iClient] = true;
 	Client_ForceUseAction(iClient);
 }
@@ -291,11 +290,11 @@ public Action Timer_ForceUseAction(Handle hTimer, int iRef)
 void Client_ForceUseAction(int iClient)
 {
 	KeyValues kv;
-	
+
 	kv = new KeyValues("+use_action_slot_item_server");
 	FakeClientCommandKeyValues(iClient, kv);
 	delete kv;
-	
+
 	kv = new KeyValues("-use_action_slot_item_server");
 	FakeClientCommandKeyValues(iClient, kv);
 	delete kv;

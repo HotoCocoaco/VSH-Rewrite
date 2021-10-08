@@ -20,19 +20,21 @@ methodmap SaxtonHaleBoss < SaxtonHaleBase
 		this.iBaseHealth = 0;
 		this.iHealthPerPlayer = 0;
 		this.iMaxHealth = 0;
+		this.flHealthExponential = 1.0;
+		this.flHealthMultiplier = 1.0;
+		this.bHealthPerPlayerAlive = false;
 		
 		this.flSpeed = 370.0;
 		this.flSpeedMult = 0.07;
-		this.flHealthMultiplier = 1.0;
 		this.flMaxRagePercentage = 2.0;
 		this.iRageDamage = 0;
 		this.flEnvDamageCap = 400.0;
 		this.flWeighDownTimer = 2.8;
 		this.flWeighDownForce = 3000.0;
 		this.flGlowTime = 0.0;
+		
 		this.bMinion = false;
 		this.bModel = true;
-		this.bCanBeHealed = false;
 		this.nClass = TFClass_Unknown;
 
 		strcopy(g_sClientBossType[this.iClient], sizeof(g_sClientBossType[]), type);
@@ -86,7 +88,15 @@ methodmap SaxtonHaleBoss < SaxtonHaleBase
 
 	public int CalculateMaxHealth()
 	{
-		return RoundToNearest((this.iBaseHealth + this.iHealthPerPlayer * g_iTotalAttackCount) * this.flHealthMultiplier);
+		float flHealth;
+		if (this.bHealthPerPlayerAlive)
+			flHealth = float(this.iHealthPerPlayer * SaxtonHale_GetAliveAttackPlayers());
+		else
+			flHealth = float(this.iHealthPerPlayer * g_iTotalAttackCount);
+		
+		flHealth += float(this.iBaseHealth);
+		flHealth = Pow(flHealth, this.flHealthExponential);
+		return RoundToNearest(flHealth * this.flHealthMultiplier);
 	}
 	
 	public void GetBossName(char[] sName, int length)
@@ -289,13 +299,7 @@ methodmap SaxtonHaleBoss < SaxtonHaleBase
 		if (!StrEmpty(sSound))
 			EmitSoundToAll(sSound, this.iClient, SNDCHAN_VOICE, SNDLEVEL_SCREAMING);
 	}
-
-	public void OnEntityCreated(int iEntity, const char[] sClassname)
-	{
-		if (strcmp(sClassname, "tf_projectile_healing_bolt") == 0)
-			SDKHook(iEntity, SDKHook_StartTouch, Crossbow_OnTouch);
-	}
-
+	
 	public Action OnAttackCritical(int iWeapon, bool &bResult)
 	{
 		//Disable random crit for bosses
@@ -484,24 +488,4 @@ public Action Timer_BossRageMusic(Handle hTimer, SaxtonHaleBoss boss)
 		g_flClientBossRageMusicVolume[boss.iClient] = 0.0;
 		StopSound(boss.iClient, SNDCHAN_AUTO, g_sClientBossRageMusic[boss.iClient]);
 	}
-}
-
-public Action Crossbow_OnTouch(int iEntity, int iToucher)
-{
-	if (!SaxtonHale_IsValidBoss(iToucher))
-		return Plugin_Continue;
-	
-	int iClient = GetEntPropEnt(iEntity, Prop_Send, "m_hOwnerEntity");
-	if (iClient <= 0 || iClient > MaxClients || !IsClientInGame(iClient))
-		return Plugin_Continue;
-	
-	SaxtonHaleBase boss = SaxtonHaleBase(iToucher);
-	if (!boss.bCanBeHealed && GetClientTeam(iClient) == GetClientTeam(iToucher))
-	{
-		//Dont allow crossbows heal boss, kill arrow
-		AcceptEntityInput(iEntity, "Kill");
-		return Plugin_Handled;
-	}
-	
-	return Plugin_Continue;
 }

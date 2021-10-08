@@ -8,12 +8,12 @@ methodmap CModifiersJumper < SaxtonHaleBase
 	{
 		TF2Attrib_SetByDefIndex(boss.iClient, ATTRIB_NO_JUMP, 1.0);
 	}
-	
+
 	public void GetModifiersName(char[] sName, int length)
 	{
 		strcopy(sName, length, "跳跃者");
 	}
-	
+
 	public void GetModifiersInfo(char[] sInfo, int length)
 	{
 		StrCat(sInfo, length, "\n颜色: 蓝色");
@@ -21,7 +21,7 @@ methodmap CModifiersJumper < SaxtonHaleBase
 		StrCat(sInfo, length, "\n- 正常跳跃替换为大跳");
 		StrCat(sInfo, length, "\n- 3秒冷却");
 	}
-	
+
 	public int GetRenderColor(int iColor[4])
 	{
 		iColor[0] = 64;
@@ -29,55 +29,54 @@ methodmap CModifiersJumper < SaxtonHaleBase
 		iColor[2] = 255;
 		iColor[3] = 255;
 	}
-	
+
 	public void OnButtonPress(int iButton)
 	{
 		if (GameRules_GetRoundState() == RoundState_Preround)
 			return;
-		
+
 		if (iButton == IN_JUMP && g_flJumpCooldown[this.iClient] == 0.0)
 		{
 			g_flJumpCooldown[this.iClient] = GetGameTime() + 3.0;
-			
+
 			float vecAng[3], vecVel[3];
 			GetEntPropVector(this.iClient, Prop_Data, "m_vecVelocity", vecVel);
-			
+
 			float flCharge = GetVectorLength(vecVel) / this.flSpeed;	//flSpeedMulti? meh
 			if (flCharge > 1.0)
 				flCharge = 1.0;
-			
+
 			GetVectorAngles(vecVel, vecAng);
-			
+
 			vecVel[0] = Cosine(DegToRad(vecAng[0])) * Cosine(DegToRad(vecAng[1])) * 700.0 * flCharge;
 			vecVel[1] = Cosine(DegToRad(vecAng[0])) * Sine(DegToRad(vecAng[1])) * 700.0 * flCharge;
 			vecVel[2] = 360.0;
-			
+
 			SetEntProp(this.iClient, Prop_Send, "m_bJumping", true);
-			
+
 			TeleportEntity(this.iClient, NULL_VECTOR, NULL_VECTOR, vecVel);
 		}
 	}
-	
+
 	public void OnThink()
 	{
 		if (g_flJumpCooldown[this.iClient] != 0.0 && GetGameTime() > g_flJumpCooldown[this.iClient])
 			g_flJumpCooldown[this.iClient] = 0.0;
-		
-		char sMessage[256];
+	}
+
+	public void GetHudText(char[] sMessage, int iLength)
+	{
 		if (g_flJumpCooldown[this.iClient] == 0.0)
 		{
-			Format(sMessage, sizeof(sMessage), "按空格大跳！");
+			StrCat(sMessage, iLength, "\nPress spacebar to leap!");
 		}
 		else
 		{
-			float flRemainingTime = g_flJumpCooldown[this.iClient]-GetGameTime();
-			int iSec = RoundToNearest(flRemainingTime);
-			Format(sMessage, sizeof(sMessage), "大跳冷却 %i 秒%s 剩余!", iSec, (iSec > 1) ? "s" : "");
+			int iSec = RoundToNearest(g_flJumpCooldown[this.iClient]-GetGameTime());
+			Format(sMessage, iLength, "%s\nLeap cooldown %i second%s remaining!", sMessage, iSec, (iSec > 1) ? "s" : "");
 		}
-		
-		Hud_AddText(this.iClient, sMessage);
 	}
-	
+
 	public void Destroy()
 	{
 		TF2Attrib_RemoveByDefIndex(this.iClient, ATTRIB_NO_JUMP);

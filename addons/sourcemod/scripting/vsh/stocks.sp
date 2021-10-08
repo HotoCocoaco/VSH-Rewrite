@@ -45,17 +45,24 @@ stock int Client_GetEyeTarget(int iClient)
 	return iHit;
 }
 
-stock bool TraceRay_DontHitEntity(int iEntity, int contentsMask, int data)
+stock bool TraceRay_DontHitEntity(int iEntity, int iMask, int iData)
 {
-	if (iEntity == data) return false;
-
-	return true;
+	return iEntity != iData;
 }
 
-stock bool TraceRay_DontHitPlayers(int entity, int mask, any data)
+stock bool TraceRay_DontHitPlayers(int iEntity, int iMask, int iData)
 {
-	if (entity > 0 && entity <= MaxClients) return false;
-	return true;
+	return iEntity <= 0 || iEntity > MaxClients;
+}
+
+stock bool TraceRay_HitEnemyPlayersAndObjects(int iEntity, int iMask, int iClient)
+{
+	if (0 < iEntity <= MaxClients)
+		return GetClientTeam(iEntity) != GetClientTeam(iClient);
+	
+	char sClassname[256];
+	GetEntityClassname(iEntity, sClassname, sizeof(sClassname));
+	return StrContains(sClassname, "obj_") == 0 && GetEntProp(iEntity, Prop_Send, "m_iTeamNum") != GetClientTeam(iClient);
 }
 
 stock int GetMainBoss()
@@ -111,6 +118,37 @@ stock void TF2_ForceTeamJoin(int iClient, TFTeam nTeam)
 	SetEntProp(iClient, Prop_Send, "m_lifeState", LifeState_Alive);
 
 	TF2_RespawnPlayer(iClient);
+}
+
+stock bool TF2_CreateEntityGlow(int iEntity, char[] sModel, int iColor[4] = {255, 255, 255, 255})
+{
+	int iGlow = CreateEntityByName("tf_taunt_prop");
+	if (iGlow != -1)
+	{
+		SetEntityModel(iGlow, sModel);
+		
+		DispatchSpawn(iGlow);
+		ActivateEntity(iGlow);
+		
+		SetEntityRenderMode(iGlow, RENDER_TRANSCOLOR);
+		SetEntityRenderColor(iGlow, 0, 0, 0, 0);
+		
+		int iGlowManager = TF2_CreateGlow(iGlow, iColor);
+		SDK_AlwaysTransmitEntity(iGlow);
+		SDK_AlwaysTransmitEntity(iGlowManager);
+		
+		// Set effect flags.
+		int iFlags = GetEntProp(iGlow, Prop_Send, "m_fEffects");
+		SetEntProp(iGlow, Prop_Send, "m_fEffects", iFlags | EF_BONEMERGE); // EF_BONEMERGE
+		
+		SetVariantString("!activator");
+		AcceptEntityInput(iGlow, "SetParent", iEntity);
+		
+		SetEntPropEnt(iGlow, Prop_Send, "m_hOwnerEntity", iGlowManager);
+		return true;
+	}
+	
+	return false;
 }
 
 stock int TF2_CreateGlow(int iEnt, int iColor[4])
