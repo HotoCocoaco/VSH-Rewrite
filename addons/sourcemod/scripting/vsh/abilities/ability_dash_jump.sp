@@ -66,9 +66,9 @@ methodmap CDashJump < SaxtonHaleBase
 		}
 
 		if (iCharge >= 100)
-			Format(sMessage, iLength, "%s\nDash charge: %d%%%% - Press reload to use your dash!", sMessage, iCharge);
+			Format(sMessage, iLength, "%s\n突进充能: %d%%%% - 按装填键使用你的突进！", sMessage, iCharge);
 		else
-			Format(sMessage, iLength, "%s\nDash charge: %d%%%%", sMessage, iCharge);
+			Format(sMessage, iLength, "%s\n突进充能: %d%%%%", sMessage, iCharge);
 	}
 
 	public void OnButtonPress(int iButton)

@@ -273,7 +273,7 @@ public Action Event_RoundArenaStart(Event event, const char[] sName, bool bDontB
 	//Display chat on who is next boss
 	int iNextPlayer = Queue_GetPlayerFromRank(1);
 	if (0 < iNextPlayer <= MaxClients && IsClientInGame(iNextPlayer))
-		PrintToChat(iNextPlayer, "%s================%s\nYou are about to be the next boss!\n%s================", TEXT_DARK, TEXT_COLOR, TEXT_DARK);
+		PrintToChat(iNextPlayer, "%s================%s\n你将要成为下一个Boss！\n%s================", TEXT_DARK, TEXT_COLOR, TEXT_DARK);
 }
 
 public Action Event_RoundEnd(Event event, const char[] sName, bool bDontBroadcast)

@@ -24,18 +24,18 @@ enum haleSpells
 
 static char g_strSpellsName[][] =
 {
-	"Fireball",
-	"Swarm of Bats",
-	"Uber Heal",
-	"Pumpkin MIRV",
-	"Blast Jump",
-	"Stealth",
-	"Teleport",
-	"Ball o' Lightning",
-	"Tiny and Athletic",
-	"Meteor Storm",
-	"MONOCULUS!",
-	"Skeleton Horde",
+	"火球",
+	"蝙蝠之潮",
+	"Uber治疗",
+	"南瓜地雷阵",
+	"超级高跳",
+	"潜行",
+	"传送",
+	"雷电之球",
+	"小型超人",
+	"流星坠落",
+	"召唤魔眼",
+	"骷髅大军",
 };
 
 methodmap CWeaponSpells < SaxtonHaleBase
@@ -114,11 +114,11 @@ methodmap CWeaponSpells < SaxtonHaleBase
 		if (g_flSpellsLastUsed[this.iClient] > GetGameTime()-this.flCooldown)
 		{
 			int iSec = RoundToNearest(this.flCooldown - (GetGameTime() - g_flSpellsLastUsed[this.iClient]));
-			Format(sMessage, iLength, "%s\nSpell cooldown %i second%s remaining!", sMessage, iSec, (iSec > 1) ? "s" : "");
+			Format(sMessage, iLength, "%s\n魔咒冷却 %i 秒%s 剩余！", sMessage, iSec, (iSec > 1) ? "s" : "");
 		}
 		else if (flRagePercentage < this.flRageRequirement)
 		{
-			Format(sMessage, iLength, "%s\nNot enough rage for spells!", sMessage);
+			Format(sMessage, iLength, "%s\n不够愤怒值释放魔咒！", sMessage);
 		}
 		else
 		{
@@ -126,12 +126,12 @@ methodmap CWeaponSpells < SaxtonHaleBase
 			if (iSpellIndex < 0)
 				return;
 
-			Format(sMessage, iLength, "%s\nSpell: %s", sMessage, g_strSpellsName[iSpellIndex]);
+			Format(sMessage, iLength, "%s\n魔咒: %s", sMessage, g_strSpellsName[iSpellIndex]);
 		}
 
-		Format(sMessage, iLength, "%s\nUse attack2 for spell", sMessage);
+		Format(sMessage, iLength, "%s\n使用次要攻击键释放魔咒", sMessage);
 		if (g_aSpells[this.iClient].Length > 1)
-			Format(sMessage, iLength, "%s, and reload to change current spell!", sMessage);
+			Format(sMessage, iLength, "%s, 使用装填键更换当前魔咒！", sMessage);
 		else
 			Format(sMessage, iLength, "%s!", sMessage);
 	}

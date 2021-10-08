@@ -87,7 +87,7 @@ methodmap CWeaponCharge < SaxtonHaleBase
 
 	public void GetHudText(char[] sMessage, int iLength)
 	{
-		StrCat(sMessage, iLength, "\nUse your reload key to charge!");
+		StrCat(sMessage, iLength, "\n使用你的装填键来冲锋！");
 	}
 
 	public void OnRage()

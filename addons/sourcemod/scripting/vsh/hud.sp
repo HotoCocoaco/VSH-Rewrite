@@ -35,14 +35,14 @@ void Hud_Think(int iClient)
 
 		//Display Client's damage
 		if (g_iPlayerAssistDamage[iClient] <= 0)
-			Format(sMessage, sizeof(sMessage), "%s\nDamage: %i", sMessage, g_iPlayerDamage[iClient]);
+			Format(sMessage, sizeof(sMessage), "%s\n伤害: %i", sMessage, g_iPlayerDamage[iClient]);
 		else
-			Format(sMessage, sizeof(sMessage), "%s\nDamage: %i Assist: %i", sMessage, g_iPlayerDamage[iClient], g_iPlayerAssistDamage[iClient]);
+			Format(sMessage, sizeof(sMessage), "%s\n伤害: %i 助攻: %i", sMessage, g_iPlayerDamage[iClient], g_iPlayerAssistDamage[iClient]);
 
 		//Display airblast percentage
 		float flPercentage = Tags_GetAirblastPercentage(iClient);
 		if (flPercentage >= 0.0)
-			Format(sMessage, sizeof(sMessage), "%s\nAirblast: %i%%", sMessage, RoundToFloor(flPercentage * 100.0));
+			Format(sMessage, sizeof(sMessage), "%s\n压缩气爆: %i%%", sMessage, RoundToFloor(flPercentage * 100.0));
 	}
 	else if (!IsPlayerAlive(iClient))
 	{
@@ -57,9 +57,9 @@ void Hud_Think(int iClient)
 		if (iObserverTarget != iClient && 0 < iObserverTarget <= MaxClients && IsClientInGame(iObserverTarget) && !SaxtonHale_IsValidBoss(iObserverTarget, false))
 		{
 			if (g_iPlayerAssistDamage[iObserverTarget] <= 0)
-				Format(sMessage, sizeof(sMessage), "%s\n%N's Damage: %i", sMessage, iObserverTarget, g_iPlayerDamage[iObserverTarget]);
+				Format(sMessage, sizeof(sMessage), "%s\n%N的伤害: %i", sMessage, iObserverTarget, g_iPlayerDamage[iObserverTarget]);
 			else
-				Format(sMessage, sizeof(sMessage), "%s\n%N's Damage: %i (Assist: %i)", sMessage, iObserverTarget, g_iPlayerDamage[iObserverTarget], g_iPlayerAssistDamage[iObserverTarget]);
+				Format(sMessage, sizeof(sMessage), "%s\n%N的伤害: %i (助攻: %i)", sMessage, iObserverTarget, g_iPlayerDamage[iObserverTarget], g_iPlayerAssistDamage[iObserverTarget]);
 		}
 	}
 	else if (SaxtonHale_IsValidBoss(iClient))

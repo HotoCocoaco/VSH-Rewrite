@@ -118,15 +118,15 @@ methodmap CTeleportSwap < SaxtonHaleBase
 		if (g_flTeleportSwapCooldownWait[this.iClient] != 0.0 && g_flTeleportSwapCooldownWait[this.iClient] > GetGameTime())
 		{
 			int iSec = RoundToNearest(g_flTeleportSwapCooldownWait[this.iClient]-GetGameTime());
-			Format(sMessage, iLength, "%s\nTeleport-swap cooldown %i second%s remaining!", sMessage, iSec, (iSec > 1) ? "s" : "");
+			Format(sMessage, iLength, "%s\n传送置换冷却 %i 秒%s 剩余！", sMessage, iSec, (iSec > 1) ? "s" : "");
 		}
 		else if (this.iCharge > 0)
 		{
-			Format(sMessage, iLength, "%s\nTeleport-swap: %0.2f%%. Look up and stand up to use teleport-swap.", sMessage, (float(this.iCharge)/float(this.iMaxCharge))*100.0);
+			Format(sMessage, iLength, "%s\n传送置换: %0.2f%%。向上看站起来使用传送置换。", sMessage, (float(this.iCharge)/float(this.iMaxCharge))*100.0);
 		}
 		else
 		{
-			Format(sMessage, iLength, "%s\nHold right click to use your teleport-swap!", sMessage);
+			Format(sMessage, iLength, "%s\n按住右键使用你的传送置换！", sMessage);
 		}
 	}
 

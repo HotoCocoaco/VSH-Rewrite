@@ -169,15 +169,15 @@ methodmap CFloatJump < SaxtonHaleBase
 		if (g_flFloatJumpCooldownWait[this.iClient] != 0.0 && g_flFloatJumpCooldownWait[this.iClient] > GetGameTime())
 		{
 			int iSec = RoundToNearest(g_flFloatJumpCooldownWait[this.iClient]-GetGameTime());
-			Format(sMessage, iLength, "%s\nFloat cooldown %i second%s remaining!", sMessage, iSec, (iSec > 1) ? "s" : "");
+			Format(sMessage, iLength, "%s\n漂浮冷却 %i 秒%s 剩余！", sMessage, iSec, (iSec > 1) ? "s" : "");
 		}
 		else if (this.iJumpCharge > 0)
 		{
-			Format(sMessage, iLength, "%s\nFloat charge: %0.2f%%.", sMessage, (float(this.iJumpCharge)/float(this.iMaxJumpCharge))*100.0);
+			Format(sMessage, iLength, "%s\n漂浮充能: %0.2f%%.", sMessage, (float(this.iJumpCharge)/float(this.iMaxJumpCharge))*100.0);
 		}
 		else
 		{
-			Format(sMessage, iLength, "%s\nHold right click to use your float jump!", sMessage);
+			Format(sMessage, iLength, "%s\n按住右键使用你的漂浮跳！", sMessage);
 		}
 	}
 

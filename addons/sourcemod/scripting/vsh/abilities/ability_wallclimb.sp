@@ -98,7 +98,7 @@ methodmap CWallClimb < SaxtonHaleBase
 		//Increase horizontal velocity
 		vecVelocity[0] *= this.flHorizontalSpeedMult;
 		vecVelocity[1] *= this.flHorizontalSpeedMult;
-		
+
 		//Limit max speed
 		float flSpeed = SquareRoot(vecVelocity[0] * vecVelocity[0] + vecVelocity[1] * vecVelocity[1]);
 		if (flSpeed > this.flMaxHorizontalVelocity)
@@ -115,6 +115,6 @@ methodmap CWallClimb < SaxtonHaleBase
 
 	public void GetHudText(char[] sMessage, int iLength)
 	{
-		StrCat(sMessage, iLength, "\nClimb walls by hitting them with your melee weapon!");
+		StrCat(sMessage, iLength, "\n使用近战武器攻击墙面来爬墙！");
 	}
 };

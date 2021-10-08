@@ -34,7 +34,7 @@ public void ClassLimit_Refresh()
 			char sName[MAXLEN_CONFIG_VALUE];
 			g_cvClassLimit[iClass].GetName(sName, sizeof(sName));
 			int iClassLimit = g_ConfigConvar.LookupInt(sName);
-			
+
 			if (iClassLimit == -1)	//If unlimited class found, stop counting
 			{
 				iMaxLimit = -1;
@@ -45,11 +45,11 @@ public void ClassLimit_Refresh()
 				iMaxLimit += iClassLimit;
 			}
 		}
-		
+
 		if (iMaxLimit < TF_MAXPLAYERS && iMaxLimit != -1)	//If total count is smaller than max players and not unlimited...
 		{
 			g_bClassLimit = false;				//...disable class limit
-			PrintToChatAll("%s%s Class Limit config total number is too small! (min %d out of %d)", TEXT_TAG, TEXT_ERROR, TF_MAXPLAYERS, iMaxLimit);
+			PrintToChatAll("%s%s 兵种限制总数太小了！(最小 %d / %d)", TEXT_TAG, TEXT_ERROR, TF_MAXPLAYERS, iMaxLimit);
 			LogMessage("Class Limit config total number is too small! (min %d out of %d)", TF_MAXPLAYERS, iMaxLimit);
 		}
 		else
@@ -74,7 +74,7 @@ public TFClassType ClassLimit_GetNewClass(int iClient)
 	else if (g_bClassLimit)
 	{
 		TFClassType nClass = TF2_GetPlayerClass(iClient);
-		
+
 		//Try set class to his desired class if not already one
 		TFClassType nDesiredClass = ClassLimit_GetDesiredClass(iClient);
 		if (nDesiredClass != TFClass_Unknown && nClass != nDesiredClass)
@@ -82,20 +82,20 @@ public TFClassType ClassLimit_GetNewClass(int iClient)
 			if (ClassLimit_GetMaxNum(nDesiredClass) == -1 || ClassLimit_GetCurrentNum(nDesiredClass) < ClassLimit_GetMaxNum(nDesiredClass))
 				return nDesiredClass;
 		}
-		
+
 		//Otherwise, use current class and check if it breaks class limit
 		if (ClassLimit_GetMaxNum(nClass) != -1 && ClassLimit_GetCurrentNum(nClass) > ClassLimit_GetMaxNum(nClass))
 		{
 			PrintToChat(iClient, "%s%s %s 位置已经满了! (最大 %d)", TEXT_TAG, TEXT_ERROR, g_strClassName[nClass], ClassLimit_GetMaxNum(nClass));
-			
+
 			//Create a list of all classes to randomize and select one
 			TFClassType nClassList[sizeof(g_strClassName)-1];	//Don't want to count unknown class at 0
 			for (int i = 0; i < sizeof(nClassList); i++)
 				nClassList[i] = view_as<TFClassType>(i+1);
-			
+
 			//Randomize
 			SortIntegers(view_as<int>(nClassList), sizeof(nClassList), Sort_Random);
-			
+
 			//Go through each class in the list, and find the class not already in limit
 			for (int i = 0; i < sizeof(nClassList); i++)
 			{
@@ -105,7 +105,7 @@ public TFClassType ClassLimit_GetNewClass(int iClient)
 					return nClassList[i];
 				}
 			}
-			
+
 			//We somehow reach here with no other class to find... that should never happen
 			PluginStop(true, "[VSH] FAILED TO FIND NEW CLASS IN CLASSLIMIT!!!!");
 			return nClass;
@@ -151,7 +151,7 @@ public Action ClassLimit_JoinClass(int iClient, TFClassType nClass)
 		//If player is dead, set current class as that class for real
 		if (!IsPlayerAlive(iClient))
 			TF2_SetPlayerClass(iClient, nClass);
-		
+
 		return Plugin_Continue;
 	}
 }
@@ -196,15 +196,15 @@ stock int ClassLimit_GetMaxNum(TFClassType nClass)	//Input TFClassType, return m
 stock void ClassLimit_SetSpecialRound(TFClassType nClass)
 {
 	g_nSpecialRoundClass = nClass;
-	
+
 	//Check every clients with new special round
 	for (int iClient = 1; iClient <= MaxClients; iClient++)
 	{
 		if (!IsClientInGame(iClient) || GetClientTeam(iClient) <= 1) continue;
-		
+
 		TFClassType iOldClass = TF2_GetPlayerClass(iClient);
 		TFClassType iNewClass = ClassLimit_GetNewClass(iClient);
-		
+
 		if (iOldClass != iNewClass)
 		{
 			TF2_SetPlayerClass(iClient, iNewClass);
@@ -217,6 +217,6 @@ stock bool ClassLimit_IsSpecialRoundOn()
 {
 	if (g_nSpecialRoundClass != TFClass_Unknown)
 		return true;
-	
+
 	return false;
 }

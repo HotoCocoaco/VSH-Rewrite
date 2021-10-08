@@ -166,29 +166,29 @@ methodmap CTeleportView < SaxtonHaleBase
 		if (g_nTeleportViewMode[this.iClient] == TeleportViewMode_Teleporting)
 		{
 			//Progress in teleporting
-			StrCat(sMessage, iLength, "\nTeleport-view: TELEPORTING.");
+			StrCat(sMessage, iLength, "\n视野传送：传送中。");
 		}
 		else if (g_nTeleportViewMode[this.iClient] == TeleportViewMode_Teleported)
 		{
 			//Progress into finishing
-			StrCat(sMessage, iLength, "\nTeleport-view: TELEPORTED.");
+			StrCat(sMessage, iLength, "\n视野传送：已传送。");
 		}
 		else if (g_flTeleportViewCooldownWait[this.iClient] != 0.0 && g_flTeleportViewCooldownWait[this.iClient] > GetGameTime())
 		{
 			//Teleport in cooldown
 			int iSec = RoundToNearest(g_flTeleportViewCooldownWait[this.iClient] - GetGameTime());
-			Format(sMessage, iLength, "%s\nTeleport-view cooldown %i second%s remaining!", sMessage, iSec, (iSec > 1) ? "s" : "");
+			Format(sMessage, iLength, "%s\n视野传送冷却 %i 秒%s剩余！", sMessage, iSec, (iSec > 1) ? "s" : "");
 		}
 		else if (g_flTeleportViewStartCharge[this.iClient] == 0.0)
 		{
 			//Can use teleport, but not charging
-			StrCat(sMessage, iLength, "\nHold reload to use your teleport-view!");
+			StrCat(sMessage, iLength, "\n按住装填键使用你的视野传送！");
 		}
 		else
 		{
 			//Charging to teleport
 			float flPercentage = (GetGameTime() - g_flTeleportViewStartCharge[this.iClient]) / this.flCharge;
-			Format(sMessage, iLength, "%s\nTeleport-view: %0.2f%%.", sMessage, flPercentage * 100.0);
+			Format(sMessage, iLength, "%s\n视野传送: %0.2f%%.", sMessage, flPercentage * 100.0);
 		}
 	}
 

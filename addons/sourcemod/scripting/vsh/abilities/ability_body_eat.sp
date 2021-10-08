@@ -234,7 +234,7 @@ methodmap CBodyEat < SaxtonHaleBase
 
 	public void GetHudText(char[] sMessage, int iLength)
 	{
-		StrCat(sMessage, iLength, "\nAim at dead bodies and press reload to heal up!");
+		StrCat(sMessage, iLength, "\n瞄准尸体并按下装填键来治疗！");
 	}
 
 	public void OnEntityCreated(int iEntity, const char[] sClassname)

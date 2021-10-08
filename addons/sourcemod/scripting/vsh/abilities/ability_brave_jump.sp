@@ -147,15 +147,15 @@ methodmap CBraveJump < SaxtonHaleBase
 		if (g_flJumpCooldownWait[this.iClient] != 0.0 && g_flJumpCooldownWait[this.iClient] > GetGameTime())
 		{
 			int iSec = RoundToNearest(g_flJumpCooldownWait[this.iClient]-GetGameTime());
-			Format(sMessage, iLength, "%s\nSuper-jump cooldown %i second%s remaining!", sMessage, iSec, (iSec > 1) ? "s" : "");
+			Format(sMessage, iLength, "%s\n超级跳冷却 %i 秒%s 剩余！", sMessage, iSec, (iSec > 1) ? "s" : "");
 		}
 		else if (this.iJumpCharge > 0)
 		{
-			Format(sMessage, iLength, "%s\nJump charge: %0.2f%%. Look up and stand up to use super-jump.", sMessage, (float(this.iJumpCharge)/float(this.iMaxJumpCharge))*100.0);
+			Format(sMessage, iLength, "%s\n跳跃充能: %0.2f%%。向上看站起来使用超级跳。", sMessage, (float(this.iJumpCharge)/float(this.iMaxJumpCharge))*100.0);
 		}
 		else
 		{
-			Format(sMessage, iLength, "%s\nHold right click to use your super-jump!", sMessage);
+			Format(sMessage, iLength, "%s\n按住右键使用你的超级跳！", sMessage);
 		}
 	}
 

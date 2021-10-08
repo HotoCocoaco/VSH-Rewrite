@@ -65,7 +65,7 @@
 #define FL_EDICT_DONTSEND	(1<<4)	// don't transmit this entity
 #define FL_EDICT_PVSCHECK	(1<<5)	// always transmit entity, but cull against PVS
 
-#define TEXT_TAG			"\x07E19300[\x07E17100VSH REWRITE\x07E19300]\x01"
+#define TEXT_TAG			"\x07E19300[\x07E17100VSH重制版\x07E19300]\x01"
 #define TEXT_COLOR			"\x07E19F00"
 #define TEXT_DARK			"\x07E17100"
 #define TEXT_POSITIVE		"\x0744FF11"
@@ -196,43 +196,43 @@ enum
 };
 
 char g_strPreferencesName[][] = {
-	"Boss Selection",
+	"Boss选择",
 	"",
-	"Multi Boss",
-	"Music",
-	"Revival"
+	"多人Boss",
+	"音乐",
+	"复苏"
 };
 
 // TF2 Class names, ordered from TFClassType
 char g_strClassName[TFClassType][] = {
-	"Unknown",
-	"Scout",
-	"Sniper",
-	"Soldier",
-	"Demoman",
-	"Medic",
-	"Heavy",
-	"Pyro",
-	"Spy",
-	"Engineer",
+	"未知",
+	"侦察兵",
+	"狙击手",
+	"士兵",
+	"爆破手",
+	"医生",
+	"机枪手",
+	"火焰兵",
+	"间谍",
+	"工程师",
 };
 
 // TF2 Slot names
 char g_strSlotName[][] = {
-	"Primary",
-	"Secondary",
-	"Melee",
+	"主要武器",
+	"次要武器",
+	"近战武器",
 	"PDA1",
 	"PDA2",
-	"Building"
+	"建筑物"
 };
 
 // TF2 Building names
 char g_strBuildingName[TFObjectType][TFObjectMode][] = {
-	{"Dispenser", ""},
-	{"Teleporter Entrance", "Teleporter Exit"},
-	{"Sentry Gun", ""},
-	{"Sapper", ""},
+	{"补给器", ""},
+	{"传送入口", "传送出口"},
+	{"步哨枪", ""},
+	{"电子工兵", ""},
 };
 
 // Color Tag
@@ -1147,7 +1147,7 @@ public void TF2_OnConditionAdded(int iClient, TFCond nCond)
 		if (GetEntProp(iClient, Prop_Send, "m_iTauntItemDefIndex") == ITEM_ROCK_PAPER_SCISSORS)
 		{
 			TF2_RemoveCondition(iClient, TFCond_Taunting);
-			PrintToChat(iClient, "%s%s Rock, Paper, Scissors taunt is disabled in this gamemode", TEXT_TAG, TEXT_ERROR);
+			PrintToChat(iClient, "%s%s 剪刀石头布在此模式被禁用", TEXT_TAG, TEXT_ERROR);
 		}
 	}
 }
@@ -1208,7 +1208,7 @@ public Action Timer_WelcomeMessage(Handle hTimer)
 	if (!g_bEnabled)
 		return Plugin_Stop;
 
-	PrintToChatAll("%s%s Welcome to Versus Saxton Hale: Rewrite! \nType %s/vsh%s for more info.", TEXT_TAG, TEXT_COLOR, TEXT_DARK, TEXT_COLOR);
+	PrintToChatAll("%s%s 欢迎来到VSH重制版！\n输入 %s/vsh%s 获取更多信息。", TEXT_TAG, TEXT_COLOR, TEXT_DARK, TEXT_COLOR);
 	return Plugin_Continue;
 }
 
@@ -1404,8 +1404,8 @@ public Action Client_OnTakeDamageAlive(int victim, int &attacker, int &inflictor
 					{
 						int iTelefragDamage = g_ConfigConvar.LookupInt("vsh_telefrag_damage");
 						damage = float(iTelefragDamage);
-						PrintCenterText(attacker, "TELEFRAG! You are a pro.");
-						PrintCenterText(victim, "TELEFRAG! Be careful around quantum tunneling devices!");
+						PrintCenterText(attacker, "传送杀！你是大佬！");
+						PrintCenterText(victim, "传送杀！小心那些量子传送设备！");
 
 						//Try to retrieve the entity under the player, and hopefully this is the teleporter
 						int iBuilder = 0;

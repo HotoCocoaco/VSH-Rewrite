@@ -141,7 +141,7 @@ methodmap CWeaponSentry < SaxtonHaleBase
 
 	public void GetHudText(char[] sMessage, int iLength)
 	{
-		StrCat(sMessage, iLength, "\nUse your rage to build sentry!");
+		StrCat(sMessage, iLength, "\n使用你的愤怒来建造步哨枪！");
 	}
 
 	public void Destroy()
