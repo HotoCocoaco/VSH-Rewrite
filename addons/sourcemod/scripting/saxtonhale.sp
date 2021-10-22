@@ -196,43 +196,43 @@ enum
 };
 
 char g_strPreferencesName[][] = {
-	"Boss选择",
+	"Boss Selection",
 	"",
-	"多人Boss",
-	"音乐",
-	"复苏"
+	"Multi Boss",
+	"Music",
+	"Revival"
 };
 
 // TF2 Class names, ordered from TFClassType
 char g_strClassName[TFClassType][] = {
-	"未知",
-	"侦察兵",
-	"狙击手",
-	"士兵",
-	"爆破手",
-	"医生",
-	"机枪手",
-	"火焰兵",
-	"间谍",
-	"工程师",
+	"Unknown",
+	"Scout",
+	"Sniper",
+	"Soldier",
+	"Demoman",
+	"Medic",
+	"Heavy",
+	"Pyro",
+	"Spy",
+	"Engineer",
 };
 
 // TF2 Slot names
 char g_strSlotName[][] = {
-	"主要武器",
-	"次要武器",
-	"近战武器",
+	"Primary",
+	"Secondary",
+	"Melee",
 	"PDA1",
 	"PDA2",
-	"建筑物"
+	"Building"
 };
 
 // TF2 Building names
 char g_strBuildingName[TFObjectType][TFObjectMode][] = {
-	{"补给器", ""},
-	{"传送入口", "传送出口"},
-	{"步哨枪", ""},
-	{"电子工兵", ""},
+	{"Dispenser", ""},
+	{"Teleporter Entrance", "Teleporter Exit"},
+	{"Sentry Gun", ""},
+	{"Sapper", ""},
 };
 
 // Color Tag
