@@ -1146,7 +1146,7 @@ public void TF2_OnConditionAdded(int iClient, TFCond nCond)
 		if (nCond == TFCond_Milked)
 		{
 			EmitSoundToClient(iClient, SOUND_JAR_EXPLODE);
-			PrintCenterText(iClient, "You were milked!");
+			PrintCenterText(iClient, "你被牛奶泼中！");
 		}
 	}
 
