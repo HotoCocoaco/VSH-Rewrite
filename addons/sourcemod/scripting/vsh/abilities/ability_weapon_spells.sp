@@ -110,7 +110,7 @@ methodmap CWeaponSpells < SaxtonHaleBase
 			return;
 
 		float flRagePercentage = float(this.iRageDamage) / float(this.iMaxRageDamage);
-
+//这里在检查是否过了冷却时间
 		if (g_flSpellsLastUsed[this.iClient] > GetGameTime()-this.flCooldown)
 		{
 			int iSec = RoundToNearest(this.flCooldown - (GetGameTime() - g_flSpellsLastUsed[this.iClient]));
